@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"   
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.1.xsd">
+    
+	<bean id="wmlAdminAction" class="com.action.WmlAdminAction" scope="prototype"  >
+		<property name="wmlAdminService" ref="wmlAdminService"></property>
+	</bean>    
+	<bean id="wmlAdvertisementAction" class="com.action.WmlAdvertisementAction" scope="prototype"  >
+		<property name="wmlAdvertisementService" ref="wmlAdvertisementService"></property>
+	</bean>   
+	<bean id="wmlAttentionAction" class="com.action.WmlAttentionAction" scope="prototype"  >
+		<property name="wmlAttentionService" ref="wmlAttentionService"></property>
+	</bean>   
+	
+	<bean id="wmlBeAttentionAction" class="com.action.WmlBeAttentionAction" scope="prototype"  >
+		<property name="wmlAttentionService" ref="wmlAttentionService"></property>
+	</bean>   
+	<bean id="wmlBrandAction" class="com.action.WmlBrandAction"  scope="prototype" >
+		<property name="wmlBrandService" ref="wmlBrandService"></property>
+	</bean>   
+	<bean id="wmlConfigAction" class="com.action.WmlConfigAction" scope="prototype"  >
+		<property name="wmlConfigService" ref="wmlConfigService"></property>
+	</bean>   
+	<bean id="wmlInstallationlogAction" class="com.action.WmlInstallationlogAction" scope="prototype"  >
+		<property name="wmlInstallationlogService" ref="wmlInstallationlogService"></property>
+	</bean>   
+	<bean id="wmlOrganAction" class="com.action.WmlOrganAction" scope="prototype"  >
+		<property name="wmlOrganService" ref="wmlOrganService"></property>
+			<property name="wmlUserService" ref="wmlUserService"></property>
+	</bean>   
+	<bean id="wmlPosterAction" class="com.action.WmlPosterAction" scope="prototype"  >
+		<property name="wmlPosterService" ref="wmlPosterService"></property>
+	</bean>   
+	<bean id="wmlProductAction" class="com.action.WmlProductAction" scope="prototype"  >
+		<property name="wmlProductService" ref="wmlProductService"></property>
+			<property name="wmlProductImageService" ref="wmlProductImageService"></property>
+	</bean>   
+	<bean id="wmlProductImageAction" class="com.action.WmlProductImageAction" scope="prototype"  >
+		<property name="wmlProductImageService" ref="wmlProductImageService"></property>
+	</bean>   
+	<bean id="wmlProductTypeAction" class="com.action.WmlProductTypeAction"  scope="prototype"  >
+		<property name="wmlProductTypeService" ref="wmlProductTypeService"></property>
+	</bean>   
+	<bean id="wmlsmsAction" class="com.action.WmlsmsAction"  scope="prototype"  >
+		<property name="wmlsmsService" ref="wmlsmsService"></property>
+	</bean>   
+	<bean id="wmlUserAction" class="com.action.WmlUserAction"  scope="prototype" >
+		<property name="wmlUserService" ref="wmlUserService"></property>
+	</bean>   
+	
+	<bean id="wmlMenuAction" class="com.action.WmlMenuAction"  scope="prototype"  >
+		<property name="wmlMenuService" ref="wmlMenuService"></property>
+	</bean>   
+	
+	<bean id="wmlClientAction" class="com.action.WmlClientAction"  scope="prototype"  >
+	    <property name="wmlProductService" ref="wmlProductService"></property>
+	    <property name="wmlUserService" ref="wmlUserService"></property>
+	    <property name="wmlBrandService" ref="wmlBrandService"></property>
+	    <property name="wmlAdvertisementService" ref="wmlAdvertisementService"></property>
+	    <property name="wmlProductImageService" ref="wmlProductImageService"></property>
+	    <property name="wmlUseEvaluationService" ref="wmlUseEvaluationService"></property>
+	    <property name="wmlAttentionService" ref="wmlAttentionService"></property>
+	    <property name="wmlUsePraiseService" ref="wmlUsePraiseService"></property>
+	</bean> 
+	
+	
+</beans>
+
+
+

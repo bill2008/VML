@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.pojo.WmlBrand" table="wml_brand" dynamic-insert="true"  catalog="wml_test">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" length="14" not-null="true"/>
+            	<generator class="identity"></generator>
+        </id>
+        <property name="createDate" type="java.lang.String">
+            <column name="createDate" length="20" />
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="255" />	
+        </property>
+        <property name="letter" type="java.lang.String">
+            <column name="letter" length="255" />
+        </property>
+        <property name="keyword" type="java.lang.String">
+            <column name="keyword" length="255" />
+        </property>
+        <property name="isDel" type="java.lang.Integer">
+            <column name="isDel" length="14" />
+        </property>
+    </class>
+</hibernate-mapping>

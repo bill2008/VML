@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+		<tx:method name="exists" read-only="true" /> 
+		<tx:method name="add*" propagation="REQUIRED" />   
+       <tx:method name="create*" propagation="REQUIRED" />   
+        <tx:method name="save*" propagation="REQUIRED" />   
+        <tx:method name="delete*" propagation="REQUIRED" />   
+        <tx:method name="del*" propagation="REQUIRED" />   
+        <tx:method name="update*" propagation="REQUIRED" />   
+        <tx:method name="transition*" propagation="REQUIRED" />   
+
+        <!-- hibernate4必须配置为开启事务 否则 getCurrentSession()获取不到    -->
+        <tx:method name="get*" propagation="REQUIRED"  read-only="true"  />   
+        <tx:method name="find*" propagation="REQUIRED" read-only="true" />   
+        <tx:method name="query*" propagation="REQUIRED" read-only="true" />  
+         <tx:method name="*" propagation="REQUIRED" read-only="true"/> 
+		</tx:attributes>
+	</tx:advice>
+	
+	
+	
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="bussinessService" 	expression="execution(* com.service.*.*(..))" />
+		<aop:advisor pointcut-ref="bussinessService" advice-ref="txAdvice"/>
+	</aop:config>
+
+	
+	<bean id="wmlAdminDao" class="com.dao.impl.WmlAdminDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlAdvertisementDao" class="com.dao.impl.WmlAdvertisementDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlAttentionDao" class="com.dao.impl.WmlAttentionDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlBrandDao" class="com.dao.impl.WmlBrandDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlConfigDao" class="com.dao.impl.WmlConfigDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlInstallationlogDao" class="com.dao.impl.WmlInstallationlogDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlOrganDao" class="com.dao.impl.WmlOrganDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlPosterDao" class="com.dao.impl.WmlPosterDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlProductDao" class="com.dao.impl.WmlProductDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlProductImageDao" class="com.dao.impl.WmlProductImageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlProductTypeDao" class="com.dao.impl.WmlProductTypeDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlsmsDao" class="com.dao.impl.WmlsmsDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlUserDao" class="com.dao.impl.WmlUserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlMenuDao" class="com.dao.impl.WmlMenuDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+	<bean id="wmlUseCollectDao" class="com.dao.impl.WmlUseCollectDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlUseDownloadDao" class="com.dao.impl.WmlUseDownloadDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlUseEvaluationDao" class="com.dao.impl.WmlUseEvaluationDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean id="wmlUsePraiseDao" class="com.dao.impl.WmlUsePraiseDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	
+</beans>
+
+
+

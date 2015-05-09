@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.pojo.WmlAttention" table="wml_attention" dynamic-insert="true"  catalog="wml_test">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" length="14" not-null="true"/>
+            	<generator class="identity"></generator>
+        </id>
+        <property name="createDate" type="java.lang.String">
+            <column name="createDate" length="20" />
+        </property>
+        <property name="byId" type="java.lang.Integer">
+            <column name="ById" length="11" />	
+        </property>
+        <property name="byName" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select t1.name from wml_user t1 WHERE t1.id=byId and  isDel=1)
+        	</formula>
+		</property>
+        <property name="forId" type="java.lang.Integer">
+            <column name="ForId" length="11" />
+        </property>
+        <property name="forName" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select t.name from wml_user t WHERE t.id=forId and  isDel=1)
+        	</formula>
+		</property>
+        <property name="isDel" type="java.lang.Integer">
+            <column name="isDel" length="1" />
+        </property>
+    </class>
+</hibernate-mapping>

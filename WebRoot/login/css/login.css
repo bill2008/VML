@@ -1,0 +1,116 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+}:focus {
+    outline: 0;
+}
+
+.loginbody {
+    background: #0C73B7 url(../images/login_bg.png) repeat-x 0 0;
+}
+
+.midbox {
+    position: absolute;
+    width: 430px;
+    height: 230px;
+    top: 50%;
+    left: 50%;
+    margin-left: -215px;
+    margin-top: -115px;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+}
+
+.loginhead {
+    height: 40px;
+    color: #333333;
+    font-family: "微软雅黑";
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 40px;
+    margin-top: 20px;
+}
+
+.loginhead span {
+    float: left;
+    padding-left: 20px;
+}
+
+.logindl {
+    margin-left: 20px;
+    width: 380px;
+    height: 110px;
+    padding-left: 10px;
+    border-bottom: solid 1px #b7b7b7;
+}
+
+.logindl dt {
+    float: left;
+    width: 60px;
+    height: 35px;
+    margin-top: 10px;
+    text-align: right;
+    color: #666666;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 35px;
+}
+
+.logindl dd {
+    float: left;
+    width: 300px;
+    height: 35px;
+    padding-left: 10px;
+    margin-top: 10px;
+    background: url(../images/textbg.png) no-repeat 8px 0;
+}
+
+.logindl dd input {
+    width: 253px;
+    height: 20px;
+    padding: 3px;
+    border: 0;
+    margin-top: 2px;
+}
+
+.logindl dd span {
+    font-size: 20px;
+    color: #FF0000;
+    padding-left: 8px;
+}
+
+.loginsub {
+    margin-left: 20px;
+    width: 390px;
+    height: 40px;
+    border-top: solid 1px #FFFFFF;
+}
+
+.loginsub a {
+    float: left;
+    width: 97px;
+    height: 27px;
+    background: url(../images/loginbtn.jpg) no-repeat 0 0;
+    text-indent: -9999px;
+}
+
+.loginsub .btn {
+    float: right;
+    width: 120px;
+    height: 30px;
+    padding-top: 8px;
+}
+
+.errors {
+    margin-top: 10px;
+    color: red;
+    font-size: 12px;
+    width: 200px;
+    float: left
+}
+
+.errors ul {
+    list-style: none
+}
+
+

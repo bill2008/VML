@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.pojo.WmlUser" table="wml_user" dynamic-insert="true"  catalog="wml_test">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" length="14" not-null="true"/>
+            	<generator class="identity"></generator>
+        </id>
+        <property name="createDate" type="java.lang.String">
+            <column name="createDate" length="20" />
+        </property>
+        <property name="uid" type="java.lang.Integer">
+            <column name="uid" length="14" />	
+        </property>
+        <property name="uidName" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select e.name from wml_user  e where e.id=uid and e.isDel=1)
+        	</formula>
+		</property>
+        <property name="lastDate" type="java.lang.String">
+            <column name="lastDate" length="20" />
+        </property>
+        <property name="signature" type="java.lang.String">
+            <column name="signature" length="255" />
+        </property>
+        <property name="loginName" type="java.lang.String">
+            <column name="loginName" length="255" />
+        </property>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="255" />
+        </property>
+        <property name="password" type="java.lang.String">
+            <column name="password" length="255" />
+        </property>
+        <property name="phone" type="java.lang.String">
+            <column name="phone" length="255" />
+        </property>
+        <property name="head" type="java.lang.String">
+            <column name="head" length="255" />
+        </property>
+        <property name="type" type="java.lang.String">
+            <column name="type" length="255" />
+        </property>
+        <property name="organ" type="java.lang.Integer">
+            <column name="Organ" length="14" />
+        </property>
+         <property name="organName" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select e.name from wml_organ  e where e.id=organ and e.isDel=1)
+        	</formula>
+		</property>
+        <property name="permissions" type="java.lang.Integer">
+            <column name="Permissions" length="14" />
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="status" length="14" />
+        </property>
+        <property name="channel" type="java.lang.Integer">
+            <column name="Channel" length="14" />
+        </property>
+        <property name="uploadFlag" type="java.lang.String">
+            <column name="uploadFlag" length="255" />
+        </property>
+        <property name="isDel" type="java.lang.Integer">
+            <column name="isDel" length="14" />
+        </property>
+    </class>
+</hibernate-mapping>

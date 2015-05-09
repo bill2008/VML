@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.pojo.Wmlsms" table="wml_sms" dynamic-insert="true"  catalog="wml_test">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" length="14" not-null="true"/>
+            	<generator class="identity"></generator>
+        </id>
+           <property name="content" type="java.lang.String">
+            <column name="content" length="255" />	
+        </property>
+        <property name="uid" type="java.lang.Integer">
+            <column name="uid" length="11" />
+        </property>
+        <property name="createDate" type="java.lang.String">
+            <column name="createDate" length="20" />
+        </property>
+        <property name="isDel" type="java.lang.Integer">
+            <column name="isDel" length="11" />
+        </property>
+           <property name="userName" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select t.name from wml_user t WHERE t.id=uid)
+        	</formula>
+		</property>
+    </class>
+</hibernate-mapping>

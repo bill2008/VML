@@ -1,0 +1,13 @@
+﻿# ignore Folders #
+/WebRoot/posterUpload
+/WebRoot/productUpload
+/WebRoot/advertisementUpload
+/WebRoot/userpic
+/work
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear

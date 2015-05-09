@@ -1,0 +1,166 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%
+	String path = request.getContextPath();
+	String basePath = request.getScheme() + "://"
+			+ request.getServerName() + ":" + request.getServerPort()
+			+ path + "/";
+%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>品牌管理</title>
+<LINK REL="SHORTCUT ICON" HREF="<%=basePath%>images/logo.png">
+<script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
+<jsp:include page="../../common/gtGridHead.jsp" />
+<style type="text/css">
+.gt-row-selected td {
+	background-color: #004da8;
+	color: #ffffff;
+}
+</style>
+<script type="text/javascript">
+
+	var mygrid = null;
+
+	var jsonVal="";
+	var isDelOpt={};
+	isDelOpt["0"] = "是";
+	isDelOpt["1"] = "否";
+	function initComplate() {
+		var grid_demo_id = "myGrid1";
+
+		var dsConfig = {
+			fields : [ 
+			           {name : 'id',type : 'text'}, 
+					   {name : 'createDate',type : 'text'}, 
+					   {name : 'name',type : 'text'},
+					   {name : 'letter',type : 'text'},
+					   {name : 'isDel',type : 'text'},
+					   {name : 'keyword',type : 'text'}
+					  ]};
+
+		var colsConfig = [ 
+			{id : 'name',header : "品牌名称",width : 200},
+			{id : 'letter',header : "首字母",width : 150},
+			{id : 'keyword',header : "关键字",width : 150},
+			{id : 'createDate',header : "创建时间",width : 150},
+			{id : 'isDel',header : "是否删除",width : 200,renderer : GT.Grid.mappingRenderer(isDelOpt, '')}
+			];
+
+		var gridConfig = {
+			id : grid_demo_id,
+			loadURL : "wmlBrand_queryWmlBrand.action",
+			dataset : dsConfig,
+			columns : colsConfig,
+			remotePaging : false,
+			container : 'grid1_container',
+			toolbarPosition : 'bottom',
+			toolbarContent : 'nav | goto | pagesize  | state',
+			pageSize : 15,
+			pageSizeList : [ 15, 40, 80, 100 ],
+			onCellDblClick : function(value, record , cell,row, colNO, rowNO,column,event){
+				jsonVal=JSON.stringify(record);
+				var sheight = screen.height * 0.5;
+				var swidth = screen.width * 0.4;
+				var iTop = (window.screen.availHeight-30-sheight)/2; 
+				var iLeft = (window.screen.availWidth-10-swidth)/2; 
+				var url = "<%=basePath%>page/productManager/brandUpdate.jsp";
+				window.open(url,null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+		}
+		};
+
+		mygrid = new GT.Grid(gridConfig);
+		mygrid.render();
+	}
+
+	$(function() {
+		initComplate();
+		queryAuto();
+	});
+	
+
+	function query(e) {
+		var theEvent = e || window.event;
+		var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+		if (code == 13) {
+			queryAuto();
+		}
+	}
+	
+	function queryAuto() {
+		var name = $("#name").val();
+		var letter = $("#letter").val();
+		var keyword = $("#keyword").val();
+		var startDate=$("#startDate").val();
+		var endTime=$("#endDate").val();
+		if(endTime!="" && endTime!=""){
+			if(startDate<endTime){
+		mygrid.query( {
+			'wmlBrand.name' :name,
+			'wmlBrand.letter' :letter,
+			'wmlBrand.keyword' :keyword,
+			'wmlBrand.createDate' :startDate,
+			'wmlBrand.endDate' :endTime
+		});
+		}else{
+			alert("开始时间不能大于结束时间!");
+		}
+		}else{
+		mygrid.query( {
+			'wmlBrand.name' :name,
+			'wmlBrand.letter' :letter,
+			'wmlBrand.keyword' :keyword
+		});
+		}
+	}
+	function add() {
+		var sheight = screen.height * 0.5;
+		var swidth = screen.width * 0.4;
+		var iTop = (window.screen.availHeight-30-sheight)/2; 
+		var iLeft = (window.screen.availWidth-10-swidth)/2; 
+		var url = "<%=basePath%>page/productManager/brandAdd.jsp";
+		window.open(url, null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+		
+	}
+
+
+</script>
+</head>
+<body>
+<div class="gt-panel" style="width: 100%;  height: 15%">
+		<div class="gt-panel-head">
+			<span>查 询</span>
+		</div>
+		<div>
+			<table>
+				<tr>
+					<td>品牌名称：</td>
+					<td style="width: 120px;"><input style="width: 100px;" type="text" name="name" id="name"
+						onkeydown="query(event)"></td>
+						<td>首字母：</td>
+					<td style="width: 120px;"><input style="width: 100px;" type="text" name="letter" id="letter"
+						onkeydown="query(event)"></td>
+						<td>关键字：</td>
+					<td style="width: 120px;"><input style="width: 100px;" type="text" name="keyword" id="keyword"
+						onkeydown="query(event)"></td>
+						<td>开始时间：</td>
+					<td ><input type="text" name="startDate" id="startDate"onclick="timeSelect('startDate',null)" onkeydown="query(event)"/></td>
+						<td>结束时间：</td>
+					<td><input type="text" name="endDate" id="endDate" onclick="timeSelect('endDate',null)" onkeydown="query(event)" /></td>
+				</tr>
+			</table>
+		</div>
+		<div class="gt-button-area">
+			<input type="button" class="gt-input-button" value="添加" onclick="add()" /> 
+			<input type="button" class="gt-input-button" value="查询" onclick="queryAuto()" /> 
+				
+		</div>
+	</div>
+	<br/>
+	<!-- grid的容器. -->
+	<div id="grid1_container" style="width: 100%; height: 82%"></div>
+	
+</body>
+</html>
