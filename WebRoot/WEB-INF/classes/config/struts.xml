@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+<struts>
+<constant name="struts.objectFactory" value="spring" />
+	<constant name="struts.i18n.encoding" value="UTF-8" />
+	<constant name="struts.multipart.maxSize" value="9000000" />
+	
+	<package name="action" extends="json-default">
+	    <global-results>
+			<result name="success" type="json"></result>
+			<result name="fail" type="redirect">/fail.jsp</result>
+			<result name="optsuccess" type="redirect">/success.jsp</result>
+			<result name="outLogin">/Login.jsp</result>
+		</global-results>
+		<action name="login_*" class="userAction" method="{1}"></action>
+		
+		<action name="wmlAdmin_*" class="wmlAdminAction" method="{1}">
+		    	<result name="pwdSuccess" type="redirect">/pwdSuccess.jsp</result>
+				<result name="loginfail">/LoginFail.jsp</result>
+				<result name="resultlogin">/Login.jsp</result>
+				<result name="login">/Main.jsp</result>
+		</action>
+		<action name="wmlAdvertisement_*" class="wmlAdvertisementAction" method="{1}"></action>
+		<action name="wmlAttention_*" class="wmlAttentionAction" method="{1}"></action>
+		<action name="wmlBeAttention_*" class="wmlBeAttentionAction" method="{1}"></action>
+		<action name="wmlBrand_*" class="wmlBrandAction" method="{1}"></action>
+		<action name="wmlConfig_*" class="wmlConfigAction" method="{1}"></action>
+		<action name="wmlInstallationlog_*" class="wmlInstallationlogAction" method="{1}"></action>
+		<action name="wmlOrgan_*" class="wmlOrganAction" method="{1}"></action>
+		<action name="wmlPoster_*" class="wmlPosterAction" method="{1}"></action>
+		<action name="wmlProduct_*" class="wmlProductAction" method="{1}">
+		    <result name="productListSuccess">/page/productManager/productImageUpdate.jsp</result>
+		</action>
+		<action name="wmlProductImage_*" class="wmlProductImageAction" method="{1}">
+		</action>
+		<action name="wmlProductType_*" class="wmlProductTypeAction" method="{1}"></action>
+		<action name="wmlsms_*" class="wmlsmsAction" method="{1}"></action>
+		<action name="wmlUser_*" class="wmlUserAction" method="{1}">
+		    	<result name="myIndex" >/MyIndex.jsp</result>
+		    	<result name="userDetail">/page/userManager/WmlUserDetailInfo.jsp</result>
+		    	<result name="update">/updateResult.jsp</result>
+		</action>
+		<action name="wmlMenu_*" class="wmlMenuAction" method="{1}"></action>
+		<action name="wmlClient_*" class="wmlClientAction" method="{1}"></action>
+		
+		
+	</package>
+</struts>

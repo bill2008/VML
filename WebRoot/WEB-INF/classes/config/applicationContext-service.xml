@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://www.springframework.org/schema/beans"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/aop 
+       http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx-4.1.xsd">
+       
+     
+    
+	
+	<bean id="wmlAdminService" class="com.service.impl.WmlAdminServiceImpl">
+		<property name="wmlAdminDao" ref="wmlAdminDao"></property>
+	</bean>
+	<bean id="wmlAdvertisementService" class="com.service.impl.WmlAdvertisementServiceImpl">
+		<property name="wmlAdvertisementDao" ref="wmlAdvertisementDao"></property>
+	</bean>
+	<bean id="wmlAttentionService" class="com.service.impl.WmlAttentionServiceImpl">
+		<property name="wmlAttentionDao" ref="wmlAttentionDao"></property>
+	</bean>
+	<bean id="wmlBrandService" class="com.service.impl.WmlBrandServiceImpl">
+		<property name="wmlBrandDao" ref="wmlBrandDao"></property>
+	</bean>
+	<bean id="wmlConfigService" class="com.service.impl.WmlConfigServiceImpl">
+		<property name="wmlConfigDao" ref="wmlConfigDao"></property>
+	</bean>
+	<bean id="wmlInstallationlogService" class="com.service.impl.WmlInstallationlogServiceImpl">
+		<property name="wmlInstallationlogDao" ref="wmlInstallationlogDao"></property>
+	</bean>
+	<bean id="wmlOrganService" class="com.service.impl.WmlOrganServiceImpl">
+		<property name="wmlOrganDao" ref="wmlOrganDao"></property>
+	</bean>
+	<bean id="wmlPosterService" class="com.service.impl.WmlPosterServiceImpl">
+		<property name="wmlPosterDao" ref="wmlPosterDao"></property>
+	</bean>
+	<bean id="wmlProductService" class="com.service.impl.WmlProductServiceImpl">
+		<property name="wmlProductDao" ref="wmlProductDao"></property>
+	</bean>
+	<bean id="wmlProductImageService" class="com.service.impl.WmlProductImageServiceImpl">
+		<property name="wmlProductImageDao" ref="wmlProductImageDao"></property>
+	</bean>
+	<bean id="wmlProductTypeService" class="com.service.impl.WmlProductTypeServiceImpl">
+		<property name="wmlProductTypeDao" ref="wmlProductTypeDao"></property>
+	</bean>
+	<bean id="wmlsmsService" class="com.service.impl.WmlsmsServiceImpl">
+		<property name="wmlsmsDao" ref="wmlsmsDao"></property>
+	</bean>
+		<bean id="wmlUserService" class="com.service.impl.WmlUserServiceImpl">
+		<property name="wmlUserDao" ref="wmlUserDao"></property>
+	</bean>
+		<bean id="wmlMenuService" class="com.service.impl.WmlMenuServiceImpl">
+		<property name="wmlMenuDao" ref="wmlMenuDao"></property>
+	</bean>
+	
+		<bean id="wmlUseCollectService" class="com.service.impl.WmlUseCollectServiceImpl">
+		<property name="wmlUseCollectDao" ref="wmlUseCollectDao"></property>
+	</bean>
+	<bean id="wmlUseDownloadService" class="com.service.impl.WmlUseDownloadServiceImpl">
+		<property name="wmlUseDownloadDao" ref="wmlUseDownloadDao"></property>
+	</bean>
+	<bean id="wmlUseEvaluationService" class="com.service.impl.WmlUseEvaluationServiceImpl">
+		<property name="wmlUseEvaluationDao" ref="wmlUseEvaluationDao"></property>
+	</bean>
+	<bean id="wmlUsePraiseService" class="com.service.impl.WmlUsePraiseServiceImpl">
+		<property name="wmlUsePraiseDao" ref="wmlUsePraiseDao"></property>
+	</bean>
+	
+	    
+</beans>
+
+
+

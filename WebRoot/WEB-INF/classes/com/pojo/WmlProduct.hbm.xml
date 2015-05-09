@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.pojo.WmlProduct" table="wml_product" dynamic-insert="true"  catalog="wml_test">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" length="14" not-null="true"/>
+            	<generator class="identity"></generator>
+        </id>
+        <property name="createDate" type="java.lang.String">
+            <column name="createDate" length="20" />
+        </property>
+        <property name="onTime" type="java.lang.String">
+            <column name="onTime" length="20" />
+        </property>
+        <property name="uid" type="java.lang.Integer">
+            <column name="uid" length="11" />	
+        </property>
+        
+         <property name="userName" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select e.name from wml_user  e where e.id=uid and e.isDel=1)
+        	</formula>
+		</property>
+		
+        <property name="tid" type="java.lang.Integer">
+            <column name="tid" length="11" />
+        </property>
+        
+          <property name="productType" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select e.name from wml_product_type  e where e.id=tid and e.isDel=1)
+        	</formula>
+		</property>
+		
+        <property name="bid" type="java.lang.Integer">
+            <column name="bid" length="11" />
+        </property>
+        
+        <property name="brandName" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select e.keyword from wml_brand  e where e.id=bid and e.isDel=1)
+        	</formula>
+		</property>
+		
+        <property name="oid" type="java.lang.Integer">
+            <column name="oid" length="11" />
+        </property>
+        
+        <property name="organName" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(select e.name from wml_organ  e where e.id=oid and e.isDel=1)
+        	</formula>
+		</property>
+		
+        <property name="property" type="java.lang.String">
+            <column name="property" length="255" />
+        </property>
+        <property name="uploadType" type="java.lang.String">
+            <column name="uploadType" length="255" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="description" length="255" />
+        </property>
+         <property name="name" type="java.lang.String">
+            <column name="name" length="255" />
+        </property>
+        <property name="price" type="java.lang.Double">
+            <column name="Price" length="11" />
+        </property>
+        <property name="forwar" type="java.lang.Integer">
+            <column name="forwar" length="11" />
+        </property>
+        <property name="download" type="java.lang.Integer">
+            <column name="download" length="11" />
+        </property>
+        <property name="collect" type="java.lang.Integer">
+            <column name="collect" length="11" />
+        </property>
+        <property name="viewCount" type="java.lang.Integer">
+            <column name="viewCount" length="11" />
+        </property>
+        <property name="status" type="java.lang.Integer">
+            <column name="status" length="11" />
+        </property>
+            <property name="isDel" type="java.lang.Integer">
+            <column name="isDel" length="11" />
+        </property>
+        <property name="productImgPath" type="java.lang.String"
+			insert="false" update="false">
+			<formula>
+				(SELECT  e.url FROM wml_product_image e WHERE e.productId =id AND e.isFirst=1 AND e.isDel=1)
+        	</formula>
+		</property>
+		  <property name="productImgWidth" type="java.lang.Integer"
+			insert="false" update="false">
+			<formula>
+				(SELECT  e.width FROM wml_product_image e WHERE e.productId =id AND e.isFirst=1 AND e.isDel=1)
+        	</formula>
+		</property>
+		  <property name="productImgHeight" type="java.lang.Integer"
+			insert="false" update="false">
+			<formula>
+				(SELECT  e.height FROM wml_product_image e WHERE e.productId =id AND e.isFirst=1 AND e.isDel=1)
+        	</formula>
+		</property>
+
+    </class>
+</hibernate-mapping>
