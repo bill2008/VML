@@ -18,7 +18,11 @@
 
 <script type="text/javascript">
  function init() {
-	var json=window.opener;
+	 
+	var json=eval($("#data").html());
+	
+	console.info(json);
+/* 	var json=window.opener; */
 	var jsonObj=JSON.parse(json.jsonVal);
 	var organid=jsonObj.organ;
 	$.post("wmlOrgan_queryWmlOrgan.action",null, function(resultData) {
@@ -36,7 +40,6 @@
 			$("#organ").append($option);
 		}
 	});
-	console.info(jsonObj);
 	$("#uid").val(jsonObj.uid);
 	$("#useId").val(jsonObj.id);
 	$("#loginName").val(jsonObj.loginName);

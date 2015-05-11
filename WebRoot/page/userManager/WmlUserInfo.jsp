@@ -49,7 +49,7 @@
 	var permiOpt={};
 	permiOpt["0"] = "是";
 	permiOpt["1"] = "否";
-	
+
 	
 		var grid_demo_id = "myGrid1";
 
@@ -92,8 +92,8 @@
 			{id : 'uidName',header : "推荐人",width : 50},
 			{id : 'detail' , header : "详细信息" , width : 70,
 				renderer : function(value ,record,columnObj,grid,colNo,rowNo){
-					
-					return "<u onclick=showSellDetail('"+record['id']+"')>点击查看</u>";
+
+					return "<u onclick=showSellDetail('"+record['id']+"')>点击查看</u>"; 
 					
 				}}
 			];
@@ -110,13 +110,14 @@
 			pageSizeList : [ 20, 40, 80, 100 ],
 			onCellDblClick : function(value, record , cell,row, colNO, rowNO,column,event){
 				jsonVal=JSON.stringify(record);
-				var sheight = screen.height * 0.6;
+/* 				var sheight = screen.height * 0.6;
 				var swidth = screen.width * 0.55;
 				var iTop = (window.screen.availHeight-30-sheight)/2; 
-				var iLeft = (window.screen.availWidth-10-swidth)/2; 
+				var iLeft = (window.screen.availWidth-10-swidth)/2;  */
 				var url = "<%=basePath%>page/userManager/WmlUserUpdate.jsp";
-				window.open(url,null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
-		}
+/* 				window.open(url,null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no'); */
+				addTab("修改客户", url, jsonVal);
+			}
 		};
 
 		
@@ -181,19 +182,30 @@
 		mygrid.reload();
 	}
 	function showSellDetail(userId){
-		var sheight = screen.height * 0.8;
-		var swidth = screen.width * 0.8;
-		var iTop = (window.screen.availHeight-30-sheight)/2; 
-		var iLeft = (window.screen.availWidth-10-swidth)/2; 
 		var url = "wmlUser_queryUserDetail.action?wmlUser.id="+userId;
-		window.open(url, null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
-		
+		addTab("详细信息", url, null);
 	}
+	
+	function addTab(title, url, data){
+		if ($('#tt').tabs('exists', title)){
+			$('#tt').tabs('select', title);
+		} else {
+			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
+			content = content + '</iframe>';
+			content = content + '<span id="data" style="display:none">' + data +'</span>';
+			alert(content);
+			$('#tt').tabs('add',{
+				title:title,
+				content:content,
+				closable:true
+			});
+		}
+	}	
 </script>
 </head>
 <body>
-<div id="tt" class="easyui-tabs"  style="height: 570px;">
-	<div title="客户管理" class="gt-panel" >
+<div id="tt" class="easyui-tabs"  style="height: 650px;">
+	<div title="客户管理" class="gt-panel" align="center">
 		<div>
 			<table>
 				<tr>
