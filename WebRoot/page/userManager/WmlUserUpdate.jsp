@@ -19,11 +19,9 @@
 <script type="text/javascript">
  function init() {
 	 
-	var json=eval($("#data").html());
-	
-	console.info(json);
-/* 	var json=window.opener; */
-	var jsonObj=JSON.parse(json.jsonVal);
+	var json=$("#data",parent.document).html();
+	var jsonObj=JSON.parse(json);
+
 	var organid=jsonObj.organ;
 	$.post("wmlOrgan_queryWmlOrgan.action",null, function(resultData) {
 		var jsonObj = resultData.data;
@@ -50,7 +48,7 @@
 	$("#uploadFlag").val(jsonObj.uploadFlag);
 	$("#lastDate").val(jsonObj.lastDate);
 	$("#status option[value="+jsonObj.status+"]").attr("selected",'selected');
-	$("#channel option[value="+jsonObj.channel+"]").attr("selected",'selected');
+	$("#channel option[vlue="+jsonObj.channel+"]").attr("selected",'selected');
 	$("#permissions option[value="+jsonObj.permissions+"]").attr("selected",'selected');
 	$("#imgPreview").attr("src",'<%=basePath%>userpic/'+jsonObj.head);
 	$("#isDel option[value="+jsonObj.isDel+"]").attr("selected",'selected');

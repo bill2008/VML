@@ -13,6 +13,7 @@
 <title>添加客户信息</title>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>/js/gt-grid/gt_grid.css"/>
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/jquery-easyui-1.3.5/jquery.easyui.min.js"></script>
 <script type="text/javascript">
 $(document).ready( function() {
 	$.post("wmlOrgan_queryWmlOrgan.action",null, function(resultData) {
@@ -24,7 +25,10 @@ $(document).ready( function() {
 			$("#organ").append($option);
 		}
 	});
-		
+	$("#loginName").val($("#loginName",parent.document).attr("value"));
+	$("#channel").val($("#channel",parent.document).attr("value"));
+	$("#status").val($("#status",parent.document).attr("value"));
+	$("#uid").val($("#uid",parent.document).attr("value"));
 });
 
 
@@ -55,18 +59,19 @@ function doSubmit(){
 			"wmlUser.permissions" : permissions,
 			"wmlUser.uid" : uid,
 			"wmlUser.phone" : phone
-	}
+	};
 	$.post("wmlUser_addWmlUser.action",data,function(result){
 		if(result == "fail"){
 			alert("添加失败！");
 		}
 		else if(result == "optsuccess"){
 			alert("添加成功！");
-			window.opener.location.reload();
+			/* window.opener.location.reload(); */
 		}else if(result=="uidNull"){
 			alert("此推荐人不存在！");
 		}
-	})
+	});
+	$("#tt",parent.document).tabs('close', "添加客户");
 }
 
 </script>
@@ -80,7 +85,7 @@ function doSubmit(){
 	<tr>
 		<td>所属商户：</td>
 		<td>
-		<select id="organ" name="organ" onblur="checkValue(this,'所属商户')">
+		<select id="organ" name="organ" >
 				<option value="">--请选择--</option>
 			</select></td>
 	</tr>

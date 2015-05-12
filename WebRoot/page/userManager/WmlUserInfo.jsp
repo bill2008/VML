@@ -92,9 +92,7 @@
 			{id : 'uidName',header : "推荐人",width : 50},
 			{id : 'detail' , header : "详细信息" , width : 70,
 				renderer : function(value ,record,columnObj,grid,colNo,rowNo){
-
-					return "<u onclick=showSellDetail('"+record['id']+"')>点击查看</u>"; 
-					
+ 					return "<u onclick=showSellDetail("+record['id']+")>点击查看</u>";
 				}}
 			];
 
@@ -110,12 +108,7 @@
 			pageSizeList : [ 20, 40, 80, 100 ],
 			onCellDblClick : function(value, record , cell,row, colNO, rowNO,column,event){
 				jsonVal=JSON.stringify(record);
-/* 				var sheight = screen.height * 0.6;
-				var swidth = screen.width * 0.55;
-				var iTop = (window.screen.availHeight-30-sheight)/2; 
-				var iLeft = (window.screen.availWidth-10-swidth)/2;  */
 				var url = "<%=basePath%>page/userManager/WmlUserUpdate.jsp";
-/* 				window.open(url,null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no'); */
 				addTab("修改客户", url, jsonVal);
 			}
 		};
@@ -172,34 +165,56 @@
 	}
 
 
-	function add() {
-		var sheight = screen.height * 0.5;
-		var swidth = screen.width * 0.4;
-		var iTop = (window.screen.availHeight-30-sheight)/2; 
-		var iLeft = (window.screen.availWidth-10-swidth)/2; 
+	function addUser() {
 		var url = "<%=basePath%>page/userManager/WmlUserAdd.jsp";
-		window.open(url, null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
-		mygrid.reload();
+		addTab("添加客户", url, null);
+		/* mygrid.reload(); */
 	}
+	
 	function showSellDetail(userId){
 		var url = "wmlUser_queryUserDetail.action?wmlUser.id="+userId;
 		addTab("详细信息", url, null);
+		
 	}
 	
 	function addTab(title, url, data){
-		if ($('#tt').tabs('exists', title)){
-			$('#tt').tabs('select', title);
-		} else {
+		if("详细信息"==title){
+			if ($('#tt').tabs('exists', "详细信息")){
+				$('#tt').tabs('close', "详细信息");
+			}
 			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
 			content = content + '</iframe>';
-			content = content + '<span id="data" style="display:none">' + data +'</span>';
-			alert(content);
 			$('#tt').tabs('add',{
 				title:title,
 				content:content,
 				closable:true
-			});
+			});			
+		}else if("修改客户"==title){
+			if ($('#tt').tabs('exists', "修改客户")){
+				$('#tt').tabs('close', "修改客户");
+			}
+			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
+			content = content + '</iframe>';
+			content = content + '<span id="data" style="display:none">' + data +'</span>';
+			$('#tt').tabs('add',{
+				title:title,
+				content:content,
+				closable:true
+			});				
+			
+		}else if("添加客户"==title){
+			if ($('#tt').tabs('exists', "添加客户")){
+				$('#tt').tabs('close', "添加客户");
+			}
+			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
+			content = content + '</iframe>';
+			$('#tt').tabs('add',{
+				title:title,
+				content:content,
+				closable:true
+			});	
 		}
+		
 	}	
 </script>
 </head>
@@ -240,7 +255,7 @@
 			</table>
 		</div>
 		<div class="gt-button-area">
-			<input type="button" class="gt-input-button" value="添加" onclick="add()" /> 
+			<input type="button" class="gt-input-button" value="添加" onclick="addUser()" /> 
 			<input type="button" class="gt-input-button" value="查询" onclick="queryAuto()" /> 
 		</div>
 		<!-- grid的容器. -->
