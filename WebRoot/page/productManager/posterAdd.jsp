@@ -15,7 +15,14 @@
 <link rel="stylesheet" type="text/css" href="<%=path%>/js/gt-grid/gt_grid.css" />
 <script type="text/javascript">
 $(document).ready( function() {
-	$.post("wmlProduct_queryWmlProduct.action", function(resultData) {
+	
+	$("#name").val($("#name",parent.document).attr("value"));
+	$("#description").val($("#description",parent.document).attr("value"));
+	/*1.此处应用ajax 来查询；
+	  2.当选择好一个关联商品时，图片也要相应显示出来；
+	  3.显示图片不仅是显示首图，所有图片都要显示
+	*/
+/* 	$.post("wmlProduct_queryWmlProduct.action", function(resultData) {
 		var jsonObj = resultData.data;
 		for ( var i = 0; i < jsonObj.length; i++) {
 			var $option = $("<option></option>");
@@ -23,8 +30,33 @@ $(document).ready( function() {
 			$option.text(jsonObj[i].name);
 			$("#porductName").append($option);
 		}
-	});
+	}); */
 });
+
+function checkValue(item,widgetName){
+	if(item.value=="" ){
+		alert(widgetName+"不能为空!");
+	}
+	
+}
+
+function doSubmit(){
+	var name= $("#name").val();
+	var description= $("#description").val();
+	var data = {
+			"WmlPoster.name" : name,
+			"wmlPoster.description" : description,
+	};
+	$.post("wmlPoster_addWmlPoster.action",data,function(result){
+		if(result == "fail"){
+			alert("添加失败！");
+		}
+		else if(result == "optsuccess"){
+			alert("添加成功！");
+			window.opener.location.reload();
+		}
+	});
+}
 </script>
 </head>
 <body>
@@ -35,7 +67,7 @@ $(document).ready( function() {
 	<table >
 	<tr >
 		<td>海报名称：</td>
-		<td><input id="wmlPoster.name" name="wmlPoster.name"></td>
+		<td><input id="name" name="name"></td>
 	</tr>
 	<tr>
 		<td>关联商品：</td>
@@ -46,7 +78,7 @@ $(document).ready( function() {
 	<tr>
 		<td>文字描述：</td>
 		<td>
-		<textarea rows="3" cols="25"  id="wmlPoster.description" name="wmlPoster.description"></textarea>
+		<textarea rows="3" cols="25"  id="description" name="description"></textarea>
 		</td>
 	</tr>
 	<tr>
@@ -58,8 +90,7 @@ $(document).ready( function() {
 	
 <div>
 	<input type="reset" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; " value="重置" />
-	
-	<input type="submit" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; margin-right: 10px;" value="提交"  />
+	<input type="submit" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; margin-right: 10px;" value="提交"  onclick="doSubmit()"/>
 </div>
 </div>
 </div>

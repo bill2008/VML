@@ -15,8 +15,8 @@
 <link rel="stylesheet" type="text/css" href="<%=path%>/js/gt-grid/gt_grid.css" />
 <script type="text/javascript">
 $(document).ready( function() {
-	var json=window.opener;
-	var jsonObj=JSON.parse(json.jsonVal);
+	var json=$("#data",parent.document).html();
+	var jsonObj=JSON.parse(json);
 	var pkgid=jsonObj.pkgId;
 	$.post("wmlProduct_queryWmlProduct.action", function(resultData) {
 		var jsonObj = resultData.data;

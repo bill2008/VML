@@ -29,7 +29,7 @@
 	var jsonVal="";
 	var ProductTypeopt={};
 	var userOpt={};
-	var permiOpt={}
+	var permiOpt={};
 	permiOpt["0"] = "是";
 	permiOpt["1"] = "否";
 	function init(){
