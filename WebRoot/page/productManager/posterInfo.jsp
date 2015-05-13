@@ -59,7 +59,7 @@
 			remotePaging : false,
 			container : 'grid1_container',
 			toolbarPosition : 'bottom',
-			toolbarContent :null,
+			toolbarContent :'state',
 			pageSize : 20,
 			pageSizeList : [ 20, 40, 80, 100 ],
 			onClickCell:function(value, record , cell, row,  colNO, rowNO,columnObj,grid){

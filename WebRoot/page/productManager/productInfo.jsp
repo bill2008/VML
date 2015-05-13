@@ -120,7 +120,7 @@
 			columns : colsConfig,
 			container : 'grid1_container',
 			toolbarPosition : 'bottom',
-			toolbarContent : 'nav | goto | pagesize | save | state',
+			toolbarContent : 'nav | goto | pagesize | state',
 			pageSize : 20,
 			pageSizeList : [ 20, 40, 80, 100 ],
 			onClickCell:function(value, record , cell, row,  colNO, rowNO,columnObj,grid){
