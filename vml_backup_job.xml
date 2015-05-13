@@ -29,8 +29,8 @@
 <createdb>yes</createdb>
 <usedb>yes</usedb>
 <dropobjects>yes</dropobjects>
-<bulkinsert>yes</bulkinsert>
-<completeinsert>no</completeinsert>
+<bulkinsert>no</bulkinsert>
+<completeinsert>yes</completeinsert>
 <insertdelayed>no</insertdelayed>
 <flushlogs>no</flushlogs>
 <flushmaster>no</flushmaster>

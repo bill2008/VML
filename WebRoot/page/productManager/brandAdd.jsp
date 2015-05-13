@@ -14,32 +14,38 @@
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=path%>/js/gt-grid/gt_grid.css" />
 <script type="text/javascript">
-function checkValue(item,widgetName){
-	if(item.value=="" ){
-		alert(widgetName+"不能为空!");
-	}
+	$(document).ready( function() {
+		
+		$("#name").val($("#name",parent.document).attr("value"));
+		$("#letter").val($("#letter",parent.document).attr("value"));
+		$("#keyword").val($("#keyword",parent.document).attr("value"));
+	});
 	
-}
-
-function doSubmit(){
-	var name= $("#name").val();
-	var letter= $("#letter").val();
-	var keyword= $("#keyword").val();
-	var data = {
-			"wmlBrand.name" : name,
-			"wmlBrand.letter" : letter,
-			"wmlBrand.keyword" : keyword,
-	}
-	$.post("wmlBrand_addWmlBrand.action",data,function(result){
-		if(result == "fail"){
-			alert("添加失败！");
+	function checkValue(item,widgetName){
+			if(item.value=="" ){
+				alert(widgetName+"不能为空!");
+			}
+			
 		}
-		else if(result == "optsuccess"){
-			alert("添加成功！");
-			document.getElementById("frm").reset(); 
+	
+		function doSubmit(){
+			var name= $("#name").val();
+			var letter= $("#letter").val();
+			var keyword= $("#keyword").val();
+			var data = {
+					"wmlBrand.name" : name,
+					"wmlBrand.letter" : letter,
+					"wmlBrand.keyword" : keyword,
+			};
+			$.post("wmlBrand_addWmlBrand.action",data,function(result){
+				if(result == "fail"){
+					alert("添加失败！");
+				}
+				else if(result == "optsuccess"){
+					alert("添加成功！");
+				}
+			});
 		}
-	})
-}
 </script>
 </head>
 <body>

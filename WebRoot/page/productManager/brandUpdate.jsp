@@ -14,50 +14,48 @@
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<%=path%>/js/gt-grid/gt_grid.css" />
 <script type="text/javascript">
-function checkValue(item,widgetName){
-	if(item.value=="" ){
-		alert(widgetName+"不能为空!");
+	function checkValue(item,widgetName){
+		if(item.value=="" ){
+			alert(widgetName+"不能为空!");
+		}
+	}
+
+	function doSubmit(){
+		var id= $("#id").val();
+		var createDate= $("#createDate").val();
+		var name= $("#name").val();
+		var letter= $("#letter").val();
+		var keyword= $("#keyword").val();
+		var isDel= $("#isDel").val();
+		var data = {
+				"wmlBrand.id" : id,
+				"wmlBrand.createDate" : createDate,
+				"wmlBrand.name" : name,
+				"wmlBrand.letter" : letter,
+				"wmlBrand.keyword" : keyword,
+				"wmlBrand.isDel" : isDel
+		};
+		$.post("wmlBrand_updateWmlBrand.action",data,function(result){
+			if(result == "fail"){
+				alert("修改失败！");
+			}
+			else if(result == "optsuccess"){
+				alert("修改成功！");
+			}
+		});
 	}
 	
-}
-
-function doSubmit(){
-	var id= $("#id").val();
-	var createDate= $("#createDate").val();
-	var name= $("#name").val();
-	var letter= $("#letter").val();
-	var keyword= $("#keyword").val();
-	var isDel= $("#isDel").val();
-	var data = {
-			"wmlBrand.id" : id,
-			"wmlBrand.createDate" : createDate,
-			"wmlBrand.name" : name,
-			"wmlBrand.letter" : letter,
-			"wmlBrand.keyword" : keyword,
-			"wmlBrand.isDel" : isDel
+	function init(){
+		var json=$("#data",parent.document).html();
+		var jsonObj=JSON.parse(json);
+		$("#id").val(jsonObj.id);
+	    $("#createDate").val(jsonObj.createDate);
+	    $("#name").val(jsonObj.name);
+	    $("#letter").val(jsonObj.letter);
+	    $("#keyword").val(jsonObj.keyword);
+		$("#isDel option[value="+jsonObj.isDel+"]").attr("selected",'selected');
+	
 	}
-	$.post("wmlBrand_updateWmlBrand.action",data,function(result){
-		if(result == "fail"){
-			alert("修改失败！");
-		}
-		else if(result == "optsuccess"){
-			alert("修改成功！");
-			window.opener.location.reload();
-			window.close();
-		}
-	})
-}
-function init(){
-	var json=window.opener;
-	var jsonObj=JSON.parse(json.jsonVal);
-	$("#id").val(jsonObj.id);
-    $("#createDate").val(jsonObj.createDate);
-    $("#name").val(jsonObj.name);
-    $("#letter").val(jsonObj.letter);
-    $("#keyword").val(jsonObj.keyword);
-	$("#isDel option[value="+jsonObj.isDel+"]").attr("selected",'selected');
-
-}
 </script>
 </head>
 <body onload="init()">
