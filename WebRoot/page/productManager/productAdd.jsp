@@ -20,10 +20,18 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$("#name").val($("#name",parent.document).attr("value"));
+
 	$.post("wmlProductType_queryWmlProductType.action", function(resultData) {
 		var jsonObj = resultData.data;
+		var selectId = $("#productType",parent.document).attr("value");
 		for ( var i = 0; i < jsonObj.length; i++) {
-			var $option = $("<option></option>");
+			var $option = null;
+			if(jsonObj[i].id==selectId){
+				 $option = $("<option selected='selected'></option>");
+			}else{
+				 $option = $("<option></option>");
+			}
 			$option.attr("value", jsonObj[i].id);
 			$option.text(jsonObj[i].name);
 			$("#productType").append($option);
@@ -40,13 +48,22 @@ $(document).ready(function() {
 	});
 	$.post("wmlBrand_queryWmlBrand.action", function(resultData) {
 		var jsonObj = resultData.data;
+		var selectId = $("#brandName",parent.document).attr("value");
 		for ( var i = 0; i < jsonObj.length; i++) {
-			var $option = $("<option></option>");
+			var $option = null;
+			if(jsonObj[i].id==selectId){
+				 $option = $("<option selected='selected'></option>");
+			}else{
+				 $option = $("<option></option>");
+			}
 			$option.attr("value", jsonObj[i].id);
 			$option.text(jsonObj[i].keyword);
 			$("#brandName").append($option);
 		}
 	});
+	
+	$("#uploadType").get(0).selectedIndex = $("#uploadType",parent.document).attr("value");
+	
 	$("#uploadify").uploadify({
 		'uploader'       : '<%=basePath%>js/uploadify/scripts/uploadify.swf',
 		'script'         : 'wmlProduct_productUpload.action',
@@ -67,7 +84,8 @@ $(document).ready(function() {
 			$('#result').html(data.filesUploaded +'个图片上传成功');
 		}
 	});
-	
+	$("#property").get(0).selectedIndex = parseInt($("#Property",parent.document).attr("value")) + 1;
+	$("#status").get(0).selectedIndex = parseInt($("#status",parent.document).attr("value")) + 1;
 	
 });
 
@@ -99,7 +117,7 @@ function doSubmit(){
 			"wmlProduct.price" : price,
 			"wmlProduct.description" : description
 			
-	}
+	};
 	$.post("wmlProduct_addWmlProduct.action",data,function(result){
 		if(result == "fail"){
 			alert("添加失败！");
@@ -112,7 +130,7 @@ function doSubmit(){
 			window.close();
 			
 		}
-	})
+	});
 }
 function uploasFile(){   
     //校验  

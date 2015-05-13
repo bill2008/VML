@@ -18,15 +18,15 @@ background-image:url('images/header_bg.png');
 background-position:0px -50px;
 }
 .side {  width:220px; height:750px; float:left}
-.main {  width:1100px; height:750px; float:left}
-.center{width:1330px;height:760px; margin:auto;padding:auto;}
+.main {  width:1150px; height:850px; float:left}
+.center{width:1400px;height:860px; margin:auto;padding:auto;}
 
 </style>
 <script type="text/javascript">
 window.onbeforeunload = function()
 {
 	window.location.href="wmlAdmin_outLogin.action?loginName=${loginName}";
-}
+};
 
 </script>
 </head>

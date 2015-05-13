@@ -92,6 +92,7 @@ function init(productType,organ,brand,property,uploadType,status,isDel) {
 	$("#status option[value="+status+"]").attr("selected",'selected'); 
 	$("#isDel option[value="+isDel+"]").attr("selected",'selected'); 
 
+
 }
 function selectProductType(productType){
 
@@ -144,7 +145,7 @@ function doSubmit(){
 			"wmlProduct.download" : download,
 			"wmlProduct.collect" : collect,
 			"wmlProduct.description" : description
-	}
+	};
 	$.post("wmlProduct_updateWmlProduct.action",data,function(result){
 		alert(result);
 		window.opener.location.reload();
@@ -159,7 +160,7 @@ function doFirst(imgId,imgUrl,imgProductId,imgIsDel){
 			"wmlProductImage.productId" : imgProductId,
 			"wmlProductImage.isFirst" : "1",
 			"wmlProductImage.isDel" : imgIsDel
-	}
+	};
 	$.post("wmlProductImage_updateWmlProductImage.action",data,function(result){
 		if(result == "fail"){
 			alert("设置失败！");
@@ -167,7 +168,7 @@ function doFirst(imgId,imgUrl,imgProductId,imgIsDel){
 		else if(result == "optsuccess"){
 			alert("设置成功！");
 		}
-	})
+	});
 }
 
 function uploasFile(){   
@@ -180,7 +181,7 @@ function uploasFile(){
 	var str= new Array();
 	str=strtime.split("-");
 	var timestr="";
-	for (i=0;i<str.length ;i++ ){
+	for (var i=0;i<str.length ;i++ ){
 		timestr+=str[i];
 	}
   	if(productName==null){

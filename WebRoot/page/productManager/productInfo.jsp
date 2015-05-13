@@ -11,7 +11,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>商品管理</title>
+<link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5//themes/icon.css">
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/jquery-easyui-1.3.5/jquery.easyui.min.js"></script>
 <jsp:include page="../../common/gtGridHead.jsp" />
 <style type="text/css">
 .gt-row-selected td {
@@ -43,8 +46,6 @@
 		$.post("wmlProductType_queryWmlProductType.action", function(resultData) {
 			var jsonObj = resultData.data;
 			for ( var i = 0; i < jsonObj.length; i++) {
-				//alert(jsonObj[i].id+"_____"+jsonObj[i].name);				
-				//console.info(jsonObj[i].id+"_____"+jsonObj[i].name);
 				var $option = $("<option></option>");
 				$option.attr("value", jsonObj[i].id);
 				$option.text(jsonObj[i].name);
@@ -93,22 +94,22 @@
 					  ]};
 
 		var colsConfig = [ 
-			{id : 'id',header : "编号",width : 50}, 
+			{id : 'id',header : "编号",width : 70}, 
 			{id : 'name',header : "商品名称",width : 100}, 
 			{id : 'description',header : "描述",width : 130,editable : true,editor : {type : 'text'}},
 			{id : 'brandName',header : "商品品牌",width : 70},
 			{id : 'productType',header : "商品类型",width : 70},
-			{id : 'property',header : "属性",width : 50,renderer : GT.Grid.mappingRenderer(propertyOpt, '')},
+			{id : 'property',header : "属性",width : 70,renderer : GT.Grid.mappingRenderer(propertyOpt, '')},
 			{id : 'brandName',header : "商户",width : 70},
 			{id : 'uploadType',header : "上传类型",width : 70,renderer : GT.Grid.mappingRenderer(UploadTypeOpt, '')},
-			{id : 'userName',header : "上传人",width : 60},
+			{id : 'userName',header : "上传人",width : 70},
 			{id : 'createDate',header : "上传时间",width : 70},
 			{id : 'price',header : "价格",width : 50,editable : true,editor : {type : 'text'}},
-			{id : 'viewCount',header : "浏览次数",width : 70},
+			{id : 'viewCount',header : "浏览次数",width : 	50},
 			{id : 'forwar',header : "转发",width : 50},
 			{id : 'download',header : "下载",width : 50},
 			{id : 'collect',header : "收藏",width : 50},
-			{id : 'status',header : "状态",width : 50,renderer : GT.Grid.mappingRenderer(statusOpt, '')}
+			{id : 'status',header : "状态",width : 70,renderer : GT.Grid.mappingRenderer(statusOpt, '')}
 			];
 
 		var gridConfig = {
@@ -147,12 +148,9 @@
 			},
 		
 			onCellDblClick : function(value, record , cell,row, colNO, rowNO,column,event){
-					var sheight = screen.height * 0.9;
-					var swidth = screen.width * 0.7;
-					var iTop = (window.screen.availHeight-30-sheight)/2; 
-					var iLeft = (window.screen.availWidth-10-swidth)/2; 
+					jsonVal=JSON.stringify(record);
 					var url = "wmlProduct_queryProduct.action?wmlProduct.id="+record['id'];
-					window.open(url, null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+					addTab("修改商品信息", url, jsonVal);
 					
 			},
 	
@@ -202,7 +200,7 @@
 			'wmlUser.endDate' :endTime
 		});
 		}else{
-			alert("开始时间不能大于结束时间!")
+			alert("开始时间不能大于结束时间!");
 		}
 		}else{
 		mygrid.query( {
@@ -221,23 +219,54 @@
 	}
 
 	function add() {
-		var sheight = screen.height * 0.8;
-		var swidth = screen.width * 0.47;
-		var iTop = (window.screen.availHeight-30-sheight)/2; 
-		var iLeft = (window.screen.availWidth-10-swidth)/2; 
 		var url = "<%=basePath%>page/productManager/productAdd.jsp";
-		window.open(url, null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+/* 		var data = "{";
+		data = data + "name:" +$("#name").val()+",";
+		data = data + "productType:" +$("#productType").val()+",";
+		data = data + "brandName:" +$("#brandName").val()+",";
+		data = data + "uploadType:" +$("#uploadType").val()+",";
+		data = data + "Property:" +$("#Property").val()+",";
+		data = data + "status:" +$("#status").val()+","; */
+		addTab("添加商品信息", url, null);
 	}
+	
 	function imgOut(){
 		$("#imgDiv").attr("style", "position:absolute; left:200px; top:200px; width:100px; height:100px; display: none; ");
 	}
+	
+	function addTab(title, url, data){
+		if("修改商品信息"==title){
+			if ($('#tt').tabs('exists', "修改商品信息")){
+				$('#tt').tabs('close', "修改商品信息");
+			}
+			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
+			content = content + '</iframe>';
+			$('#tt').tabs('add',{
+				title:title,
+				content:content,
+				closable:true
+			});			
+			
+		}else if("添加商品信息"==title){
+			if ($('#tt').tabs('exists', "添加商品信息")){
+				$('#tt').tabs('close', "添加商品信息");
+			}
+			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
+			content = content + '</iframe>';
+			
+			$('#tt').tabs('add',{
+				title:title,
+				content:content,
+				closable:true
+			});	
+		}
+		
+	}		
 </script>
 </head>
 <body>
-<div class="gt-panel" style="width: 100%;  height: 15%">
-		<div class="gt-panel-head">
-			<span>查 询</span>
-		</div>
+<div id="tt" class="easyui-tabs"  style="height: 725px;">
+	<div title="商品管理" class="gt-panel" style="align: left; margin-left: 2px; ">
 		<div>
 			<table>
 				<tr>
@@ -284,12 +313,15 @@
 		<div class="gt-button-area">
 			<input type="button" class="gt-input-button" value="添加" onclick="add()" /> 
 			<input type="button" class="gt-input-button" value="查询" onclick="queryAuto()" /> 
+
+		<br/>
+		<br/>
+		<!-- grid的容器. -->
+		<div id="grid1_container" style="width: 1126px; height: 82%"></div>
+		<div style="width:100px; height:100px; display: none; z-index: 2" id="imgDiv" onmousemove="imgOut()"> <img id="img"   src=""> </div>
 				
 		</div>
 	</div>
-	<br/>
-	<!-- grid的容器. -->
-	<div id="grid1_container" style="width: 100%; height: 82%"></div>
-	<div style="width:100px; height:100px; display: none; z-index: 2" id="imgDiv" onmousemove="imgOut()"> <img id="img"   src=""> </div>
+</div>
 </body>
 </html>
