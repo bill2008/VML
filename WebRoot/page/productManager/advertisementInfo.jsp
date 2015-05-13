@@ -12,7 +12,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>广告管理</title>
 <LINK REL="SHORTCUT ICON" HREF="<%=basePath%>images/logo.png">
+<link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5//themes/icon.css">
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/jquery-easyui-1.3.5/jquery.easyui.min.js"></script>
 <jsp:include page="../../common/gtGridHead.jsp" />
 <style type="text/css">
 .gt-row-selected td {
@@ -61,7 +64,7 @@
 			remotePaging : false,
 			container : 'grid1_container',
 			toolbarPosition : 'bottom',
-			toolbarContent : 'nav | goto | pagesize | state',
+			toolbarContent : null,
 			pageSize : 20,
 			pageSizeList : [ 20, 40, 80, 100 ],
 			onClickCell:function(value, record , cell, row,  colNO, rowNO,columnObj,grid){
@@ -74,12 +77,8 @@
 			},
 			onCellDblClick : function(value, record , cell,row, colNO, rowNO,column,event){
 				jsonVal=JSON.stringify(record);
-				var sheight = screen.height * 0.5;
-				var swidth = screen.width * 0.4;
-				var iTop = (window.screen.availHeight-30-sheight)/2; 
-				var iLeft = (window.screen.availWidth-10-swidth)/2; 
 				var url = "<%=basePath%>page/productManager/advertisementUpdate.jsp";
-				window.open(url,null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+				addTab("修改广告信息", url, jsonVal);;
 		}
 		};
 
@@ -122,46 +121,69 @@
 	}
 
 	function add() {
-		var sheight = screen.height * 0.6;
-		var swidth = screen.width * 0.4;
-		var iTop = (window.screen.availHeight-30-sheight)/2; 
-		var iLeft = (window.screen.availWidth-10-swidth)/2; 
 		var url = "<%=basePath%>page/productManager/advertisementAdd.jsp";
-		window.open(url, null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+		addTab("添加广告信息", url, null);
+		mygrid.reload();
 	}
 	function imgOut(){
 		$("#imgDiv").attr("style", "position:absolute; left:200px; top:200px; width:100px; height:100px; display: none; ");
 	}
+	function addTab(title, url, data){
+		if("修改广告信息"==title){
+			if ($('#tt').tabs('exists', "修改广告信息")){
+				$('#tt').tabs('close', "修改广告信息");
+			}
+			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
+			content = content + '</iframe>';
+			content = content + '<span id="data" style="display:none">' + data +'</span>';
+			$('#tt').tabs('add',{
+				title:title,
+				content:content,
+				closable:true
+			});			
+			
+		}else if("添加广告信息"==title){
+			if ($('#tt').tabs('exists', "添加广告信息")){
+				$('#tt').tabs('close', "添加广告信息");
+			}
+			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
+			content = content + '</iframe>';
+			$('#tt').tabs('add',{
+				title:title,
+				content:content,
+				closable:true
+			});	
+		}
+	}	
 </script>
 </head>
 <body>
-<div class="gt-panel" style="width: 100%;  height: 15%">
-		<div class="gt-panel-head">
-			<span>查 询</span>
-		</div>
-		<div>
-			<table>
-				<tr>
-					<td>广告名称：</td>
-					<td ><input  type="text" name="name" id="name"	onkeydown="query(event)"></td>
-					<td>文字描述：</td>
-					<td ><input  type="text" name="description" id="description"	onkeydown="query(event)"></td>
-						<td>开始时间：</td>
-					<td ><input type="text" name="startDate" id="startDate"onclick="timeSelect('startDate',null)" onkeydown="query(event)"/></td>
-						<td>结束时间：</td>
-					<td><input type="text" name="endDate" id="endDate" onclick="timeSelect('endDate',null)" onkeydown="query(event)" /></td>
-				</tr>
-			</table>
-		</div>
-		<div class="gt-button-area">
-			<input type="button" class="gt-input-button" value="添加" onclick="add()" /> 
-			<input type="button" class="gt-input-button" value="查询" onclick="queryAuto()" /> 
-				
-		</div>
+<div id="tt" class="easyui-tabs"  style="height: 720px;">
+<div title="广告管理"  class="gt-panel" >
+	<div>
+		<table>
+			<tr>
+				<td>广告名称：</td>
+				<td ><input  type="text" name="name" id="name"	onkeydown="query(event)"></td>
+				<td>文字描述：</td>
+				<td ><input  type="text" name="description" id="description"	onkeydown="query(event)"></td>
+					<td>开始时间：</td>
+				<td ><input type="text" name="startDate" id="startDate"onclick="timeSelect('startDate',null)" onkeydown="query(event)"/></td>
+					<td>结束时间：</td>
+				<td><input type="text" name="endDate" id="endDate" onclick="timeSelect('endDate',null)" onkeydown="query(event)" /></td>
+			</tr>
+		</table>
+	</div>
+	<div class="gt-button-area">
+		<input type="button" class="gt-input-button" value="添加" onclick="add()" /> 
+		<input type="button" class="gt-input-button" value="查询" onclick="queryAuto()" /> 
+			
 	</div>
 	<br/>
 	<!-- grid的容器. -->
-	<div id="grid1_container" style="width: 100%; height: 82%"></div>
-		<div style="width:100px; height:100px; display: none; z-index: 2" id="imgDiv" onmousemove="imgOut()"> <img id="img"   src=""> </div>
+	<div id="grid1_container" style="width: 655px; height: 249px"></div>
+	<div style="width:100px; height:100px; display: none; z-index: 2" id="imgDiv" onmousemove="imgOut()"> <img id="img"   src=""> </div>
+	</div>
+</div>
 </body>
 </html>
