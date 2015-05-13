@@ -15,7 +15,10 @@
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
 $(document).ready( function() {
-
+	
+	$("#code").val($("#organCode",parent.document).attr("value"));
+	$("#name").val($("#organName",parent.document).attr("value"));
+	$("#phone").val($("#phone",parent.document).attr("value"));
 	
 	$.post("wmlProductType_queryWmlProductType.action",null, function(resultData) {
 		var jsonObj = resultData.data;
@@ -53,7 +56,7 @@ function doSubmit(){
 			"wmlOrgan.phone" : phone,
 			"wmlOrgan.address" : address,
 			"wmlOrgan.permissions" : permissions,
-	}
+	};
 	$.post("wmlOrgan_addWmlOrgan.action",data,function(result){
 		if(result == "fail"){
 			alert("添加失败！");
@@ -64,7 +67,7 @@ function doSubmit(){
 		}else if(result=="orgNull"){
 			alert("所属商户不存在!");
 		}
-	})
+	});
 }
 
 </script>

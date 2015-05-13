@@ -45,10 +45,10 @@
 
 <body>
 	
-	<div class="gt-panel"  style="padding: 0px; margin-top: 9px;width:210px; height:725px;">
+	<div class="gt-panel"  style="padding: 0px; margin-top: 9px;width:190px; height:718px;">
 	<div class="gt-panel-head"><center> <span>菜单栏</span></center></div>
 	<div class="gt-panel-body" style="margin-top: 0px;">
-		<ul style=" height:500px; width:160px; padding: 0px; margin-top: 0px;" id="navigation" class="ztree"></ul>
+		<ul style=" height:650px; width:80px; padding: 0px; margin-top: 0px;" id="navigation" class="ztree"></ul>
 		</div>
 	</div>
 

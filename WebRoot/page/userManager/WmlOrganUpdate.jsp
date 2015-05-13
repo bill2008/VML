@@ -15,9 +15,8 @@
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
  function init() {
-	 var json=window.opener;
-	var jsonObj=JSON.parse(json.jsonVal);
-	
+	var json=$("#data",parent.document).html();
+	var jsonObj=JSON.parse(json);
 
 	var typeId=jsonObj.typeId;
 	$.post("wmlProductType_queryWmlProductType.action",null, function(resultData) {
@@ -82,8 +81,8 @@ function doSubmit(){
 		}
 		else if(result == "optsuccess"){
 			
-			//alert("修改成功！");
-			window.opener.location.reload();
+			alert("修改成功！");
+			//window.opener.location.reload();
 			//window.close();
 
 		}else if(result=="orgNull"){

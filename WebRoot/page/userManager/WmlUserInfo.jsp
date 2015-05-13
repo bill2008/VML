@@ -87,9 +87,9 @@
 			{id : 'channel',header : "登录类型",width : 60,renderer : GT.Grid.mappingRenderer(channelOpt, '')},
 			{id : 'type',header : "用户类型",width : 70,renderer : GT.Grid.mappingRenderer(typeOpt, '')},
 			{id : 'permissions',header : "免审批",width : 50,renderer : GT.Grid.mappingRenderer(permiOpt, '')},
-			{id : 'lastDate',header : "最近登录时间",width :90},
-			{id : 'createDate',header : "创建时间",width :80},
-			{id : 'uidName',header : "推荐人",width : 50},
+			{id : 'lastDate',header : "最近登录时间",width :100},
+			{id : 'createDate',header : "创建时间",width :100},
+			{id : 'uidName',header : "推荐人",width : 100},
 			{id : 'detail' , header : "详细信息" , width : 70,
 				renderer : function(value ,record,columnObj,grid,colNo,rowNo){
  					return "<u onclick=showSellDetail("+record['id']+")>点击查看</u>";
@@ -104,7 +104,7 @@
 			container : 'grid1_container',
 			toolbarPosition : 'bottom',
 			toolbarContent : 'nav | goto | pagesize | state',
-			pageSize : 19,
+			pageSize : 20,
 			pageSizeList : [ 20, 40, 80, 100 ],
 			onCellDblClick : function(value, record , cell,row, colNO, rowNO,column,event){
 				jsonVal=JSON.stringify(record);
@@ -219,8 +219,8 @@
 </script>
 </head>
 <body>
-<div id="tt" class="easyui-tabs"  style="height: 650px;">
-	<div title="客户管理" class="gt-panel" align="center">
+<div id="tt" class="easyui-tabs"  style="height: 720px;">
+	<div title="客户管理" class="gt-panel"  >
 		<div>
 			<table>
 				<tr>
@@ -258,8 +258,9 @@
 			<input type="button" class="gt-input-button" value="添加" onclick="addUser()" /> 
 			<input type="button" class="gt-input-button" value="查询" onclick="queryAuto()" /> 
 		</div>
+		<br/>
 		<!-- grid的容器. -->
-		<div id="grid1_container" style="width: 99%; height: 88%;"></div>		
+		<div id="grid1_container" style="width: 1124px; height: 72%;"></div>		
 	</div>
 </div>
 </body>

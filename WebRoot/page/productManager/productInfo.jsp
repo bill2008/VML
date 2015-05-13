@@ -150,7 +150,7 @@
 			onCellDblClick : function(value, record , cell,row, colNO, rowNO,column,event){
 					jsonVal=JSON.stringify(record);
 					var url = "wmlProduct_queryProduct.action?wmlProduct.id="+record['id'];
-					addTab("修改商品信息", url, jsonVal);
+					addTab("修改商品信息", url);
 					
 			},
 	
@@ -220,21 +220,14 @@
 
 	function add() {
 		var url = "<%=basePath%>page/productManager/productAdd.jsp";
-/* 		var data = "{";
-		data = data + "name:" +$("#name").val()+",";
-		data = data + "productType:" +$("#productType").val()+",";
-		data = data + "brandName:" +$("#brandName").val()+",";
-		data = data + "uploadType:" +$("#uploadType").val()+",";
-		data = data + "Property:" +$("#Property").val()+",";
-		data = data + "status:" +$("#status").val()+","; */
-		addTab("添加商品信息", url, null);
+		addTab("添加商品信息", url);
 	}
 	
 	function imgOut(){
 		$("#imgDiv").attr("style", "position:absolute; left:200px; top:200px; width:100px; height:100px; display: none; ");
 	}
 	
-	function addTab(title, url, data){
+	function addTab(title, url){
 		if("修改商品信息"==title){
 			if ($('#tt').tabs('exists', "修改商品信息")){
 				$('#tt').tabs('close', "修改商品信息");
@@ -265,8 +258,8 @@
 </script>
 </head>
 <body>
-<div id="tt" class="easyui-tabs"  style="height: 725px;">
-	<div title="商品管理" class="gt-panel" style="align: left; margin-left: 2px; ">
+<div id="tt" class="easyui-tabs"  style="height: 720px;">
+	<div title="商品管理" class="gt-panel"  >
 		<div>
 			<table>
 				<tr>
@@ -317,7 +310,7 @@
 		<br/>
 		<br/>
 		<!-- grid的容器. -->
-		<div id="grid1_container" style="width: 1126px; height: 82%"></div>
+		<div id="grid1_container" style="width: 1126px; height: 72%"></div>
 		<div style="width:100px; height:100px; display: none; z-index: 2" id="imgDiv" onmousemove="imgOut()"> <img id="img"   src=""> </div>
 				
 		</div>

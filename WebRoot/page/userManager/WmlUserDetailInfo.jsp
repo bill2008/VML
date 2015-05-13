@@ -67,7 +67,7 @@ function initUserProduct(){
 		var colsConfig2 = [ 
 			{id : 'id',header : "编号",width : 50}, 
 			{id : 'name',header : "商品名称",width : 100}, 
-			{id : 'description',header : "描述",width : 150},
+			{id : 'description',header : "描述",width : 167},
 			{id : 'brandName',header : "商品品牌",width : 70},
 			{id : 'productType',header : "商品类型",width : 70},
 			{id : 'property',header : "属性",width : 50,renderer : GT.Grid.mappingRenderer(propertyOpt, '')},
@@ -88,8 +88,8 @@ function initUserProduct(){
 				columns : colsConfig2,
 				container : 'grid1_container2',
 				toolbarPosition : 'bottom',
-				toolbarContent : 'nav | state',
-				pageSize : 20
+				toolbarContent : 'nav | goto | pagesize | save | state',
+				pageSize : 14
 			};
 		mygrid2=new GT.Grid( gridConfig2 );
 		mygrid2.render();
@@ -106,9 +106,9 @@ function initUserAttention(){
 				   ]
 		};
 	var colsConfig = [ 
-	{headAlign : 'center',align : 'center',id : 'forId',header : "关注人ID",	width : 100},
-	{headAlign : 'center',align:'center',  id : 'forName', header : "关注人" , width : 260},
-	{headAlign : 'center',align : 'center',id : 'createDate',header : "关注时间",	width : 150}
+	{headAlign : 'center',align : 'center',id : 'forId',header : "关注人ID",	width : 101},
+	{headAlign : 'center',align:'center',  id : 'forName', header : "关注人" , width : 261},
+	{headAlign : 'center',align : 'center',id : 'createDate',header : "关注时间",	width : 152}
 	];
 	var gridConfig = {
 			id: 'grid1', 
@@ -119,7 +119,7 @@ function initUserAttention(){
 	        toolbarPosition: 'bottom',  
 	        remotePaging : false,
 	        autoLoad : false,
-	        pageSize : 20,
+	        pageSize : 8,
 	        toolbarContent : ' nav | state ' 
 		};
 		mygrid=new GT.Grid( gridConfig );
@@ -137,9 +137,9 @@ function initUserBeAttention(){
 					   ]
 			};
 		var colsConfig1 = [ 
-		{headAlign : 'center',align : 'center',id : 'byId',header : "被关注人ID",	width : 100},
-		{headAlign : 'center',align:'center',  id : 'byName', header : "被关注人" , width : 260},
-		{headAlign : 'center',align : 'center',id : 'createDate',header : "关注时间",	width : 150}
+		{headAlign : 'center',align : 'center',id : 'byId',header : "被关注人ID",	width : 101},
+		{headAlign : 'center',align:'center',  id : 'byName', header : "被关注人" , width : 261},
+		{headAlign : 'center',align : 'center',id : 'createDate',header : "关注时间",	width : 152}
 		];
 		var gridConfig1 = {
 				id: 'grid', 
@@ -150,7 +150,7 @@ function initUserBeAttention(){
 		        toolbarPosition: 'bottom',  
 		        remotePaging : false,
 		        autoLoad : false,
-		        pageSize : 20,
+		        pageSize : 8,
 		        toolbarContent : ' nav | state ' 
 			};
 			mygrid1=new GT.Grid( gridConfig1 );
@@ -189,12 +189,12 @@ function init(userId) {
     <td><input class="fontStyle" type="text" value="${wmlUserDetail.name}" readonly="readonly" /></td>
   </tr>
   <tr>
-    <td colspan="3"><div id="grid1_container" style="width: 515px; height: 200px;"></div></td>
-    <td width="524"><div id="grid1_container1" style="width: 515px; height: 200px" ></div></td>
+    <td colspan="3"><div id="grid1_container" style="width: 518px; height: 200px;"></div></td>
+    <td width="524"><div id="grid1_container1" style="width: 518px; height: 200px" ></div></td>
     <td width="3">&nbsp;</td>
   </tr>
   <tr>
-    <td colspan="5"><div id="grid1_container2" style="width: 1035px; height: 280px;" ></div></td>
+    <td colspan="5"><div id="grid1_container2" style="width: 1042px; height: 358px;" ></div></td>
   </tr>
 </table>
 
