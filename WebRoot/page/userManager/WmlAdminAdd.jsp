@@ -14,6 +14,15 @@
 <jsp:include page="../../common/gtGridHead.jsp" />
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
+
+$(document).ready( function() {
+	
+	$("#name").val($("#name",parent.document).attr("value"));
+	$("#loginName").val($("#loginName",parent.document).attr("value"));
+	$("#phone").val($("#phone",parent.document).attr("value"));
+	
+});
+
 function checkValue(item,widgetName){
 	if(item.value=="" ){
 		alert(widgetName+"不能为空!");

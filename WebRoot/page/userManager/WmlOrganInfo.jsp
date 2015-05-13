@@ -118,9 +118,8 @@
 	}
 
 	function add() {
-
 		var url = "<%=basePath%>page/userManager/WmlOrganAdd.jsp";
-		addTab("添加商户信息", url);
+		addTab("添加商户信息", url, null);
 	}
 	
 	function addTab(title, url, data){
@@ -143,7 +142,6 @@
 			}
 			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
 			content = content + '</iframe>';
-			
 			$('#tt').tabs('add',{
 				title:title,
 				content:content,
@@ -180,7 +178,7 @@
 	
 		<br/>
 			<!-- grid的容器. -->
-		<div id="grid1_container" style="width: 1058px; height: 80%"></div>
+		<div id="grid1_container" style="width: 1058px; height: 490px"></div>
 	</div>
 </div>	
 	

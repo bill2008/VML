@@ -22,8 +22,9 @@ function checkValue(item,widgetName){
 }
 function init(){
 	
-	var json=window.opener;
-	var jsonObj=JSON.parse(json.jsonVal);
+	var json=$("#data",parent.document).html();
+	var jsonObj=JSON.parse(json);
+	
     $("#name").val(jsonObj.name);
 	$("#loginName").val(jsonObj.loginName);
 	$("#phone").val(jsonObj.phone);
