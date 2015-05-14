@@ -2,7 +2,6 @@ package com.action;
 
 import java.util.List;
 
-import com.grid.tool.GridSupport;
 import com.pojo.WmlMenu;
 import com.service.IWmlMenuService;
 import com.tool.BuildTreeUtil;
@@ -13,7 +12,16 @@ public class WmlMenuAction extends BaseAction {
 	private List<CommTreeInfo> menuTree;
 	private List<WmlMenu> data;
 	private WmlMenu menu;
+	private String message;
 	
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 	public WmlMenu getMenu() {
 		return menu;
 	}
@@ -60,13 +68,35 @@ public class WmlMenuAction extends BaseAction {
 		return "success";
 	} 
 	
-	public String updateMenu() throws Exception{
-		GridSupport gridData = new GridSupport(this._gt_json);
-		if(wmlMenuService.updateMenu(gridData)){
-			return "success";
+	public void addMenu() throws Exception{
+		if(wmlMenuService.addMenu(menu)){
+			message= "optsuccess";
 		}else{
-			return "fail";
-		}	
+			message= "fail";
+		}
+		menu=null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);
+	}
+	
+	public void updateMenu() throws Exception{
+		
+		WmlMenu item=new WmlMenu();
+		item.setMenuId(menu.getMenuId());
+		item.setMenuName(menu.getMenuName());
+		item.setMenuLink(menu.getMenuLink());
+		item.setMenuAid(menu.getMenuAid());
+		item.setMenuNo(menu.getMenuNo());
+		if(wmlMenuService.updateMenu(item)){
+			message= "optsuccess";
+		}else{
+			message= "fail";
+		}
+		
+		menu=null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);		
+		
 	}
 
 	

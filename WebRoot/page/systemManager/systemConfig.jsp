@@ -12,7 +12,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>系统信息</title>
 <LINK REL="SHORTCUT ICON" HREF="<%=basePath%>images/logo.png">
+<link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5//themes/icon.css">
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="<%=basePath%>js/jquery-easyui-1.3.5/jquery.easyui.min.js"></script>
 <jsp:include page="../../common/gtGridHead.jsp" />
 <style type="text/css">
 .gt-row-selected td {
@@ -39,10 +42,10 @@
 					  ]};
 
 		var colsConfig = [ 
-			{id : 'name',header : "参数名称",width : 100}, 
-			{id : 'value',header : "值",width : 150},
-			{id : 'description',header : "描述",width : 200},
-			{id : 'isDel',header : "是否删除",width : 200,renderer : GT.Grid.mappingRenderer(statusOpt, '')}
+			{id : 'name',header : "参数名称",width : 200}, 
+			{id : 'value',header : "值",width : 200},
+			{id : 'description',header : "描述",width : 300},
+			{id : 'isDel',header : "是否删除",width : 100,renderer : GT.Grid.mappingRenderer(statusOpt, '')}
 			];
 
 		var gridConfig = {
@@ -54,17 +57,13 @@
 			container : 'grid1_container',
 			toolbarPosition : 'bottom',
 			toolbarContent : 'nav | goto | pagesize  | state',
-			pageSize : 15,
-			pageSizeList : [ 15, 40, 80, 100 ],
+			pageSize : 20,
+			pageSizeList : [ 20, 40, 80, 100 ],
 			autoLoad : false,
 			onCellDblClick : function(value, record , cell,row, colNO, rowNO,column,event){
 				jsonVal=JSON.stringify(record);
-				var sheight = screen.height * 0.5;
-				var swidth = screen.width * 0.4;
-				var iTop = (window.screen.availHeight-30-sheight)/2; 
-				var iLeft = (window.screen.availWidth-10-swidth)/2; 
 				var url = "<%=basePath%>page/systemManager/systemConfigUpdate.jsp";
-				window.open(url,null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
+				addTab("修改系统参数", url, jsonVal);
 		}
 		};
 
@@ -93,22 +92,27 @@
 		mygrid.query({'wmlConfig.name':name,'wmlConfig.value':value,'wmlConfig.description':desp});
 	}
 
-
-	function add() {
-		var sheight = screen.height * 0.5;
-		var swidth = screen.width * 0.4;
-		var iTop = (window.screen.availHeight-30-sheight)/2; 
-		var iLeft = (window.screen.availWidth-10-swidth)/2; 
-		var url = "<%=basePath%>page/systemManager/systemConfigAdd.jsp";
-		window.open(url, null,'height='+sheight+'px,width='+swidth+'px,top='+iTop+'px,left='+iLeft+'px,toolbar=no,menubar=no,scrollbars=no,resizable=no,location=no,status=no');
-	}
+	
+	function addTab(title, url, data){
+		if("修改系统参数"==title){
+			if ($('#tt').tabs('exists', "修改系统参数")){
+				$('#tt').tabs('close', "修改系统参数");
+			}
+			var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;">';
+			content = content + '</iframe>';
+			content = content + '<span id="data" style="display:none">' + data +'</span>';
+			$('#tt').tabs('add',{
+				title:title,
+				content:content,
+				closable:true
+			});
+		}
+	}	
 </script>
 </head>
 <body>
-<div class="gt-panel" style="width: 100%;  height: 15%">
-		<div class="gt-panel-head">
-			<span>查 询</span>
-		</div>
+<div id="tt" class="easyui-tabs"  style="height: 720px;">
+	<div title="系统参数"  class="gt-panel" >
 		<div>
 			<table>
 				<tr>
@@ -125,16 +129,12 @@
 			</table>
 		</div>
 		<div class="gt-button-area">
-			<input type="button" class="gt-input-button" value="添加" onclick="add()" /> 
-			
 			<input type="button" class="gt-input-button" value="查询" onclick="queryAuto()" /> 
-				
 		</div>
+		<br/>
+		<!-- grid的容器. -->
+		<div id="grid1_container" style="width: 804px; height: 490px"></div>
 	</div>
-	<br/>
-	
-	<!-- grid的容器. -->
-	<div id="grid1_container" style="width: 100%; height: 82%"></div>
-	
+</div>	
 </body>
 </html>

@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.dao.IWmlMenuDAO;
-import com.grid.tool.GridSupport;
 import com.pojo.WmlMenu;
 import com.service.IWmlMenuService;
 
@@ -27,26 +26,9 @@ public class WmlMenuServiceImpl implements IWmlMenuService {
 
 
 	@Transactional
-	public boolean updateMenu(GridSupport gridData) {
+	public boolean updateMenu(WmlMenu item) {
 		try{
-			List<WmlMenu> addRecords=gridData.getParamRecords(GridSupport.RECORD_INSERT, WmlMenu.class);
-			List<WmlMenu> updateRecords=gridData.getParamRecords(GridSupport.RECORD_UPDATE, WmlMenu.class);
-			List<WmlMenu> deleteRecords=gridData.getParamRecords(GridSupport.RECORD_DELETE, WmlMenu.class);
-			if(addRecords != null && addRecords.size() > 0){
-				for(WmlMenu item:addRecords){
-					wmlMenuDao.save(item);
-				}
-			}
-			if(updateRecords != null && updateRecords.size() > 0){
-				for(WmlMenu item:updateRecords){
-					wmlMenuDao.saveOrUpdate(item);
-				}
-			}
-			if(deleteRecords != null && deleteRecords.size() > 0){
-				for(WmlMenu item:deleteRecords){
-					wmlMenuDao.delete(item);
-				}
-			}
+			wmlMenuDao.saveOrUpdate(item);
 			return true;
 		}catch(Exception e){
 			e.printStackTrace();
@@ -54,7 +36,17 @@ public class WmlMenuServiceImpl implements IWmlMenuService {
 		}
 	}
 
-
+	@Transactional
+	public boolean addMenu(WmlMenu item) {
+		try{
+			wmlMenuDao.save(item);
+			return true;
+	}catch(Exception e){
+		e.printStackTrace();
+		return false;
+	}
+	}
+	
 	@Override
 	public List<WmlMenu> queryMenu(WmlMenu item) {
 		// TODO Auto-generated method stub

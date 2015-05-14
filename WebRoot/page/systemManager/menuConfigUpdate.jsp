@@ -25,33 +25,32 @@ function init(){
 	var json=$("#data",parent.document).html();
 	var jsonObj=JSON.parse(json);
 	
-    $("#name").val(jsonObj.name);
-	$("#value").val(jsonObj.value);
-	$("#description").val(jsonObj.description);
-	$("#id").val(jsonObj.id);
-	$("#isDel option[value="+jsonObj.isDel+"]").attr("selected",'selected'); 
+	$("#menuNo").val(jsonObj.menuNo);
+	$("#id").val(jsonObj.menuId);
+    $("#name").val(jsonObj.menuName);
+	$("#link").val(jsonObj.menuLink);
+	$("#aid").val(jsonObj.menuAid);
 	}
 
 function doSubmit(){
 	var id= $("#id").val();
 	var name= $("#name").val();
-	var value= $("#value").val();
-	var description= $("#description").val();
-	var isDel= $("#isDel").val();
+	var link= $("#link").val();
+	var aid= $("#aid").val();
+	var menuNo= $("#menuNo").val();
 	var data = {
-			"wmlConfig.id" : id,
-			"wmlConfig.name" : name,
-			"wmlConfig.value" : value,
-			"wmlConfig.isDel" : isDel,
-			"wmlConfig.description" : description
+			"menu.menuId" : id,
+			"menu.menuName" : name,
+			"menu.menuLink" : link,
+			"menu.menuAid" : aid,
+			"menu.menuNo" : menuNo,
 	};
-	$.post("wmlConfig_updateWmlConfig.action",data,function(result){
+	$.post("wmlMenu_updateMenu.action",data,function(result){
 		if(result == "fail"){
 			alert("修改失败！");
 		}
 		else if(result == "optsuccess"){
 			alert("修改成功！");
-			window.opener.location.reload();
 		}
 	});
 }
@@ -60,31 +59,26 @@ function doSubmit(){
 <body onload="init()">
 
 <div class="gt-panel" style="width: 500px; margin-left: 10px; ">
-	<div class="gt-panel-head"><center> <span>修改系统配置信息</span></center></div>
-		<form id="frm">
+	<div class="gt-panel-head"><center> <span>修改菜单信息</span></center></div>
+	<form id="frm">
 	<div class="gt-panel-body" style="margin: 0px;">
 	<table>
+	<tr>
+		<td>菜单顺序：</td>
+		<td><input type="text"  id="menuNo" name="menuNo" style="width: 350px" onblur="checkValue(this,'值')"></td>
+	</tr>	
 	<tr >
-		<td>参数：</td>
+		<td>菜单名：</td>
 		<td><input type="hidden" id="id" name="id"> <input type="text"  id="name" name="name" style="width: 350px" onblur="checkValue(this,'参数')"></td>
 	</tr>
 	<tr>
-		<td>值：</td>
-		<td><input type="text"  id="value" name="value" style="width: 350px" onblur="checkValue(this,'值')"></td>
+		<td>链接地址：</td>
+		<td><input type="text"  id="link" name="link" style="width: 350px" onblur="checkValue(this,'值')"></td>
 	</tr>
 	<tr>
-		<td>描述：</td>
-		<td>
-		<input type="text"  id="description" name="description"  style="width: 350px" onblur="checkValue(this,'描述')"></td>
-	</tr>
-	
-	<tr>
-		<td>是否删除：</td>
-		<td><select id="isDel" name="isDel" onblur=>
-				<option value="1">否</option>
-				<option value="0">是</option>
-			</select></td>
-	</tr>
+		<td>父菜单：</td>
+		<td><input type="text"  id="aid" name="aid" style="width: 350px" onblur="checkValue(this,'值')"></td>
+	</tr>	
 	</table>
 	
 <div>

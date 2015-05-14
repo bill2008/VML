@@ -10,81 +10,74 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>修改系统配置信息</title>
-<link rel="stylesheet" type="text/css" href="<%=basePath%>/js/gt-grid/gt_grid.css"/>
+<title>添加系统配置信息</title>
+<jsp:include page="../../common/gtGridHead.jsp" />
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
+
+$(document).ready( function() {
+	
+	$("#name").val($("#name",parent.document).attr("value"));
+	$("#link").val($("#link",parent.document).attr("value"));
+});
+
 function checkValue(item,widgetName){
 	if(item.value=="" ){
 		alert(widgetName+"不能为空!");
 	}
 	
 }
-function init(){
-	
-	var json=$("#data",parent.document).html();
-	var jsonObj=JSON.parse(json);
-	
-    $("#name").val(jsonObj.name);
-	$("#value").val(jsonObj.value);
-	$("#description").val(jsonObj.description);
-	$("#id").val(jsonObj.id);
-	$("#isDel option[value="+jsonObj.isDel+"]").attr("selected",'selected'); 
-	}
 
 function doSubmit(){
 	var id= $("#id").val();
 	var name= $("#name").val();
-	var value= $("#value").val();
-	var description= $("#description").val();
-	var isDel= $("#isDel").val();
+	var link= $("#link").val();
+	var aid= $("#aid").val();
+	var menuNo= $("#menuNo").val();
+	
 	var data = {
-			"wmlConfig.id" : id,
-			"wmlConfig.name" : name,
-			"wmlConfig.value" : value,
-			"wmlConfig.isDel" : isDel,
-			"wmlConfig.description" : description
+			"WmlMenu.id" : id,
+			"WmlMenu.name" : name,
+			"WmlMenu.link" : link,
+			"WmlMenu.aid" : aid,
+			"WmlMenu.menuNo" : menuNo
 	};
-	$.post("wmlConfig_updateWmlConfig.action",data,function(result){
+	$.post("wmlConfig_addWmlConfig.action",data,function(result){
 		if(result == "fail"){
-			alert("修改失败！");
+			alert("添加失败！");
 		}
 		else if(result == "optsuccess"){
-			alert("修改成功！");
-			window.opener.location.reload();
+			alert("添加成功！");
+			document.getElementById("frm").reset(); 
 		}
 	});
 }
 </script>
 </head>
-<body onload="init()">
+<body>
 
 <div class="gt-panel" style="width: 500px; margin-left: 10px; ">
-	<div class="gt-panel-head"><center> <span>修改系统配置信息</span></center></div>
+	<div class="gt-panel-head"><center> <span>添加菜单信息</span></center></div>
 		<form id="frm">
 	<div class="gt-panel-body" style="margin: 0px;">
-	<table>
+	<table >
+	<tr>
+		<td>菜单顺序：</td>
+		<td><input type="text"  id="menuNo" name="menuNo" style="width: 350px" onblur="checkValue(this,'值')"></td>
+	</tr>	
 	<tr >
-		<td>参数：</td>
+		<td>菜单名：</td>
 		<td><input type="hidden" id="id" name="id"> <input type="text"  id="name" name="name" style="width: 350px" onblur="checkValue(this,'参数')"></td>
 	</tr>
 	<tr>
-		<td>值：</td>
-		<td><input type="text"  id="value" name="value" style="width: 350px" onblur="checkValue(this,'值')"></td>
+		<td>链接地址：</td>
+		<td><input type="text"  id="link" name="link" style="width: 350px" onblur="checkValue(this,'值')"></td>
 	</tr>
 	<tr>
-		<td>描述：</td>
-		<td>
-		<input type="text"  id="description" name="description"  style="width: 350px" onblur="checkValue(this,'描述')"></td>
+		<td>父菜单：</td>
+		<td><input type="text"  id="aid" name="aid" style="width: 350px" onblur="checkValue(this,'值')"></td>
 	</tr>
 	
-	<tr>
-		<td>是否删除：</td>
-		<td><select id="isDel" name="isDel" onblur=>
-				<option value="1">否</option>
-				<option value="0">是</option>
-			</select></td>
-	</tr>
 	</table>
 	
 <div>

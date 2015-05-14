@@ -22,15 +22,15 @@ public class WmlMenu implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public WmlMenu(String menuName, String menuLink, Integer menuAid,
-			Integer menuNo) {
+
+	public WmlMenu(Integer menuId, String menuName, String menuLink,
+			Integer menuAid, Integer menuNo) {
+		this.menuId = menuId;
 		this.menuName = menuName;
 		this.menuLink = menuLink;
 		this.menuAid = menuAid;
 		this.menuNo = menuNo;
 	}
-
-	// Property accessors
 
 	public Integer getMenuId() {
 		return this.menuId;
