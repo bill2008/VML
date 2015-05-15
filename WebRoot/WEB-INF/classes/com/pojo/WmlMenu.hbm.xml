@@ -7,7 +7,8 @@
 <hibernate-mapping>
     <class name="com.pojo.WmlMenu" table="wml_menu"  dynamic-insert="true" catalog="wml_test">
         <id name="menuId" type="java.lang.Integer">
-            <column name="menu_id" />
+            <column name="menu_id" length="14" not-null="true"/>
+            	<generator class="identity"></generator>
         </id>
         <property name="menuName" type="java.lang.String">
             <column name="menu_name" length="30" />

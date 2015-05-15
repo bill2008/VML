@@ -36,13 +36,13 @@ function doSubmit(){
 	var menuNo= $("#menuNo").val();
 	
 	var data = {
-			"WmlMenu.id" : id,
-			"WmlMenu.name" : name,
-			"WmlMenu.link" : link,
-			"WmlMenu.aid" : aid,
-			"WmlMenu.menuNo" : menuNo
+			"menu.menuId" : id,
+			"menu.menuName" : name,
+			"menu.menuLink" : link,
+			"menu.menuAid" : aid,
+			"menu.menuNo" : menuNo,
 	};
-	$.post("wmlConfig_addWmlConfig.action",data,function(result){
+	$.post("wmlMenu_addMenu.action",data,function(result){
 		if(result == "fail"){
 			alert("添加失败！");
 		}
@@ -58,34 +58,34 @@ function doSubmit(){
 
 <div class="gt-panel" style="width: 500px; margin-left: 10px; ">
 	<div class="gt-panel-head"><center> <span>添加菜单信息</span></center></div>
-		<form id="frm">
-	<div class="gt-panel-body" style="margin: 0px;">
-	<table >
-	<tr>
-		<td>菜单顺序：</td>
-		<td><input type="text"  id="menuNo" name="menuNo" style="width: 350px" onblur="checkValue(this,'值')"></td>
-	</tr>	
-	<tr >
-		<td>菜单名：</td>
-		<td><input type="hidden" id="id" name="id"> <input type="text"  id="name" name="name" style="width: 350px" onblur="checkValue(this,'参数')"></td>
-	</tr>
-	<tr>
-		<td>链接地址：</td>
-		<td><input type="text"  id="link" name="link" style="width: 350px" onblur="checkValue(this,'值')"></td>
-	</tr>
-	<tr>
-		<td>父菜单：</td>
-		<td><input type="text"  id="aid" name="aid" style="width: 350px" onblur="checkValue(this,'值')"></td>
-	</tr>
-	
-	</table>
-	
-<div>
-	<input type="reset" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; " value="重置" />
-	<input type="button" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; margin-right: 10px;" value="提交"   onclick="doSubmit()"/>
-</div>
-</div>
-</form>
+	<form id="frm">
+		<div class="gt-panel-body" style="margin: 0px;">
+			<table >
+			<tr>
+				<td>菜单顺序：</td>
+				<td><input type="text"  id="menuNo" name="menuNo" style="width: 350px" onblur="checkValue(this,'值')"></td>
+			</tr>	
+			<tr >
+				<td>菜单名：</td>
+				<td><input type="hidden" id="id" name="id"> <input type="text"  id="name" name="name" style="width: 350px" onblur="checkValue(this,'参数')"></td>
+			</tr>
+			<tr>
+				<td>链接地址：</td>
+				<td><input type="text"  id="link" name="link" style="width: 350px" onblur="checkValue(this,'值')"></td>
+			</tr>
+			<tr>
+				<td>父菜单：</td>
+				<td><input type="text"  id="aid" name="aid" style="width: 350px" onblur="checkValue(this,'值')"></td>
+			</tr>
+			
+			</table>
+		
+			<div>
+				<input type="reset" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; " value="重置" />
+				<input type="button" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; margin-right: 10px;" value="提交"   onclick="doSubmit()"/>
+			</div>
+		</div>
+	</form>
 </div>
 
 </body>

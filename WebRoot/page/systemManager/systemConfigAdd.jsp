@@ -29,7 +29,7 @@ function doSubmit(){
 			"wmlConfig.name" : name,
 			"wmlConfig.value" : value,
 			"wmlConfig.description" : description
-	}
+	};
 	$.post("wmlConfig_addWmlConfig.action",data,function(result){
 		if(result == "fail"){
 			alert("添加失败！");
@@ -38,7 +38,7 @@ function doSubmit(){
 			alert("添加成功！");
 			document.getElementById("frm").reset(); 
 		}
-	})
+	});
 }
 </script>
 </head>
