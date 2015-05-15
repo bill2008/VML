@@ -86,7 +86,7 @@
 			{id : 'status',header : "状态",width : 40,renderer : GT.Grid.mappingRenderer(statusOpt, '')},
 			{id : 'channel',header : "登录类型",width : 60,renderer : GT.Grid.mappingRenderer(channelOpt, '')},
 			{id : 'type',header : "用户类型",width : 70,renderer : GT.Grid.mappingRenderer(typeOpt, '')},
-			{id : 'permissions',header : "免审批",width : 50,renderer : GT.Grid.mappingRenderer(permiOpt, '')},
+			{id : 'permissions',header : "免审批",width : 50,renderer : PermissionsstyleClass},//rederer主要是用来渲染   渲染方法名叫PermissionsstyleClass
 			{id : 'lastDate',header : "最近登录时间",width :100},
 			{id : 'createDate',header : "创建时间",width :100},
 			{id : 'uidName',header : "推荐人",width : 100},
@@ -175,6 +175,16 @@
 		var url = "wmlUser_queryUserDetail.action?wmlUser.id="+userId;
 		addTab("详细信息", url, null);
 		
+	}
+	//渲染列表方法   value列表值  record列表行对象    columnObj 表格对象   
+	function  PermissionsstyleClass (value ,record,columnObj,grid,colNo,rowNo){
+		if(value==1){
+			var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/cancel.png";
+			return '<img src="'+imgPath+'"/>';
+		}else{
+			var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/ok.png";
+			return '<img src="'+imgPath+'"/>'
+		}
 	}
 	
 	function addTab(title, url, data){
