@@ -255,11 +255,11 @@ public class WmlUserAction extends BaseAction {
 					File file = new File(uploadPath + "\\" + newFilename + extName);
 					FileUtils.copyFile(myFile, file);
 					userItem.setHead(newFilename + extName);
-					}
-				} catch (Exception e) {
-					message="头像上传失败";
-					e.printStackTrace();
 				}
+			} catch (Exception e) {
+				message="头像上传失败";
+				e.printStackTrace();
+			}
 		
 			if(uid!=0){
 				WmlUser item= new WmlUser();
@@ -288,6 +288,23 @@ public class WmlUserAction extends BaseAction {
 		return "update";
 	}
 
+	public void updateWmlUserPermissions() throws Exception{
+		WmlUser userItem= new WmlUser();
+		userItem.setId(useId);
+		userItem.setPermissions(permissions);
+		try {
+			if(wmlUserService.updateWmlUserPermissions(userItem)==Constant.MSG_SUCCESS){
+				message= "optsuccess";
+			}else{
+				message= "fail";
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		wmlUser=null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);
+	}
 	
 	public void addWmlUser()throws Exception{
 		WmlUser item= new WmlUser();

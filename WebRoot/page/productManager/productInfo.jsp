@@ -310,7 +310,7 @@
 		<br/>
 		<br/>
 		<!-- grid的容器. -->
-		<div id="grid1_container" style="width: 1126px; height: 72%"></div>
+		<div id="grid1_container" style="width: 1126px; height: 490px"></div>
 		<div style="width:100px; height:100px; display: none; z-index: 2" id="imgDiv" onmousemove="imgOut()"> <img id="img"   src=""> </div>
 				
 		</div>

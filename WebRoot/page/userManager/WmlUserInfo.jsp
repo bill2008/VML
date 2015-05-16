@@ -22,6 +22,10 @@
 	background-color: #004da8;
 	color: #ffffff;
 }
+
+a:hover {background-color:yellow;} 
+img:hover {background-color:yellow;}
+
 </style>
 <script type="text/javascript">
 
@@ -76,25 +80,26 @@
 					   {name : 'isDel',type : 'int'}
 					  ]};
 
-		var colsConfig = [  
-			{id : 'id',header : "编号",width : 50},
-			{id : 'organName',header : "所属商户",width : 60},
-			{id : 'loginName',header : "登录帐号",width : 100},
-			{id : 'name',header : "用户名",width : 100},
-			{id : 'phone',header : "手机",width : 90},
-			{id : 'signature',header : "个性签名",width : 120},
-			{id : 'status',header : "状态",width : 40,renderer : GT.Grid.mappingRenderer(statusOpt, '')},
-			{id : 'channel',header : "登录类型",width : 60,renderer : GT.Grid.mappingRenderer(channelOpt, '')},
-			{id : 'type',header : "用户类型",width : 70,renderer : GT.Grid.mappingRenderer(typeOpt, '')},
-			{id : 'permissions',header : "免审批",width : 50,renderer : PermissionsstyleClass},//rederer主要是用来渲染   渲染方法名叫PermissionsstyleClass
-			{id : 'lastDate',header : "最近登录时间",width :100},
-			{id : 'createDate',header : "创建时间",width :100},
-			{id : 'uidName',header : "推荐人",width : 100},
-			{id : 'detail' , header : "详细信息" , width : 70,
-				renderer : function(value ,record,columnObj,grid,colNo,rowNo){
- 					return "<u onclick=showSellDetail("+record['id']+")>点击查看</u>";
-				}}
-			];
+		var colsConfig = [
+						{id : 'id',header : "编号",width : 50},
+						{id : 'organName',header : "所属商户",width : 60},
+						{id : 'loginName',header : "登录帐号",width : 100},
+						{id : 'name',header : "用户名",width : 100},
+						{id : 'phone',header : "手机",width : 90},
+						{id : 'signature',header : "个性签名",width : 120},
+						{id : 'status',header : "状态",width : 40, align : 'center' , renderer : GT.Grid.mappingRenderer(statusOpt, '')},
+						{id : 'channel',header : "登录类型",width : 60, align : 'center' , renderer : GT.Grid.mappingRenderer(channelOpt, '')},
+						{id : 'type',header : "用户类型",width : 70, align : 'center' , renderer : GT.Grid.mappingRenderer(typeOpt, '')},
+						{id : 'permissions',header : "免审批",width : 50, align : 'center' , renderer : PermissionsstyleClass},//rederer主要是用来渲染   渲染方法名叫PermissionsstyleClass
+						{id : 'lastDate',header : "最近登录时间",width :100},
+						{id : 'createDate',header : "创建时间",width :100},
+						{id : 'uidName',header : "推荐人",width : 100},
+						{id : 'detail' , header : "详细信息" , width : 70,
+							renderer : function(value ,record,columnObj,grid,colNo,rowNo){
+			 					return "<u onclick=showSellDetail("+record['id']+")>点击查看</u>";
+							}}
+						];
+		
 
 		var gridConfig = {
 			id : grid_demo_id,
@@ -178,13 +183,39 @@
 	}
 	//渲染列表方法   value列表值  record列表行对象    columnObj 表格对象   
 	function  PermissionsstyleClass (value ,record,columnObj,grid,colNo,rowNo){
+		var permissions;
+		var useId=record['id'];
+		if (record['permissions']==0){
+			permissions = 1;
+		}else{
+			permissions = 0;
+		}
+		
+		var url = "wmlUser_updateWmlUserPermissions.action?permissions="+permissions+"&useId="+useId;
 		if(value==1){
-			var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/cancel.png";
-			return '<img src="'+imgPath+'"/>';
+			<%-- var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/no.png"; --%>
+			return "<a onclick=\"confirmWindow('"+url+"')\"><font size=\"4\" color=\"red\">--</font></span>";
 		}else{
 			var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/ok.png";
-			return '<img src="'+imgPath+'"/>'
+			return "<img onclick=\"confirmWindow('"+url+"')\" src=\""+imgPath+"\"/>";
 		}
+	}
+	
+	function confirmWindow(url){
+		if(window.confirm('你确定要修改免审批吗？')){
+			$.post(url,function(result){
+				if(result == "fail"){
+					alert("修改失败！");
+				}
+				else if(result == "optsuccess"){
+					alert("修改成功！");
+					mygrid.reload();
+				}
+			});
+	        return true;
+	     }else{
+	        return false;
+         }
 	}
 	
 	function addTab(title, url, data){
@@ -270,7 +301,7 @@
 		</div>
 		<br/>
 		<!-- grid的容器. -->
-		<div id="grid1_container" style="width: 1124px; height: 72%;"></div>		
+		<div id="grid1_container" style="width: 1124px; height: 490px;"></div>		
 	</div>
 </div>
 </body>

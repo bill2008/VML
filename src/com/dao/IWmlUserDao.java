@@ -12,5 +12,7 @@ public interface IWmlUserDao extends IObjectDAO {
 			int pageSize);
 	
 	public int getWmlUserCount(WmlUser item);
+	
+	public int updateWmlUserPermissions(WmlUser item);
 
 }

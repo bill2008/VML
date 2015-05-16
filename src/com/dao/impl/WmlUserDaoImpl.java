@@ -145,7 +145,27 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 		List<WmlUser> WmlUserList=c.list();
 		return WmlUserList;
 	}
-
+	
+	@Override
+	public int updateWmlUserPermissions(WmlUser item) {
+		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+		StringBuffer sql=new StringBuffer("update wml_user set ");
+		if(item!=null){
+			if(item.getPermissions()!=null){
+				sql.append(" Permissions = "+item.getPermissions()+"");
+			}
+			if(item.getId()!=null){
+				sql.append(" where id = "+item.getId()+"");
+			}
+		}
+		Query query=session.createSQLQuery(sql.toString());
+		
+		int result = query.executeUpdate();
+		return result;
+	}
+	
+	
+	
 	@Override
 	public int getWmlUserCount(WmlUser item) {
 		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();

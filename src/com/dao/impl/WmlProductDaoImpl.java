@@ -54,7 +54,7 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 				dc.add(Restrictions.eq("property", item.getProperty()));
 			}
 			if(StringUtils.isNotEmpty(item.getName()) ){
-				dc.add(Restrictions.eq("name", item.getName()));
+				dc.add(Restrictions.like("name", "%"+item.getName()+"%"));
 			}
 			if(StringUtils.isNotEmpty(item.getUploadType()) && !item.getUploadType().equals(" ")){
 				dc.add(Restrictions.eq("uploadType", item.getUploadType()));
@@ -123,7 +123,7 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 				dc.add(Restrictions.eq("property", item.getProperty()));
 			}
 			if(StringUtils.isNotEmpty(item.getName()) ){
-				dc.add(Restrictions.eq("name", item.getName()));
+				dc.add(Restrictions.like("name", "%"+item.getName()+"%"));
 			}
 			if(StringUtils.isNotEmpty(item.getUploadType()) && !item.getUploadType().equals(" ")){
 				dc.add(Restrictions.eq("uploadType", item.getUploadType()));
@@ -165,7 +165,7 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 				sql.append(" and createDate <= '"+item.getEndDate()+"'");
 			}
 			if(item.getId()!=null){
-				sql.append(" and id= "+item.getId()+"");
+				sql.append(" and id like \""+item.getId()+"%\"");
 			}
 			if(item.getPrice()!=null){
 				sql.append(" and price>= "+item.getPrice()+"");
@@ -191,7 +191,7 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 				
 			}
 			if(StringUtils.isNotEmpty(item.getName()) ){
-				sql.append(" and name= '"+item.getName()+"'");
+				sql.append(" and name like \"%"+item.getName()+"%\"");
 			}
 			if(StringUtils.isNotEmpty(item.getUploadType()) && !item.getUploadType().equals(" ")){
 				sql.append(" and uploadType= '"+item.getUploadType()+"'");

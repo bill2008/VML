@@ -40,7 +40,7 @@ function doSubmit(){
 			"wmladmin.loginName" : loginName,
 			"wmladmin.phone" : phone,
 			"wmladmin.updatePrice" : updatePrice
-	}
+	};
 	$.post("wmlAdmin_addWmlAdmin.action",data,function(result){
 		if(result == "fail"){
 			alert("添加失败！");
@@ -50,7 +50,7 @@ function doSubmit(){
 			window.opener.location.reload();
 			window.close();
 		}
-	})
+	});
 }
 </script>
 </head>

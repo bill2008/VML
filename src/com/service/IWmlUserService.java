@@ -15,6 +15,8 @@ public interface IWmlUserService {
 	
 	public String updateWmlUser(WmlUser item);
 	
+	public String updateWmlUserPermissions(WmlUser item);
+	
 	public int getWmlUserCount(WmlUser item);
 	
 	public List<WmlUser> queryWmlUserPage(WmlUser item,int startRowNum,int pageSize);

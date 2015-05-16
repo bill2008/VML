@@ -65,6 +65,19 @@ public class WmlUserServiceImpl implements IWmlUserService {
 		}
 		return message;
 	}
+	
+	@Transactional
+	public String updateWmlUserPermissions(WmlUser item) {
+		String message=null;
+		try{
+			wmlUserDao.updateWmlUserPermissions(item);
+			message=Constant.MSG_SUCCESS;
+		}catch(Exception e){
+			message =Constant.MSG_FAILURE;
+			e.printStackTrace();
+		}
+		return message;
+	}	
 
 	@Override
 	public int getWmlUserCount(WmlUser item) {
