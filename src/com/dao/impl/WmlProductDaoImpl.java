@@ -142,7 +142,7 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 			}	
 		}
 		dc.add(Restrictions.eq("isDel", Constant.DELETE));
-		c.setFirstResult(startRowNum);
+		c.setFirstResult(startRowNum-1);
 		c.setMaxResults(pageSize);
 		List<WmlProduct> WmlProductList= c.list();
 		return WmlProductList;

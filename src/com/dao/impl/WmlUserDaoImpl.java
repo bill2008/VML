@@ -140,7 +140,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 			}
 		}
 		dc.add(Restrictions.eq("isDel", Constant.DELETE));
-		c.setFirstResult(startRowNum);
+		c.setFirstResult(startRowNum-1);
 		c.setMaxResults(pageSize);
 		List<WmlUser> WmlUserList=c.list();
 		return WmlUserList;

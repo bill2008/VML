@@ -81,24 +81,24 @@ img:hover {background-color:yellow;}
 					  ]};
 
 		var colsConfig = [
-						{id : 'id',header : "编号",width : 50},
-						{id : 'organName',header : "所属商户",width : 60},
-						{id : 'loginName',header : "登录帐号",width : 100},
-						{id : 'name',header : "用户名",width : 100},
-						{id : 'phone',header : "手机",width : 90},
-						{id : 'signature',header : "个性签名",width : 120},
-						{id : 'status',header : "状态",width : 40, align : 'center' , renderer : GT.Grid.mappingRenderer(statusOpt, '')},
-						{id : 'channel',header : "登录类型",width : 60, align : 'center' , renderer : GT.Grid.mappingRenderer(channelOpt, '')},
-						{id : 'type',header : "用户类型",width : 70, align : 'center' , renderer : GT.Grid.mappingRenderer(typeOpt, '')},
-						{id : 'permissions',header : "免审批",width : 50, align : 'center' , renderer : PermissionsstyleClass},//rederer主要是用来渲染   渲染方法名叫PermissionsstyleClass
-						{id : 'lastDate',header : "最近登录时间",width :100},
-						{id : 'createDate',header : "创建时间",width :100},
-						{id : 'uidName',header : "推荐人",width : 100},
-						{id : 'detail' , header : "详细信息" , width : 70,
-							renderer : function(value ,record,columnObj,grid,colNo,rowNo){
-			 					return "<u onclick=showSellDetail("+record['id']+")>点击查看</u>";
-							}}
-						];
+					{id : 'id',header : "编号",width : 50},
+					{id : 'organName',header : "所属商户",width : 60},
+					{id : 'loginName',header : "登录帐号",width : 100},
+					{id : 'name',header : "用户名",width : 100},
+					{id : 'phone',header : "手机",width : 90},
+					{id : 'signature',header : "个性签名",width : 120},
+					{id : 'status',header : "状态",width : 40, align : 'center' , renderer : GT.Grid.mappingRenderer(statusOpt, '')},
+					{id : 'channel',header : "登录类型",width : 60, align : 'center' , renderer : GT.Grid.mappingRenderer(channelOpt, '')},
+					{id : 'type',header : "用户类型",width : 70, align : 'center' , renderer : GT.Grid.mappingRenderer(typeOpt, '')},
+					{id : 'permissions',header : "免审批",width : 50, align : 'center' , renderer : PermissionsstyleClass},//rederer主要是用来渲染   渲染方法名叫PermissionsstyleClass
+					{id : 'lastDate',header : "最近登录时间",width :100},
+					{id : 'createDate',header : "创建时间",width :100},
+					{id : 'uidName',header : "推荐人",width : 100},
+					{id : 'detail' , header : "详细信息" , width : 70,
+						renderer : function(value ,record,columnObj,grid,colNo,rowNo){
+		 					return "<u onclick=showSellDetail("+record['id']+")>点击查看</u>";
+						}}
+					];
 		
 
 		var gridConfig = {
