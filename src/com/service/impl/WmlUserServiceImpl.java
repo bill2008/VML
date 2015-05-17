@@ -51,8 +51,8 @@ public class WmlUserServiceImpl implements IWmlUserService {
 			e.printStackTrace();
 		}
 		return message;
-	}
-
+	}	
+	
 	@Transactional
 	public String updateWmlUser(WmlUser item) {
 		String message=null;

@@ -84,65 +84,63 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 	public List<WmlUser> queryWmlUserPage(WmlUser item, int startRowNum,
 			int pageSize) {
 		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
-		DetachedCriteria dc=DetachedCriteria.forClass(WmlUser.class);
-		Criteria c = dc.getExecutableCriteria(session);
+		StringBuffer sql=new StringBuffer("select * FROM wml_user WHERE isDel=1 ");
 		if(item!=null){
 			if(item.getCreateDate()!=null){
-
-				dc.add(Restrictions.ge("createDate", item.getCreateDate()));
+				sql.append(" and createDate>= '"+item.getCreateDate()+"'");
 			}
 			if(item.getEndDate()!=null){
-				
-				dc.add(Restrictions.le("createDate",item.getEndDate()));
+				sql.append(" and createDate <= '"+item.getEndDate()+"'");
 			}
 			if(item.getLastDate()!=null){
-				dc.add(Restrictions.ge("lastDate", item.getLastDate()));
+				sql.append(" and lastDate>= '"+item.getCreateDate()+"'");
+				
 			}
 			if(item.getLastTime()!=null){
-				dc.add(Restrictions.le("lastTime", item.getLastTime()));
+				sql.append(" and lastDate <= '"+item.getEndDate()+"'");
 			}
 			if(item.getId()!=null){
-				dc.add(Restrictions.eq("id", item.getId()));
+				sql.append(" and id like '"+item.getId()+"%'");
 			}
 			if(item.getUid()!=null){
-				dc.add(Restrictions.eq("uid", item.getUid()));
+				sql.append(" and uid= "+item.getUid()+"");
 			}
 			if(item.getStatus()!=null){
-				dc.add(Restrictions.eq("status", item.getStatus()));
+				sql.append(" and status= "+item.getStatus()+"");
 			}
-			
 			if(StringUtils.isNotEmpty(item.getLoginName())){
-				dc.add(Restrictions.like("loginName","%"+item.getLoginName()+"%"));
+				
+				sql.append(" and loginName like '%"+item.getLoginName()+"%'");
 			}
 			if(StringUtils.isNotEmpty(item.getName())){
-				dc.add(Restrictions.like("name", "%"+item.getName()+"%"));
+				sql.append(" and name= '"+item.getName()+"'");
 			}
 			if(StringUtils.isNotEmpty(item.getPassword())){
-				dc.add(Restrictions.eq("password", item.getPassword()));
+				sql.append(" and password= '"+item.getUid()+"'");
 			}
 			if(StringUtils.isNotEmpty(item.getPhone())){
-				dc.add(Restrictions.like("phone","%"+ item.getPhone()+"%"));
+				sql.append(" and phone like '%"+item.getUid()+"%'");
 			}
 			if(StringUtils.isNotEmpty(item.getType())){
-				dc.add(Restrictions.eq("type", item.getType()));
+				sql.append(" and type= '"+item.getType()+"'");
 			}
 			if(item.getOrgan()!=null){
-				dc.add(Restrictions.eq("organ", item.getOrgan()));
+				sql.append(" and Organ= "+item.getOrgan()+"");
 			}
 			if(item.getPermissions()!=null){
-				dc.add(Restrictions.eq("permissions", item.getPermissions()));
+				sql.append(" and Permissions= "+item.getPermissions()+"");
 			}
 			if(item.getChannel()!=null){
-				dc.add(Restrictions.eq("channel", item.getChannel()));
+				sql.append(" and Channel= "+item.getChannel()+"");
 			}
 			if(StringUtils.isNotEmpty(item.getUploadFlag())){
-				dc.add(Restrictions.eq("uploadFlag", item.getUploadFlag()));
+				sql.append(" and uploadFlag= '"+ item.getUploadFlag()+"'");
 			}
 		}
-		dc.add(Restrictions.eq("isDel", Constant.DELETE));
-		c.setFirstResult(startRowNum-1);
-		c.setMaxResults(pageSize);
-		List<WmlUser> WmlUserList=c.list();
+		Query query=session.createSQLQuery(sql.toString());
+		query.setFirstResult(startRowNum-1);
+		query.setMaxResults(pageSize);
+		List<WmlUser> WmlUserList=query.list();
 		return WmlUserList;
 	}
 	
@@ -185,7 +183,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 				sql.append(" and lastDate <= '"+item.getEndDate()+"'");
 			}
 			if(item.getId()!=null){
-				sql.append(" and id= "+item.getId()+"");
+				sql.append(" and id= like '"+item.getId()+"%'");
 			}
 			if(item.getUid()!=null){
 				sql.append(" and uid= "+item.getUid()+"");

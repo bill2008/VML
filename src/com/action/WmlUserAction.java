@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.grid.tool.GridServerHandler;
+import com.pojo.WmlProduct;
 import com.pojo.WmlUser;
 import com.service.IWmlUserService;
 import com.tool.Constant;
@@ -216,7 +217,6 @@ public class WmlUserAction extends BaseAction {
 			gridServerHandler.setData(itemList,WmlUser.class);
 		}
 		
-		//wmlProduct=null;
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().print(gridServerHandler.getLoadResponseText());
 		
@@ -323,6 +323,26 @@ public class WmlUserAction extends BaseAction {
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().print(message);
 	}
+	
+	public void deleteWmlUser()throws Exception{
+		WmlUser item= new WmlUser();
+		item.setId(useId);
+		item=wmlUserService.queryWmlUser(item);
+		if(item!=null){
+			item.setIsDel(0);
+			if(wmlUserService.updateWmlUser(item)==Constant.MSG_SUCCESS){
+				message= "optsuccess";
+			}else{
+				message= "fail";
+			}	
+		}else{
+			message="uidNull";
+		}
+		wmlUser=null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);
+	}	
+	
 	
 	public String queryUserDetail() throws Exception{
 		wmlUserDetail=wmlUserService.queryWmlUser(wmlUser);		

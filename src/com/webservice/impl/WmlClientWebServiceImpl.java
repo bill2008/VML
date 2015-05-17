@@ -419,15 +419,12 @@ public class WmlClientWebServiceImpl implements IWmlClientWebService{
 	 * @param 文件IO流
 	 * @return
 	 */
-	public String uploadProduct(Integer id,String productname,String createDate,String endDate,String description,String property,Double price,Integer uid,Integer bid,
-			Integer oid,String uploadType,Integer forword,Integer download,Integer viewcount,Integer collect,Integer status,Integer isdel, String fileName,
-			File uploadfile) {
+	public String uploadProduct(String productname,String description,String property,Double price,Integer uid,Integer bid,
+			Integer oid,String uploadType, String fileName, File uploadfile) {
+			
 		
 		WmlProduct item=new WmlProduct();
-		item.setId(id);
 		item.setName(productname);
-		item.setCreateDate(createDate);
-		item.setEndDate(endDate);
 		item.setDescription(description);
 		item.setProperty(property);
 		item.setPrice(price);
@@ -435,20 +432,16 @@ public class WmlClientWebServiceImpl implements IWmlClientWebService{
 		item.setBid(bid);
 		item.setOid(oid);
 		item.setUploadType(uploadType);
-		item.setStatus(status);
-		item.setForwar(forword);
-		item.setDownload(download);
-		item.setViewCount(viewcount);
-		item.setCollect(collect);
+		/*item.setStatus(status);*/
 		
 		
 		String outMessage=null;
 		WmlProduct pro= new WmlProduct();
 		WmlProductImage productImage= new WmlProductImage();
 		
-		if(status==0){
+/*		if(status==0){
 			item.setOnTime(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
-		}
+		}*/
 		item.setIsDel(Constant.DELETE);
 		item.setCreateDate(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
 		if(wmlProductService.addWmlProduct(item).equals("success")){

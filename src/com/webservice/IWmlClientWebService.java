@@ -91,8 +91,8 @@ public interface IWmlClientWebService {
 	 * @param 文件IO流
 	 * @return
 	 */
-	public String uploadProduct(Integer id,String productname,String createDate,String endDate,String description,String property,Double price,Integer uid,Integer bid,
-			Integer oid,String uploadType,Integer forword,Integer download,Integer viewcount,Integer collect,Integer status,Integer isdel,String fileName,File uploadfile);
+	public String uploadProduct(String productname,String description,String property,Double price,Integer uid,Integer bid,
+			Integer oid,String uploadType, String fileName, File uploadfile);
 	
 	/**
 	 * 广告接口
