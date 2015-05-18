@@ -204,18 +204,9 @@ public class WmlUserAction extends BaseAction {
 		if (totalRowNum<1){
 			totalRowNum=wmlUserService.getWmlUserCount(wmlUser);
 			gridServerHandler.setTotalRowNum(totalRowNum);
-			if(totalRowNum==1){
-				itemList=wmlUserService.queryWmlUserList(wmlUser);
-				gridServerHandler.setData(itemList,WmlUser.class);
-			}else{
-				itemList=wmlUserService.queryWmlUserPage(wmlUser, gridServerHandler.getStartRowNum(),gridServerHandler.getPageSize());
-				gridServerHandler.setData(itemList,WmlUser.class);
-			}
-			
-		}else{
-			itemList=wmlUserService.queryWmlUserPage(wmlUser, gridServerHandler.getStartRowNum(),gridServerHandler.getPageSize());
-			gridServerHandler.setData(itemList,WmlUser.class);
 		}
+		itemList=wmlUserService.queryWmlUserPage(wmlUser, gridServerHandler.getStartRowNum(),gridServerHandler.getPageSize());
+		gridServerHandler.setData(itemList,WmlUser.class);		
 		
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().print(gridServerHandler.getLoadResponseText());

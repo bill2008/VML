@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 
 import com.dao.IWmlUserDao;
 import com.pojo.WmlUser;
@@ -38,7 +39,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 				dc.add(Restrictions.le("lastTime", item.getLastTime()));
 			}
 			if(item.getId()!=null){
-				dc.add(Restrictions.eq("id", item.getId()));
+				dc.add(Restrictions.ge("id", item.getId()));
 			}
 			if(item.getUid()!=null){
 				dc.add(Restrictions.eq("uid", item.getUid()));
@@ -80,11 +81,80 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 		return WmlUserList;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<WmlUser> queryWmlUserPage(WmlUser item, int startRowNum,
 			int pageSize) {
 		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
-		StringBuffer sql=new StringBuffer("select * FROM wml_user WHERE isDel=1 ");
+		DetachedCriteria dc=DetachedCriteria.forClass(WmlUser.class);
+		Criteria c = dc.getExecutableCriteria(session);
+		if(item!=null){
+			if(item.getCreateDate()!=null){
+
+				dc.add(Restrictions.ge("createDate", item.getCreateDate()));
+			}
+			if(item.getEndDate()!=null){
+				
+				dc.add(Restrictions.le("createDate",item.getEndDate()));
+			}
+			if(item.getLastDate()!=null){
+				dc.add(Restrictions.ge("lastDate", item.getLastDate()));
+			}
+			if(item.getLastTime()!=null){
+				dc.add(Restrictions.le("lastTime", item.getLastTime()));
+			}
+			if(item.getId()!=null){
+				dc.add(Restrictions.ge("id", item.getId()));
+			}
+			if(item.getUid()!=null){
+				dc.add(Restrictions.eq("uid", item.getUid()));
+			}
+			if(item.getStatus()!=null){
+				dc.add(Restrictions.eq("status", item.getStatus()));
+			}
+			
+			if(StringUtils.isNotEmpty(item.getLoginName())){
+				dc.add(Restrictions.like("loginName","%"+item.getLoginName()+"%"));
+			}
+			if(StringUtils.isNotEmpty(item.getName())){
+				dc.add(Restrictions.like("name", "%"+item.getName()+"%"));
+			}
+			if(StringUtils.isNotEmpty(item.getPassword())){
+				dc.add(Restrictions.eq("password", item.getPassword()));
+			}
+			if(StringUtils.isNotEmpty(item.getPhone())){
+				dc.add(Restrictions.like("phone","%"+ item.getPhone()+"%"));
+			}
+			if(StringUtils.isNotEmpty(item.getType())){
+				dc.add(Restrictions.eq("type", item.getType()));
+			}
+			if(item.getOrgan()!=null){
+				dc.add(Restrictions.eq("organ", item.getOrgan()));
+			}
+			if(item.getPermissions()!=null){
+				dc.add(Restrictions.eq("permissions", item.getPermissions()));
+			}
+			if(item.getChannel()!=null){
+				dc.add(Restrictions.eq("channel", item.getChannel()));
+			}
+			if(StringUtils.isNotEmpty(item.getUploadFlag())){
+				dc.add(Restrictions.eq("uploadFlag", item.getUploadFlag()));
+			}
+		}
+		dc.add(Restrictions.eq("isDel", Constant.DELETE));
+		c.setFirstResult(startRowNum-1);
+		c.setMaxResults(pageSize);
+		List<WmlUser> WmlUserList=c.list();
+		return WmlUserList;		
+/*		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+		
+		StringBuffer sql=new StringBuffer("select ");
+		sql.append(" id , createDate , uid , lastDate , signature , loginName , name , password , phone , head , type , Organ , Permissions , status , Channel , uploadFlag , isDel ,");
+		sql.append(" (select e.name from wml_user e where e.id=uid and e.isDel=1) ,");
+		sql.append(" (select e.name from wml_organ  e where e.id=organ and e.isDel=1) ");
+		sql.append(" from wml_test.wml_user ");
+		sql.append("where isDel=1 ");
+		
 		if(item!=null){
 			if(item.getCreateDate()!=null){
 				sql.append(" and createDate>= '"+item.getCreateDate()+"'");
@@ -137,11 +207,13 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 				sql.append(" and uploadFlag= '"+ item.getUploadFlag()+"'");
 			}
 		}
-		Query query=session.createSQLQuery(sql.toString());
+		
+		Query query=session.createSQLQuery(sql.toString()).setResultTransformer(Transformers.aliasToBean(WmlUser.class));
 		query.setFirstResult(startRowNum-1);
 		query.setMaxResults(pageSize);
-		List<WmlUser> WmlUserList=query.list();
-		return WmlUserList;
+		
+		List<WmlUser> wmlUserList=query.list();
+		return wmlUserList;*/
 	}
 	
 	@Override
@@ -183,7 +255,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 				sql.append(" and lastDate <= '"+item.getEndDate()+"'");
 			}
 			if(item.getId()!=null){
-				sql.append(" and id= like '"+item.getId()+"%'");
+				sql.append(" and id >= '"+item.getId()+"%'");
 			}
 			if(item.getUid()!=null){
 				sql.append(" and uid= "+item.getUid()+"");
