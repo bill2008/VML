@@ -85,7 +85,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 	@Override
 	public List<WmlUser> queryWmlUserPage(WmlUser item, int startRowNum,
 			int pageSize) {
-		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+		/*Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
 		DetachedCriteria dc=DetachedCriteria.forClass(WmlUser.class);
 		Criteria c = dc.getExecutableCriteria(session);
 		if(item!=null){
@@ -145,14 +145,11 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 		c.setFirstResult(startRowNum-1);
 		c.setMaxResults(pageSize);
 		List<WmlUser> WmlUserList=c.list();
-		return WmlUserList;		
-/*		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
-		
-		StringBuffer sql=new StringBuffer("select ");
-		sql.append(" id , createDate , uid , lastDate , signature , loginName , name , password , phone , head , type , Organ , Permissions , status , Channel , uploadFlag , isDel ,");
-		sql.append(" (select e.name from wml_user e where e.id=uid and e.isDel=1) ,");
-		sql.append(" (select e.name from wml_organ  e where e.id=organ and e.isDel=1) ");
-		sql.append(" from wml_test.wml_user ");
+		return WmlUserList;		*/
+	Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+		//hql语句 WmlUser 是pojo类的类名
+		StringBuffer sql=new StringBuffer();
+		sql.append(" from WmlUser ");
 		sql.append("where isDel=1 ");
 		
 		if(item!=null){
@@ -208,12 +205,12 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 			}
 		}
 		
-		Query query=session.createSQLQuery(sql.toString()).setResultTransformer(Transformers.aliasToBean(WmlUser.class));
+		Query query=session.createQuery(sql.toString());
 		query.setFirstResult(startRowNum-1);
 		query.setMaxResults(pageSize);
 		
 		List<WmlUser> wmlUserList=query.list();
-		return wmlUserList;*/
+		return wmlUserList;
 	}
 	
 	@Override
@@ -237,9 +234,12 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 	
 	
 	@Override
+	// 这里使用的是hql语句
 	public int getWmlUserCount(WmlUser item) {
-		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
-		StringBuffer sql=new StringBuffer("select COUNT(*) FROM wml_user WHERE isDel=1 ");
+	Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+		StringBuffer sql=new StringBuffer("select count(*) ");		
+		sql.append(" from WmlUser ");
+		sql.append("where isDel=1 ");
 		if(item!=null){
 			if(item.getCreateDate()!=null){
 				sql.append(" and createDate>= '"+item.getCreateDate()+"'");
@@ -255,7 +255,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 				sql.append(" and lastDate <= '"+item.getEndDate()+"'");
 			}
 			if(item.getId()!=null){
-				sql.append(" and id >= '"+item.getId()+"%'");
+				sql.append(" and id like '"+item.getId()+"%'");
 			}
 			if(item.getUid()!=null){
 				sql.append(" and uid= "+item.getUid()+"");
@@ -292,7 +292,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 				sql.append(" and uploadFlag= '"+ item.getUploadFlag()+"'");
 			}
 		}
-		Query query=session.createSQLQuery(sql.toString());
+		Query query=session.createQuery(sql.toString());
 		
 		 String str = query.uniqueResult().toString();
 		 return Integer.valueOf(str);
