@@ -75,7 +75,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 			if(StringUtils.isNotEmpty(item.getUploadFlag())){
 				dc.add(Restrictions.eq("uploadFlag", item.getUploadFlag()));
 			}
-		}
+		} 
 		dc.add(Restrictions.eq("isDel", Constant.DELETE));
 		List<WmlUser> WmlUserList=c.list();
 		return WmlUserList;
