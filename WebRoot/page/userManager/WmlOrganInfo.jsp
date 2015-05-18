@@ -21,7 +21,10 @@
 .gt-row-selected td {
 	background-color: #004da8;
 	color: #ffffff;
-}
+}	
+a:hover {background-color:yellow;} 
+img:hover {background-color:yellow;}
+
 </style>
 <script type="text/javascript">
 
@@ -74,8 +77,8 @@
 			{headAlign : 'center',header : "主卖商品类型",align:'center',id : 'typeId', width : 100,renderer : GT.Grid.mappingRenderer(ProductTypeopt, '')},
 			{id : 'phone',header : "联系电话",width : 150},
 			{id : 'address',header : "商户地址",width : 200},
-			{headAlign : 'center',header : "免审批",align:'center',id : 'permissions', width : 100,renderer : GT.Grid.mappingRenderer(permiOpt, '')},
-			{headAlign : 'center',header : "是否删除",align:'center',id : 'isDel', width : 100,	renderer : GT.Grid.mappingRenderer(permiOpt, '')}
+			{headAlign : 'center',header : "免审批",align:'center',id : 'permissions', width : 100, renderer : PermissionsstyleClass},
+			{headAlign : 'center',header : "是否删除",align:'center',id : 'isDel', width : 100,	renderer : Delete}
 			];
 
 		var gridConfig = {
@@ -116,7 +119,54 @@
 		var code=$("#organCode").val();
 		mygrid.query({'wmlOrgan.name':name,'wmlOrgan.phone':phone,'wmlOrgan.code':code});
 	}
+	
+	function  PermissionsstyleClass (value ,record,columnObj,grid,colNo,rowNo){
+		var permissions;
+		var organId=record['id'];
+		
+		if (record['permissions']==0){
+			permissions = 1;
+		}else{
+			permissions = 0;
+		}
+		
+		var url = "";
+		/* var url = "wmlUser_updateWmlUserPermissions.action?permissions="+permissions+"&organId="+organId; */
+		if( value == 1 || value == null){
+			var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/ok.png";
+			return "<img onclick=\"confirmWindow('"+url+"','你确定要修改免审批吗？')\" src=\""+imgPath+"\"/>";
+		}else if (value==0){
+			return "<a onclick=\"confirmWindow('"+url+"','你确定要修改免审批吗？')\"><font size=\"4\" color=\"red\">--</font></span>";
+		};
+	}
 
+	function confirmWindow(url,title){
+		if(window.confirm(title)){
+			$.post(url,function(result){
+				if(result == "fail"){
+					alert("操作失败！");
+				}
+				else if(result == "optsuccess"){
+					alert("操作成功！");
+					mygrid.reload();
+				}
+			});
+	        return true;
+	     }else{
+	        return false;
+         };
+	}	
+	
+	function  Delete (value ,record,columnObj,grid,colNo,rowNo){
+		var url ="";
+/* 		var url = "wmlUser_deleteOrgan.action?organId="+record['id'];  */
+
+		var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/cancel.png";
+		return "<img onclick=\"confirmWindow('"+url+"','你确定要删除商户吗？')\" src=\""+imgPath+"\"/>";
+		
+	}	
+	
+	
 	function add() {
 		var url = "<%=basePath%>page/userManager/WmlOrganAdd.jsp";
 		addTab("添加商户信息", url, null);

@@ -9,7 +9,6 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.transform.Transformers;
 
 import com.dao.IWmlUserDao;
 import com.pojo.WmlUser;
@@ -85,68 +84,7 @@ public class WmlUserDaoImpl extends BaseDAO implements IWmlUserDao {
 	@Override
 	public List<WmlUser> queryWmlUserPage(WmlUser item, int startRowNum,
 			int pageSize) {
-		/*Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
-		DetachedCriteria dc=DetachedCriteria.forClass(WmlUser.class);
-		Criteria c = dc.getExecutableCriteria(session);
-		if(item!=null){
-			if(item.getCreateDate()!=null){
-
-				dc.add(Restrictions.ge("createDate", item.getCreateDate()));
-			}
-			if(item.getEndDate()!=null){
-				
-				dc.add(Restrictions.le("createDate",item.getEndDate()));
-			}
-			if(item.getLastDate()!=null){
-				dc.add(Restrictions.ge("lastDate", item.getLastDate()));
-			}
-			if(item.getLastTime()!=null){
-				dc.add(Restrictions.le("lastTime", item.getLastTime()));
-			}
-			if(item.getId()!=null){
-				dc.add(Restrictions.ge("id", item.getId()));
-			}
-			if(item.getUid()!=null){
-				dc.add(Restrictions.eq("uid", item.getUid()));
-			}
-			if(item.getStatus()!=null){
-				dc.add(Restrictions.eq("status", item.getStatus()));
-			}
-			
-			if(StringUtils.isNotEmpty(item.getLoginName())){
-				dc.add(Restrictions.like("loginName","%"+item.getLoginName()+"%"));
-			}
-			if(StringUtils.isNotEmpty(item.getName())){
-				dc.add(Restrictions.like("name", "%"+item.getName()+"%"));
-			}
-			if(StringUtils.isNotEmpty(item.getPassword())){
-				dc.add(Restrictions.eq("password", item.getPassword()));
-			}
-			if(StringUtils.isNotEmpty(item.getPhone())){
-				dc.add(Restrictions.like("phone","%"+ item.getPhone()+"%"));
-			}
-			if(StringUtils.isNotEmpty(item.getType())){
-				dc.add(Restrictions.eq("type", item.getType()));
-			}
-			if(item.getOrgan()!=null){
-				dc.add(Restrictions.eq("organ", item.getOrgan()));
-			}
-			if(item.getPermissions()!=null){
-				dc.add(Restrictions.eq("permissions", item.getPermissions()));
-			}
-			if(item.getChannel()!=null){
-				dc.add(Restrictions.eq("channel", item.getChannel()));
-			}
-			if(StringUtils.isNotEmpty(item.getUploadFlag())){
-				dc.add(Restrictions.eq("uploadFlag", item.getUploadFlag()));
-			}
-		}
-		dc.add(Restrictions.eq("isDel", Constant.DELETE));
-		c.setFirstResult(startRowNum-1);
-		c.setMaxResults(pageSize);
-		List<WmlUser> WmlUserList=c.list();
-		return WmlUserList;		*/
-	Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
 		//hql语句 WmlUser 是pojo类的类名
 		StringBuffer sql=new StringBuffer();
 		sql.append(" from WmlUser ");
