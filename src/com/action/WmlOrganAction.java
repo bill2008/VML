@@ -67,7 +67,7 @@ public class WmlOrganAction extends BaseAction {
 		if(item!=null){
 			item.setOrgan(wmlOrgan.getId());
 			item.setOrganName(wmlOrgan.getName());
-			if(wmlOrganService.updateWmlOrgan(wmlOrgan)){
+			if(wmlOrganService.updateWmlOrgan(wmlOrgan)==Constant.MSG_SUCCESS){
 				if(wmlUserService.updateWmlUser(item)==Constant.MSG_SUCCESS){
 					message= "optsuccess";
 				}else{
@@ -119,7 +119,24 @@ public class WmlOrganAction extends BaseAction {
 		response.getWriter().print(message);
 	}	
 	
-	
+	public void deleteWmlOrgan()throws Exception{
+		WmlOrgan organItem= new WmlOrgan();
+		organItem.setId(organId);
+		organItem=wmlOrganService.queryWmlOrgan(organItem);
+		if(organItem!=null){
+			organItem.setIsDel(0);
+			if(wmlOrganService.updateWmlOrgan(organItem)==Constant.MSG_SUCCESS){
+				message= "optsuccess";
+			}else{
+				message= "fail";
+			}	
+		}else{
+			message="uidNull";
+		}
+		organItem=null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);
+	}	
 	
 	public void addWmlOrgan() throws Exception{
 		WmlUser item=new WmlUser();
