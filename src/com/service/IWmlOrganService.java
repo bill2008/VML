@@ -10,7 +10,7 @@ public interface IWmlOrganService {
 	
 	public WmlOrgan queryWmlOrgan(WmlOrgan item);
 	
-	public boolean updateWmlOrgan(WmlOrgan item);
+	public String updateWmlOrgan(WmlOrgan item);
 	
 	public String updateWmlOrganPermissions(WmlOrgan item);
 	

@@ -36,14 +36,16 @@ public class WmlOrganServiceImpl implements IWmlOrganService {
 	}
 
 	@Transactional
-	public boolean updateWmlOrgan(WmlOrgan item) {
+	public String updateWmlOrgan(WmlOrgan item) {
+		String message=null;
 		try{
 			wmlOrganDao.update(item);
-			return true;
+			message=Constant.MSG_SUCCESS;
 		}catch(Exception e){
+			message =Constant.MSG_FAILURE;
 			e.printStackTrace();
-			return false;
 		}
+		return message;
 	}
 
 	@Transactional

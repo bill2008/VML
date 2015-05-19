@@ -152,8 +152,7 @@ img:hover {background-color:yellow;}
 	}	
 	
 	function  Delete (value ,record,columnObj,grid,colNo,rowNo){
-		var url ="";
-/* 		var url = "wmlUser_deleteOrgan.action?organId="+record['id'];  */
+		var url = "wmlOrgan_deleteWmlOrgan.action?organId="+record['id']; 
 
 		var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/cancel.png";
 		return "<img onclick=\"confirmWindow('"+url+"','你确定要删除商户吗？')\" src=\""+imgPath+"\"/>";
