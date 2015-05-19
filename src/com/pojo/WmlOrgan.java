@@ -10,7 +10,7 @@ public class WmlOrgan {
 	private String typeId;
 	private String typeName;
 	private String code;
-	private String permissions;
+	private Integer permissions;
 	private Integer userId;
 	private Integer isDel;
 	
@@ -19,7 +19,7 @@ public class WmlOrgan {
 
 	public WmlOrgan(Integer id, String createDate, String endDate, String name,
 			String address, String phone, String typeId, String typeName,
-			String code, String permissions, Integer userId, Integer isDel) {
+			String code, Integer permissions, Integer userId, Integer isDel) {
 		
 		this.id = id;
 		this.createDate = createDate;
@@ -110,11 +110,11 @@ public class WmlOrgan {
 		this.code = code;
 	}
 
-	public String getPermissions() {
+	public Integer getPermissions() {
 		return permissions;
 	}
 
-	public void setPermissions(String permissions) {
+	public void setPermissions(Integer permissions) {
 		this.permissions = permissions;
 	}
 

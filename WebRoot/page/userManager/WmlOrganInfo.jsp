@@ -36,11 +36,13 @@ img:hover {background-color:yellow;}
 	permiOpt["0"] = "是";
 	permiOpt["1"] = "否";
 	function init(){
-		  $.post("wmlUser_queryWmlUser.action", function(resultData) {
-			  	 $.each(resultData.data, function(i, value) {
-			  		userOpt[value.id] = value.name;
-					});				
-				});
+		
+	  $.post("wmlUser_queryWmlUser.action", function(resultData) {
+		  	 $.each(resultData.data, function(i, value) {
+		  		userOpt[value.id] = value.name;
+				});				
+			});
+	  
 	  $.post("wmlProductType_queryWmlProductType.action", function(resultData) {
 	  	 $.each(resultData.data, function(i, value) {
 	  		ProductTypeopt[value.id] = value.name;
@@ -121,21 +123,13 @@ img:hover {background-color:yellow;}
 	}
 	
 	function  PermissionsstyleClass (value ,record,columnObj,grid,colNo,rowNo){
-		var permissions;
 		var organId=record['id'];
-		
-		if (record['permissions']==0){
-			permissions = 1;
-		}else{
-			permissions = 0;
-		}
-		
-		var url = "";
-		/* var url = "wmlUser_updateWmlUserPermissions.action?permissions="+permissions+"&organId="+organId; */
-		if( value == 1 || value == null){
+		if( value == 1 ){
+			var url = "wmlOrgan_updateWmlOrganPermissions.action?permissions=1&organId="+organId;
 			var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/ok.png";
 			return "<img onclick=\"confirmWindow('"+url+"','你确定要修改免审批吗？')\" src=\""+imgPath+"\"/>";
-		}else if (value==0){
+		}else if (value==0 || value == null){
+			var url = "wmlOrgan_updateWmlOrganPermissions.action?permissions=0&organId="+organId;
 			return "<a onclick=\"confirmWindow('"+url+"','你确定要修改免审批吗？')\"><font size=\"4\" color=\"red\">--</font></span>";
 		};
 	}

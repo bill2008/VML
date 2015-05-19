@@ -47,6 +47,19 @@ public class WmlOrganServiceImpl implements IWmlOrganService {
 	}
 
 	@Transactional
+	public String updateWmlOrganPermissions(WmlOrgan item) {
+		String message=null;
+		try{
+			wmlOrganDao.updateWmlOrganPermissions(item);
+			message=Constant.MSG_SUCCESS;
+		}catch(Exception e){
+			message =Constant.MSG_FAILURE;
+			e.printStackTrace();
+		}
+		return message;
+	}
+	
+	@Transactional
 	public boolean addWmlOrgan(WmlOrgan item) {
 		try{
 				item.setIsDel(Constant.DELETE);

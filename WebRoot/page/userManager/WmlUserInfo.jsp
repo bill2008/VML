@@ -179,18 +179,19 @@ img:hover {background-color:yellow;}
 	function  PermissionsstyleClass (value ,record,columnObj,grid,colNo,rowNo){
 		var permissions;
 		var useId=record['id'];
-		if (record['permissions']==0){
+		
+		if (record['permissions']==0 || record['permissions']==null){
 			permissions = 1;
 		}else{
 			permissions = 0;
 		}
+		
 		var url = "wmlUser_updateWmlUserPermissions.action?permissions="+permissions+"&useId="+useId;
 		if(value==1){
-			<%-- var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/no.png"; --%>
-			return "<a onclick=\"confirmWindow('"+url+"','你确定要修改免审批吗？')\"><font size=\"4\" color=\"red\">--</font></span>";
-		}else{
 			var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/ok.png";
 			return "<img onclick=\"confirmWindow('"+url+"','你确定要修改免审批吗？')\" src=\""+imgPath+"\"/>";
+		}else if (value==0 || value == null){
+			return "<a onclick=\"confirmWindow('"+url+"','你确定要修改免审批吗？')\"><font size=\"4\" color=\"red\">--</font></span>";
 		};
 	}
 

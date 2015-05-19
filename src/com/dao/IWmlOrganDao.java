@@ -7,5 +7,7 @@ import com.pojo.WmlOrgan;
 public interface IWmlOrganDao extends IObjectDAO {
 	
 	public List<WmlOrgan> queryWmlOrganList(WmlOrgan item);
+	
+	public int updateWmlOrganPermissions(WmlOrgan item);
 
 }

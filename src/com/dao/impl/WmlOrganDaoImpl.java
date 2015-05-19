@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
@@ -14,7 +15,16 @@ import com.tool.Constant;
 
 public class WmlOrganDaoImpl extends BaseDAO implements IWmlOrganDao {
 
+	private WmlUserDaoImpl wmlUserDaoImpl;
 	
+	public WmlUserDaoImpl getWmlUserDaoImpl() {
+		return wmlUserDaoImpl;
+	}
+
+	public void setWmlUserDaoImpl(WmlUserDaoImpl wmlUserDaoImpl) {
+		this.wmlUserDaoImpl = wmlUserDaoImpl;
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<WmlOrgan> queryWmlOrganList(WmlOrgan item) {
 		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
@@ -47,5 +57,29 @@ public class WmlOrganDaoImpl extends BaseDAO implements IWmlOrganDao {
 		List<WmlOrgan> WmlOrganlist=c.list();
 		return WmlOrganlist;
 	}
+	
+	@Override
+	public int updateWmlOrganPermissions(WmlOrgan item) {
+		Integer permissions;
+		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
+		StringBuffer sql=new StringBuffer("update wml_organ set ");
+		if(item!=null){
+			if (item.getPermissions()==1){
+				permissions = 0;
+			}else{
+				permissions = 1;
+			}
+			sql.append(" permissions = "+permissions+"");
+		}
+		
+		if(item.getId()!=null){
+			sql.append(" where id = "+item.getId()+"");
+		}
+		
+		Query query=session.createSQLQuery(sql.toString());
+		
+		int result = query.executeUpdate();
+		return result;
+	}	
 
 }

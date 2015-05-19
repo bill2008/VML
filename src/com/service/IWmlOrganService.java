@@ -12,6 +12,8 @@ public interface IWmlOrganService {
 	
 	public boolean updateWmlOrgan(WmlOrgan item);
 	
+	public String updateWmlOrganPermissions(WmlOrgan item);
+	
 	public boolean addWmlOrgan(WmlOrgan item);
 
 }

@@ -7,7 +7,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
 import com.grid.tool.GridServerHandler;
-import com.pojo.WmlProduct;
 import com.pojo.WmlUser;
 import com.service.IWmlUserService;
 import com.tool.Constant;
