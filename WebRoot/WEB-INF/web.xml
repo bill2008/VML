@@ -19,7 +19,10 @@
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
-	
+	<!-- 监听session -->
+	<listener>
+	    <listener-class>com.tool.SessionListener</listener-class>
+	</listener>
 	<session-config>
   <session-timeout>5</session-timeout>
  </session-config>
@@ -38,7 +41,6 @@
 	<!-- 添加对struts2的支持 -->  
 	<filter>  
 		<filter-name>struts2</filter-name> 
-		
 		<filter-class>org.apache.struts2.dispatcher.ng.filter.StrutsPrepareAndExecuteFilter</filter-class>
 		 <init-param>
             <param-name>config</param-name>
@@ -61,6 +63,7 @@
 			<param-value>UTF-8</param-value>
 	    </init-param>
 	</filter>
+	
 	<filter-mapping>
 		<filter-name>urlFilter</filter-name>
 	    <url-pattern>/*</url-pattern>

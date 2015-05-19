@@ -6,6 +6,7 @@ import com.pojo.WmlAdmin;
 import com.service.IWmlAdminService;
 import com.tool.Constant;
 import com.tool.MD5Util;
+import com.tool.SessionHandler;
 
 public class WmlAdminAction extends BaseAction {
 
@@ -87,13 +88,13 @@ public class WmlAdminAction extends BaseAction {
 			wmlUser.setStatus(Constant.DELETE);
 			WmlAdmin item=wmlAdminService.queryWmlAdmin(wmlUser);
 			if(item!=null){
-				if(this.session.containsKey("admin")){
-					message="该用户已经登录";
-					return "loginfail";
-				}else{
+				if(SessionHandler.exitsUser(String.valueOf(item.getId()),this.request.getSession())){
 					this.session.put("admin", item);
 					item=null;
 					return "login";
+				}else{
+					message="该用户已经登录";
+					return "loginfail";
 				}
 			}else{
 				message="帐号密码错误";
@@ -105,7 +106,9 @@ public class WmlAdminAction extends BaseAction {
 	}
 	public String outLogin() {
 		try{
+		WmlAdmin admin=	(WmlAdmin) this.session.get("admin");
 		this.session.remove("admin");
+		SessionHandler.removeUserFromSessionMap(admin.getId().toString());
 		}catch(Exception e){
 			e.printStackTrace();
 		}
