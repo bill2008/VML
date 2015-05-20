@@ -6,6 +6,7 @@
     
 	<bean id="wmlAdminAction" class="com.action.WmlAdminAction" scope="prototype"  >
 		<property name="wmlAdminService" ref="wmlAdminService"></property>
+		<property name="wmlUserService" ref="wmlUserService"></property>
 	</bean>    
 	<bean id="wmlAdvertisementAction" class="com.action.WmlAdvertisementAction" scope="prototype"  >
 		<property name="wmlAdvertisementService" ref="wmlAdvertisementService"></property>

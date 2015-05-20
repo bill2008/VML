@@ -3,7 +3,9 @@ package com.action;
 import java.util.List;
 
 import com.pojo.WmlAdmin;
+import com.pojo.WmlUser;
 import com.service.IWmlAdminService;
+import com.service.IWmlUserService;
 import com.tool.Constant;
 import com.tool.MD5Util;
 import com.tool.SessionHandler;
@@ -11,11 +13,15 @@ import com.tool.SessionHandler;
 public class WmlAdminAction extends BaseAction {
 
 	private IWmlAdminService wmlAdminService;
+	private IWmlUserService wmlUserService;
 	private WmlAdmin wmladmin;
 	private List<WmlAdmin> data;
 	private String message;
+	private int id;
 	private String loginName;
 	private String userPwd;
+	private int status;
+	private int updatePrice;
 	public WmlAdmin getWmladmin() {
 		return wmladmin;
 	}
@@ -38,7 +44,25 @@ public class WmlAdminAction extends BaseAction {
 		this.wmlAdminService = wmlAdminService;
 	}
 	
-
+	
+	public void setWmlUserService(IWmlUserService wmlUserService) {
+		this.wmlUserService = wmlUserService;
+	}
+	
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	
+	public int getStatus() {
+		return status;
+	}
+	public void setStatus(int status) {
+		this.status = status;
+	}
 	public String getLoginName() {
 		return loginName;
 	}
@@ -51,6 +75,14 @@ public class WmlAdminAction extends BaseAction {
 	}
 	public void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
+	}
+	
+	
+	public int getUpdatePrice() {
+		return updatePrice;
+	}
+	public void setUpdatePrice(int updatePrice) {
+		this.updatePrice = updatePrice;
 	}
 	public String queryWmlAdmin() throws Exception {
 		data=wmlAdminService.queryWmlAdminList(wmladmin);
@@ -71,15 +103,73 @@ public class WmlAdminAction extends BaseAction {
 	}
 	
 	public void addWmlAdmin()throws Exception{
-		if(wmlAdminService.addWmlAdmin(wmladmin)){
-			message= "optsuccess";
+		//添加系统操作员的时候，首先要在User表里追加一条新记录，返回一个ID作为
+		//插入Admin表的ID值。（操作员的ID和User里的记录是相同ID号）
+		WmlUser userItem = new WmlUser();
+		userItem.setName(wmladmin.getName());
+		userItem.setLoginName(wmladmin.getLoginName());
+		userItem.setPassword(wmladmin.getPassword());
+		
+		int id = wmlUserService.addWmlUserRetID(userItem);
+		
+		if (id!=0) {
+			wmladmin.setId(id);
+			if(wmlAdminService.addWmlAdmin(wmladmin)){
+				message= "optsuccess";
+			}else{
+				message= "fail";
+			}	
 		}else{
 			message= "fail";
 		}	
+		
 		wmladmin=null;
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().print(message);
 	}
+	
+	public void updateWmlAdminStatus() throws Exception{
+		
+		WmlAdmin item = new WmlAdmin();
+		item.setId(id);
+		item = wmlAdminService.queryWmlAdmin(item);
+		item.setStatus(status);
+		try {
+			if(wmlAdminService.updateWmlAdmin(item)){
+				message= "optsuccess";
+			}else{
+				message= "fail";
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);		
+		
+	}
+	
+	public void updateWmlAdminUpdatePrice() throws Exception{
+		
+		WmlAdmin item = new WmlAdmin();
+		item.setId(id);
+		item = wmlAdminService.queryWmlAdmin(item);
+		item.setUpdatePrice(updatePrice);
+		try {
+			if(wmlAdminService.updateWmlAdmin(item)){
+				message= "optsuccess";
+			}else{
+				message= "fail";
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);		
+		
+	}	
+	
 	public String loginAdmin(){
 		if(loginName!=null && userPwd!=null){
 			WmlAdmin wmlUser=new WmlAdmin();

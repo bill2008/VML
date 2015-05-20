@@ -25,7 +25,6 @@
 
 a:hover {background-color:yellow;} 
 img:hover {background-color:yellow;}
-
 </style>
 <script type="text/javascript">
 

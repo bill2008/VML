@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>客户管理</title>
+<title>员工管理</title>
 <LINK REL="SHORTCUT ICON" HREF="<%=basePath%>images/logo.png">
 <link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5//themes/icon.css">
@@ -22,19 +22,15 @@
 	background-color: #004da8;
 	color: #ffffff;
 }
+
+a:hover {background-color:yellow;} 
+img:hover {background-color:yellow;}
+
 </style>
 <script type="text/javascript">
 
 	var mygrid = null;
 
-	var statusOpt={};
-	statusOpt["0"] = "停用";
-	statusOpt["1"] = "启用";
-	var jsonVal="";
-	
-	var updatePriceOpt={};
-	updatePriceOpt["0"] = "是";
-	updatePriceOpt["1"] = "否";
 	function initComplate() {
 		var grid_demo_id = "myGrid1";
 
@@ -52,8 +48,8 @@
 			{id : 'name',header : "员工姓名",width : 100},
 			{id : 'loginName',header : "登录帐号",width : 100},
 			{id : 'phone',header : "电话",width : 200},
-			{id : 'status',header : "状态",width : 120,renderer : GT.Grid.mappingRenderer(statusOpt, '')},
-			{id : 'updatePrice',header : "编辑价格",width : 120,renderer : GT.Grid.mappingRenderer(updatePriceOpt, '')}
+			{id : 'status',header : "状态",width : 50, headAlign:'center ', align : 'center ',renderer : statusClass },
+			{id : 'updatePrice',header : "编辑价格",width : 60, headAlign:'center ',align : 'center ',renderer : updatePriceClass }
 			];
 
 		var gridConfig = {
@@ -133,8 +129,48 @@
 			});	
 		}
 		
-	}		
+	}
+	
+	function  statusClass (value ,record,columnObj,grid,colNo,rowNo){
+		var url = "";
+		if(value==1){
+			url = "wmlAdmin_updateWmlAdminStatus.action?status=0&id="+record['id'];
+			return "<a onclick=\"confirmWindow('"+url+"','你确定要修改员工状态吗？')\" /><font color=\"black\">启用</font></span>";
+		}else if (value==0 || value == null){
+			url = "wmlAdmin_updateWmlAdminStatus.action?status=1&id="+record['id'];
+			return "<a onclick=\"confirmWindow('"+url+"','你确定要修改员工状态吗？')\"><font  color=\"red\">停用</font></span>";
+		};
+	}
 
+	function  updatePriceClass (value ,record,columnObj,grid,colNo,rowNo){
+
+		var url = "";
+		var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/ok.png";
+		if(value==1){
+			url = "wmlAdmin_updateWmlAdminUpdatePrice.action?updatePrice=0&id="+record['id'];
+			return "<img onclick=\"confirmWindow('"+url+"','你确定要修改编辑价格权限吗？')\" src=\""+imgPath+"\"/>";
+		}else if (value==0 || value == null){
+			url = "wmlAdmin_updateWmlAdminUpdatePrice.action?updatePrice=1&id="+record['id'];
+			return "<a onclick=\"confirmWindow('"+url+"','你确定要修改编辑价格权限吗？')\"><font size=\"4\" color=\"red\">--</font></span>";
+		};
+	}
+	
+	function confirmWindow(url,title){
+		if(window.confirm(title)){
+			$.post(url,function(result){
+				if(result == "fail"){
+					alert("操作失败！");
+				}
+				else if(result == "optsuccess"){
+					alert("操作成功！");
+					mygrid.reload();
+				}
+			});
+	        return true;
+	     }else{
+	        return false;
+         };
+	}		
 </script>
 </head>
 <body>
@@ -163,7 +199,7 @@
 		<br/>
 		
 		<!-- grid的容器. -->
-		<div id="grid1_container" style="width: 645px; height: 490"></div>			
+		<div id="grid1_container" style="width: 515px; height: 490px"></div>			
 		
 	</div>
 

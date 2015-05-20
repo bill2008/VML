@@ -35,7 +35,7 @@ public class WmlAdminDaoImpl extends BaseDAO implements IWmlAdminDao {
 				dc.add(Restrictions.like("phone","%"+ item.getPhone()+"%"));
 			}
 		}
-		dc.add(Restrictions.eq("status",Constant.DELETE));
+		/*dc.add(Restrictions.eq("isDel",Constant.DELETE));*/
 		Criteria c = dc.getExecutableCriteria(session);
 		WmlAdminlist=c.list();
 		}catch(Exception e){

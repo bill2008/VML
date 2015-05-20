@@ -6,26 +6,25 @@
 <hibernate-mapping>
     <class name="com.pojo.WmlAdmin" table="wml_admin" dynamic-insert="true"  catalog="wml_test">
         <id name="id" type="java.lang.Integer">
-            <column name="wml_id" length="11" not-null="true"/>
-            	<generator class="identity"></generator>
+            <column name="id" length="11" not-null="true"/>
         </id>
         <property name="loginName" type="java.lang.String">
-            <column name="wml_loginName" length="255" />
+            <column name="loginName" length="255" />
         </property>
         <property name="name" type="java.lang.String">
-            <column name="wml_name" length="255" />
+            <column name="name" length="255" />
         </property>
         <property name="password" type="java.lang.String">
-            <column name="wml_password" length="255" />
+            <column name="password" length="255" />
         </property>
         <property name="phone" type="java.lang.String">
-            <column name="wml_phone" length="255" />
+            <column name="phone" length="255" />
         </property>
         <property name="status" type="java.lang.Integer">
-            <column name="wml_status" length="1" />
+            <column name="status" length="1" />
         </property>
         <property name="updatePrice" type="java.lang.Integer">
-            <column name="wml_updatePrice" length="1" />
+            <column name="updatePrice" length="1" />
         </property>
     </class>
 </hibernate-mapping>

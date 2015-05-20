@@ -14,5 +14,7 @@ public interface IWmlUserDao extends IObjectDAO {
 	public int getWmlUserCount(WmlUser item);
 	
 	public int updateWmlUserPermissions(WmlUser item);
+	
+	public int addWmlUserRetID(WmlUser item);
 
 }

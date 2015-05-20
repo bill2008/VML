@@ -13,6 +13,8 @@ public interface IWmlUserService {
 	
 	public String addWmlUser(WmlUser item);
 	
+	public int addWmlUserRetID(WmlUser item);
+			
 	public String updateWmlUser(WmlUser item);
 	
 	public String updateWmlUserPermissions(WmlUser item);

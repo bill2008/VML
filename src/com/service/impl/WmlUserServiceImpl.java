@@ -53,6 +53,20 @@ public class WmlUserServiceImpl implements IWmlUserService {
 		return message;
 	}	
 	
+	public int addWmlUserRetID(WmlUser item){
+		int id=0;
+		try{
+			item.setIsDel(Constant.DELETE);
+			item.setCreateDate(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
+			item.setPassword(MD5Util.getMD5("123456"));
+			id = wmlUserDao.addWmlUserRetID(item);
+		}catch(Exception e){
+			e.printStackTrace();
+		}		
+		
+		return id;
+	}
+	
 	@Transactional
 	public String updateWmlUser(WmlUser item) {
 		String message=null;
