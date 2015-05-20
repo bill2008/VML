@@ -34,7 +34,7 @@ public class SessionHandler {
 		if(sessionMap.containsKey(userId)){
 			sessionMap.remove(userId);
 		}
-		System.out.println("移除"+userId+"成功");
+	
 	}
 	
 }

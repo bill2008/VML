@@ -8,17 +8,7 @@
 	<constant name="struts.multipart.maxSize" value="9000000" />
 	
 	<package name="action" extends="json-default">
-	   <!--  <interceptors>
-	        <interceptor name="checkLogin" class="com.interceptor.AdminInterceptor"></interceptor>
-	        
-	        <interceptor-stack name="myInterceptor" >  
-                    <interceptor-ref name="checkLogin" />  
-                    <interceptor-ref name="defaultStack"/>  
-                </interceptor-stack> 
-	    </interceptors>
-	    
-	    <default-interceptor-ref name="myInterceptor" /> -->
-	    
+	    	    
 	    <global-results>
 	        <result name="login" >/Login.jsp</result>
 			<result name="success" type="json"></result>
