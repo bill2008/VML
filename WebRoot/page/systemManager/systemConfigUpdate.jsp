@@ -13,6 +13,14 @@
 <title>修改系统配置信息</title>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>/js/gt-grid/gt_grid.css"/>
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
+<%
+	if(session.getAttribute("admin")==null){
+		%>
+		<script type="text/javascript">
+			alert("用户没有登录,请重新登录后再操作!");
+		window.parent.location.href="/VML";
+		</script>
+<%}%>
 <script type="text/javascript">
 function checkValue(item,widgetName){
 	if(item.value=="" ){

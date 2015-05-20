@@ -13,6 +13,14 @@
 <title>商品管理</title>
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
 <jsp:include page="../../common/gtGridHead.jsp" />
+<%
+	if(session.getAttribute("admin")==null){
+		%>
+		<script type="text/javascript">
+			alert("用户没有登录,请重新登录后再操作!");
+		window.parent.location.href="/VML";
+		</script>
+<%}%>
 <style type="text/css">
 .gt-row-selected td {
 	background-color: #004da8;

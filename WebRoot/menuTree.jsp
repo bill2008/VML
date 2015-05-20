@@ -18,7 +18,14 @@
 	<script type="text/javascript" src="<%=basePath%>js/jquery.ztree.core-3.1.js"></script>
 	<jsp:include page="common/gtGridHead.jsp" />
 	
-	
+	<%
+	if(session.getAttribute("admin")==null){
+		%>
+		<script type="text/javascript">
+			alert("用户没有登录,请重新登录后再操作!");
+		window.parent.location.href="/VML";
+		</script>
+<%}%>
 <script type="text/javascript">
 	var zTreeObj;
 	var setting = {

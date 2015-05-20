@@ -19,8 +19,12 @@ public class SessionListener implements HttpSessionListener{
 		System.out.println("-----------正在销毁session-------------");
 		HttpSession session = sessionEvent.getSession() ;
 		WmlAdmin admin=	(WmlAdmin) session.getAttribute("admin");
+		if(admin!=null){
 		SessionHandler.removeUserFromSessionMap(admin.getId().toString());
-		
+		System.out.println("移除成功");
+		}else{
+			System.out.println("没有session移除");
+		}
 	}
 
 }

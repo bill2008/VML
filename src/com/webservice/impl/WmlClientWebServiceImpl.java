@@ -421,18 +421,35 @@ public class WmlClientWebServiceImpl implements IWmlClientWebService{
 	 */
 	public String uploadProduct(String productname,String description,String property,Double price,Integer uid,Integer bid,
 			Integer oid,String uploadType, String fileName, File uploadfile) {
-			
 		
+		WmlUser userItem= new WmlUser();
+		userItem.setId(uid);
+		WmlUser user=wmlUserService.queryWmlUser(userItem);
 		WmlProduct item=new WmlProduct();
-		item.setName(productname);
-		item.setDescription(description);
-		item.setProperty(property);
-		item.setPrice(price);
-		item.setUid(uid);
-		item.setBid(bid);
-		item.setOid(oid);
-		item.setUploadType(uploadType);
-		/*item.setStatus(status);*/
+	
+		//判断用户权限，设置商品上架状态
+		if(user.getPermissions()==0){
+			item.setName(productname);
+			item.setDescription(description);
+			item.setProperty(property);
+			item.setPrice(price);
+			item.setUid(uid);
+			item.setBid(bid);
+			item.setOid(oid);
+			item.setUploadType(uploadType);
+			item.setStatus(0);
+		}else{
+			item.setName(productname);
+			item.setDescription(description);
+			item.setProperty(property);
+			item.setPrice(price);
+			item.setUid(uid);
+			item.setBid(bid);
+			item.setOid(oid);
+			item.setUploadType(uploadType);
+			item.setStatus(2);
+		}
+		
 		
 		
 		String outMessage=null;

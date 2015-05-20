@@ -12,6 +12,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>添加系统配置信息</title>
 <jsp:include page="../../common/gtGridHead.jsp" />
+<%
+	if(session.getAttribute("admin")==null){
+		%>
+		<script type="text/javascript">
+			alert("用户没有登录,请重新登录后再操作!");
+		window.parent.location.href="/VML";
+		</script>
+<%}%>
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
 function checkValue(item,widgetName){
