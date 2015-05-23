@@ -58,11 +58,11 @@
         	</formula>
 		</property>
 		
-        <property name="property" type="java.lang.String">
-            <column name="property" length="255" />
+        <property name="property" type="java.lang.Integer">
+            <column name="property" length="11" />
         </property>
-        <property name="uploadType" type="java.lang.String">
-            <column name="uploadType" length="255" />
+        <property name="uploadType" type="java.lang.Integer">
+            <column name="uploadType" length="11" />
         </property>
         <property name="description" type="java.lang.String">
             <column name="description" length="255" />
@@ -85,6 +85,9 @@
         <property name="viewCount" type="java.lang.Integer">
             <column name="viewCount" length="11" />
         </property>
+        <property name="lastModifyDate" type="java.lang.String">
+            <column name="lastModifyDate" length="20" />
+        </property>        
         <property name="status" type="java.lang.Integer">
             <column name="status" length="11" />
         </property>

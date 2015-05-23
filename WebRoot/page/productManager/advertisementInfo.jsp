@@ -22,7 +22,7 @@
 		%>
 		<script type="text/javascript">
 			alert("用户没有登录,请重新登录后再操作!");
-		window.parent.location.href="/VML";
+			window.parent.location.href="/VML";
 		</script>
 <%}%>
 <style type="text/css">

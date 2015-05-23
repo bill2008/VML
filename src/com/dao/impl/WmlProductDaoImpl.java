@@ -23,11 +23,11 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 		try{
 		Criteria c = dc.getExecutableCriteria(session);
 		if(item!=null){
-			if(StringUtils.isNotEmpty(item.getCreateDate()) && !item.getCreateDate().endsWith("")){
-				dc.add(Restrictions.ge("onTime", item.getCreateDate()));
+			if(StringUtils.isNotEmpty(item.getLastModifyStartDate()) && !item.getLastModifyStartDate().endsWith("")){
+				dc.add(Restrictions.ge("lastModifyTime", item.getLastModifyStartDate()));
 			}
-			if(StringUtils.isNotEmpty(item.getEndDate()) && !item.getEndDate().endsWith("")){
-				dc.add(Restrictions.le("onTime", item.getEndDate()));
+			if(StringUtils.isNotEmpty(item.getLastModifyEndDate()) && !item.getLastModifyEndDate().endsWith("")){
+				dc.add(Restrictions.le("lastModifyTime", item.getLastModifyEndDate()));
 			}
 			if(item.getId()!=null){
 				dc.add(Restrictions.eq("id", item.getId()));
@@ -50,13 +50,13 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 			if(item.getOid()!=null){
 				dc.add(Restrictions.eq("oid", item.getOid()));
 			}
-			if(StringUtils.isNotEmpty(item.getProperty()) && !item.getProperty().equals(" ")){
+			if(item.getProperty()!=null){
 				dc.add(Restrictions.eq("property", item.getProperty()));
 			}
 			if(StringUtils.isNotEmpty(item.getName()) ){
 				dc.add(Restrictions.like("name", "%"+item.getName()+"%"));
 			}
-			if(StringUtils.isNotEmpty(item.getUploadType()) && !item.getUploadType().equals(" ")){
+			if(item.getUploadType()!=null){
 				dc.add(Restrictions.eq("uploadType", item.getUploadType()));
 			}
 			if(item.getForwar()!=null){
@@ -88,64 +88,47 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 			int pageSize) {
 		
 		Session session=this.getHibernateTemplate().getSessionFactory().getCurrentSession();
-		DetachedCriteria dc=DetachedCriteria.forClass(WmlProduct.class);
+		//hql语句 WmlUser 是pojo类的类名
+		StringBuffer sql=new StringBuffer();
+		sql.append(" from WmlProduct ");
+		sql.append(" where isDel=1 ");
+		
 		try{
-		Criteria c = dc.getExecutableCriteria(session);
-		if(item!=null){
-			if(StringUtils.isNotEmpty(item.getCreateDate()) && !item.getCreateDate().endsWith("")){
-				dc.add(Restrictions.ge("createDate", item.getCreateDate()));
+			if(item!=null){
+				if(item.getId()!=null){
+					sql.append(" and id like '"+item.getId()+"%'");
+				}
+				if(StringUtils.isNotEmpty(item.getName())){
+					sql.append(" and name like '%"+item.getName()+"%'");
+				}
+				if(item.getLastModifyStartDate()!=null){
+					sql.append(" and lastModifyDate>= '"+item.getLastModifyStartDate()+"'");
+				}
+				if(item.getLastModifyEndDate()!=null){
+					sql.append(" and lastModifyDate <= '"+item.getLastModifyEndDate()+"'");
+				}
+				if(item.getTid()!=null ){
+					sql.append(" and tid= "+item.getTid()+"");
+				}
+				if(item.getBid()!=null){
+					sql.append(" and bid= "+item.getBid()+"");
+				}
+				if(item.getUploadType()!=null){
+					sql.append(" and uploadType= "+item.getUploadType()+"");
+				}
+				if(item.getProperty()!=null){
+					sql.append(" and property= "+item.getProperty()+"");
+				}
+				if(item.getStatus()!=null){
+					sql.append(" and status= "+item.getStatus()+"");
+				}				
 			}
-			if(StringUtils.isNotEmpty(item.getEndDate()) && !item.getEndDate().endsWith("")){
-				dc.add(Restrictions.le("createDate", item.getEndDate()));
-			}
-			if(item.getId()!=null){
-				dc.add(Restrictions.eq("id", item.getId()));
-			}
-			if(item.getPrice()!=null){
-				dc.add(Restrictions.le("price", item.getPrice()));
-			}
-			if(item.getEndPrice()!=null){
-				dc.add(Restrictions.ge("price", item.getEndPrice()));
-			}
-			if(item.getUid()!=null){
-				dc.add(Restrictions.eq("uid", item.getUid()));
-			}
-			if(item.getBid()!=null){
-				dc.add(Restrictions.eq("bid", item.getBid()));
-			}
-			if(item.getTid()!=null){
-				dc.add(Restrictions.eq("tid", item.getTid()));
-			}
-			if(item.getOid()!=null){
-				dc.add(Restrictions.eq("oid", item.getOid()));
-			}
-			if(StringUtils.isNotEmpty(item.getProperty()) && !item.getProperty().equals(" ")){
-				dc.add(Restrictions.eq("property", item.getProperty()));
-			}
-			if(StringUtils.isNotEmpty(item.getName()) ){
-				dc.add(Restrictions.like("name", "%"+item.getName()+"%"));
-			}
-			if(StringUtils.isNotEmpty(item.getUploadType()) && !item.getUploadType().equals(" ")){
-				dc.add(Restrictions.eq("uploadType", item.getUploadType()));
-			}
-			if(item.getForwar()!=null){
-				dc.add(Restrictions.eq("forwar", item.getForwar()));
-			}
-			if(item.getDownload()!=null){
-				dc.add(Restrictions.eq("download", item.getDownload()));
-			}
-			if(item.getCollect()!=null){
-				dc.add(Restrictions.eq("collect", item.getCollect()));
-			}
-			if(item.getStatus()!=null){
-				dc.add(Restrictions.eq("status", item.getStatus()));
-			}	
-		}
-		dc.add(Restrictions.eq("isDel", Constant.DELETE));
-		c.setFirstResult(startRowNum-1);
-		c.setMaxResults(pageSize);
-		List<WmlProduct> WmlProductList= c.list();
-		return WmlProductList;
+			Query query=session.createQuery(sql.toString());
+			query.setFirstResult(startRowNum-1);
+			query.setMaxResults(pageSize);
+			
+			List<WmlProduct> wmlProductList=query.list();
+			return wmlProductList;
 		}catch(Exception e){
 			e.printStackTrace();
 			return null;
@@ -158,11 +141,11 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 		StringBuffer sql=new StringBuffer("select COUNT(*) FROM wml_product WHERE isDel=1 ");
 		
 		if(item!=null){
-			if(StringUtils.isNotEmpty(item.getCreateDate()) && !item.getCreateDate().endsWith("")){
-				sql.append(" and createDate>= '"+item.getCreateDate()+"'");
+			if(StringUtils.isNotEmpty(item.getLastModifyStartDate()) && !item.getLastModifyStartDate().endsWith("")){
+				sql.append(" and lastModifyDate>= '"+item.getLastModifyStartDate()+"'");
 			}
-			if(StringUtils.isNotEmpty(item.getEndDate()) && !item.getEndDate().endsWith("")){
-				sql.append(" and createDate <= '"+item.getEndDate()+"'");
+			if(StringUtils.isNotEmpty(item.getLastModifyEndDate()) && !item.getLastModifyEndDate().endsWith("")){
+				sql.append(" and lastModifyDate <= '"+item.getLastModifyEndDate()+"'");
 			}
 			if(item.getId()!=null){
 				sql.append(" and id like \""+item.getId()+"%\"");
@@ -186,14 +169,14 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 				sql.append(" and oid= "+item.getOid()+"");
 			
 			}
-			if(StringUtils.isNotEmpty(item.getProperty()) && !item.getProperty().equals(" ")){
+			if(item.getProperty()!=null){
 				sql.append(" and property= '"+item.getProperty()+"'");
 				
 			}
 			if(StringUtils.isNotEmpty(item.getName()) ){
 				sql.append(" and name like \"%"+item.getName()+"%\"");
 			}
-			if(StringUtils.isNotEmpty(item.getUploadType()) && !item.getUploadType().equals(" ")){
+			if(item.getUploadType()!=null){
 				sql.append(" and uploadType= '"+item.getUploadType()+"'");
 			}
 		}

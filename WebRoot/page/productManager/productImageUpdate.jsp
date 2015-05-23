@@ -81,16 +81,23 @@ function init(productType,organ,brand,property,uploadType,status,isDel) {
 		'queueID'        : 'fileQueue',
 		'auto'           : false,
 		'multi'          : true,
-		'simUploadLimit' : 1,
-		'sizeLimit': 19871202,
-		'queueSizeLimit ': 10,
+		'simUploadLimit' : 9,
+		'sizeLimit': 18874368,
+		'queueSizeLimit ': 9,
 		'wmode'			 : 'transparent',
-		'simUploadLimit' :1,
 		'fileExt'		 : '*.png;*.gif;*.jpg;*.bmp;*.jpeg',
 		'fileDesc'		 : '图片文件(*.png;*.gif;*.jpg;*.bmp;*.jpeg)',
 		'onAllComplete'  :function(event,data) 
+/* 		'onSelect': function(e, queueId, fileObj)   */
 		{
 			$('#result').html(data.filesUploaded +'个图片上传成功');
+/*             alert("唯一标识:" + queueId + "\r\n" +  
+                    "文件名：" + fileObj.name + "\r\n" +  
+                    "文件大小：" + fileObj.size + "\r\n" +  
+                    "创建时间：" + fileObj.creationDate + "\r\n" +  
+                    "最后修改时间：" + fileObj.modificationDate + "\r\n" +  
+                    "文件类型：" + fileObj.type  
+              );  */
 		}
 	});
 	
@@ -105,9 +112,9 @@ function selectProductType(productType){
 
 	  var type = document.getElementById("productType");
 	  for(var i = 0;i<=type.options.length;i++){
-	if(type.options[i].value == productType){
-	type.options[i].selected = 'selected';
-	}
+		if(type.options[i].value == productType){
+		type.options[i].selected = 'selected';
+		}
 	}
 }
 
@@ -154,7 +161,6 @@ function doSubmit(){
 			"wmlProduct.description" : description
 	};
 	$.post("wmlProduct_updateWmlProduct.action",data,function(result){
-		alert(result);
 		window.opener.location.reload();
 		window.close();
 });

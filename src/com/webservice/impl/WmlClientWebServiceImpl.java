@@ -92,7 +92,7 @@ public class WmlClientWebServiceImpl implements IWmlClientWebService{
 	public String queryProductList(Integer id,String name,String createDate,String endDate,String description,String property,Double price,Integer uid,Integer bid,
 			Integer oid,String uploadType,Integer forword,Integer download,Integer viewcount,Integer collect,Integer status,Integer isdel) {
 		
-		WmlProduct product=new WmlProduct();
+/*		WmlProduct product=new WmlProduct();
 		product.setId(id);
 		product.setName(name);
 		product.setCreateDate(createDate);
@@ -122,7 +122,8 @@ public class WmlClientWebServiceImpl implements IWmlClientWebService{
 		JSONArray json = JSONArray.fromObject(proList);
 		String productjson="{\"productList\":"+json.toString() + "}";
 		
-		return productjson;
+		return productjson;*/
+		return null;
 	}
 
 	/**
@@ -422,7 +423,7 @@ public class WmlClientWebServiceImpl implements IWmlClientWebService{
 	public String uploadProduct(String productname,String description,String property,Double price,Integer uid,Integer bid,
 			Integer oid,String uploadType, String fileName, File uploadfile) {
 		
-		WmlUser userItem= new WmlUser();
+/*		WmlUser userItem= new WmlUser();
 		userItem.setId(uid);
 		WmlUser user=wmlUserService.queryWmlUser(userItem);
 		WmlProduct item=new WmlProduct();
@@ -456,9 +457,9 @@ public class WmlClientWebServiceImpl implements IWmlClientWebService{
 		WmlProduct pro= new WmlProduct();
 		WmlProductImage productImage= new WmlProductImage();
 		
-/*		if(status==0){
+		if(status==0){
 			item.setOnTime(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
-		}*/
+		}
 		item.setIsDel(Constant.DELETE);
 		item.setCreateDate(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
 		if(wmlProductService.addWmlProduct(item).equals("success")){
@@ -485,7 +486,8 @@ public class WmlClientWebServiceImpl implements IWmlClientWebService{
 		pro.setProductImageList(proImageList);
 		JSONObject json=JSONObject.fromObject(pro);
 		String productjson="{\"product\":"+json.toString() + ",\"outMessage\":\""+outMessage+"\",\"}";
-		return productjson;
+		return productjson;*/
+		return null;
 	}
 
 	/**

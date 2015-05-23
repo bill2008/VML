@@ -6,7 +6,9 @@ public class WmlProduct {
 	
 	private Integer id;
 	private String createDate;
-	private String endDate;
+	private String lastModifyStartDate;
+	private String lastModifyEndDate;
+	private String lastModifyDate;
 	private Integer uid;
 	private String userName;
 	private Integer tid;
@@ -15,8 +17,8 @@ public class WmlProduct {
 	private String organName;
 	private Integer bid;
 	private String brandName;
-	private String property;
-	private String uploadType;
+	private Integer property;
+	private Integer uploadType;
 	private String description;
 	private Double price;
 	private Double endPrice;
@@ -37,10 +39,10 @@ public class WmlProduct {
 	
 	public WmlProduct() {}
 
-	public WmlProduct(Integer id, String createDate, String endDate,
-			Integer uid, String userName, Integer tid, String productType,
+	public WmlProduct(Integer id, String createDate, String lastModifyStartDate, String lastModifyEndDate,
+			String lastModifyDate, Integer uid, String userName, Integer tid, String productType,
 			Integer oid, String organName, Integer bid, String brandName,
-			String property, String uploadType, String description,
+			Integer property, Integer uploadType, String description,
 			Double price, Double endPrice, Integer forwar, Integer download,
 			Integer collect, Integer status, String name, Integer isDel,
 			Integer viewCount, String onTime, String productImgPath,
@@ -48,7 +50,9 @@ public class WmlProduct {
 			List<WmlProductImage> productImageList) {
 		this.id = id;
 		this.createDate = createDate;
-		this.endDate = endDate;
+		this.lastModifyStartDate = lastModifyStartDate;
+		this.lastModifyEndDate = lastModifyEndDate;
+		this.lastModifyDate = lastModifyDate;
 		this.uid = uid;
 		this.userName = userName;
 		this.tid = tid;
@@ -83,7 +87,8 @@ public class WmlProduct {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
+	
 	public String getCreateDate() {
 		return createDate;
 	}
@@ -92,12 +97,28 @@ public class WmlProduct {
 		this.createDate = createDate;
 	}
 
-	public String getEndDate() {
-		return endDate;
+	public String getLastModifyStartDate() {
+		return lastModifyStartDate;
 	}
 
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
+	public void setLastModifyStartDate(String lastModifyStartDate) {
+		this.lastModifyStartDate = lastModifyStartDate;
+	}
+
+	public String getLastModifyEndDate() {
+		return lastModifyEndDate;
+	}
+
+	public void setLastModifyEndDate(String lastModifyEndDate) {
+		this.lastModifyEndDate = lastModifyEndDate;
+	}
+
+	public String getLastModifyDate() {
+		return lastModifyDate;
+	}
+
+	public void setLastModifyDate(String lastModifyDate) {
+		this.lastModifyDate = lastModifyDate;
 	}
 
 	public Integer getUid() {
@@ -163,20 +184,20 @@ public class WmlProduct {
 	public void setBrandName(String brandName) {
 		this.brandName = brandName;
 	}
-
-	public String getProperty() {
+	
+	public Integer getProperty() {
 		return property;
 	}
 
-	public void setProperty(String property) {
+	public void setProperty(Integer property) {
 		this.property = property;
 	}
 
-	public String getUploadType() {
+	public Integer getUploadType() {
 		return uploadType;
 	}
 
-	public void setUploadType(String uploadType) {
+	public void setUploadType(Integer uploadType) {
 		this.uploadType = uploadType;
 	}
 

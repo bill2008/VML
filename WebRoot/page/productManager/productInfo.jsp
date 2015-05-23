@@ -83,17 +83,19 @@
 					   {name : 'userName',type : 'text'},
 					   {name : 'tid',type : 'int'},
 					   {name : 'productType',type : 'text'},
+					   {name : 'property',type : 'int'},
 					   {name : 'bid',type : 'int'},
 					   {name : 'brandName',type : 'text'},
 					   {name : 'oid',type : 'int'},
 					   {name : 'organName',type : 'text'},
-					   {name : 'uploadType',type : 'text'},
+					   {name : 'uploadType',type : 'int'},
 					   {name : 'description',type : 'text'},
 					   {name : 'price',type : 'float'},
 					   {name : 'forwar',type : 'int'},
 					   {name : 'download',type : 'int'},
 					   {name : 'viewCount',type : 'int'}, 
 					   {name : 'collect',type : 'int'},
+					   {name : 'lastModifyDate',type : 'text'},
 					   {name : 'status',type : 'int'},
 					   {name : 'productImgPath',type : 'text'},
 					   {name : 'name',type : 'text'},
@@ -102,21 +104,22 @@
 					  ]};
 
 		var colsConfig = [ 
-			{id : 'id',header : "编号",width : 70}, 
+			{id : 'id',header : "编号",width : 40}, 
 			{id : 'name',header : "商品名称",width : 100}, 
 			{id : 'description',header : "描述",width : 130,editable : true,editor : {type : 'text'}},
-			{id : 'brandName',header : "商品品牌",width : 70},
-			{id : 'productType',header : "商品类型",width : 70},
-			{id : 'property',header : "属性",width : 70,renderer : GT.Grid.mappingRenderer(propertyOpt, '')},
-			{id : 'brandName',header : "商户",width : 70},
-			{id : 'uploadType',header : "上传类型",width : 70,renderer : GT.Grid.mappingRenderer(UploadTypeOpt, '')},
-			{id : 'userName',header : "上传人",width : 70},
-			{id : 'createDate',header : "上传时间",width : 70},
+			{id : 'brandName',header : "商品品牌",width : 55},
+			{id : 'productType',header : "商品类型",headAlign : 'center' , align : 'center' ,width : 60},
+			{id : 'property',header : "属性",width : 35, headAlign : 'center' , align : 'center' ,renderer : GT.Grid.mappingRenderer(propertyOpt, '')},
+			{id : 'organName',header : "商户",width : 35},
+			{id : 'uploadType',header : "上传类型",width : 60, align : 'center' ,renderer : GT.Grid.mappingRenderer(UploadTypeOpt, '')},
+			{id : 'userName',header : "上传人",width : 50},
+			{id : 'createDate',header : "上传时间",width : 130},
 			{id : 'price',header : "价格",width : 50,editable : true,editor : {type : 'text'}},
-			{id : 'viewCount',header : "浏览次数",width : 	50},
-			{id : 'forwar',header : "转发",width : 50},
-			{id : 'download',header : "下载",width : 50},
-			{id : 'collect',header : "收藏",width : 50},
+			{id : 'viewCount',header : "浏览次数",width : 	60},
+			{id : 'forwar',header : "转发",width : 35},
+			{id : 'download',header : "下载",width : 35},
+			{id : 'collect',header : "收藏",width : 35},
+			{id : 'lastModifyDate',header : "修改日期",width : 130},
 			{id : 'status',header : "状态",width : 70,renderer : GT.Grid.mappingRenderer(statusOpt, '')}
 			];
 
@@ -185,27 +188,28 @@
 	}
 	
 	function queryAuto() {
+		
 		var proId = $("#proId").val();
 		var name = $("#name").val();
 		var productType = $("#productType").val();
 		var brandName = $("#brandName").val();
 		var uploadType = $("#uploadType").val();
-		var Property = $("#Property").val();
+		var property = $("#property").val();
 		var status = $("#status").val();
-		var startDate=$("#startDate").val();
-		var endTime=$("#endDate").val();
-		if(startDate!="" && endTime!=""){
-			if(startDate<endTime){
+		var lastModifyStartDate=$("#startDate").val();
+		var lastModifyEndDate=$("#endDate").val();
+		if(lastModifyStartDate!="" && lastModifyEndDate!=""){
+			if(lastModifyStartDate<lastModifyEndDate){
 		mygrid.query( {
 			'wmlProduct.id' :proId,
 			'wmlProduct.name' :name,
 			'wmlProduct.tid' :productType,
 			'wmlProduct.bid' :brandName,
 			'wmlProduct.uploadType' :uploadType,
-			'wmlProduct.property' :Property,
+			'wmlProduct.property' :property,
 			'wmlProduct.status' :status,
-			'wmlUser.createDate' :startDate,
-			'wmlUser.endDate' :endTime
+			'wmlProduct.lastModifyStartDate' :lastModifyStartDate,
+			'wmlProduct.lastModifyEndDate' :lastModifyEndDate
 		});
 		}else{
 			alert("开始时间不能大于结束时间!");
@@ -217,7 +221,7 @@
 			'wmlProduct.tid' :productType,
 			'wmlProduct.bid' :brandName,
 			'wmlProduct.uploadType' :uploadType,
-			'wmlProduct.property' :Property,
+			'wmlProduct.property' :property,
 			'wmlProduct.status' :status
 		});
 		}
@@ -291,7 +295,7 @@
 						<option value="2">手机</option>
 					</select></td>
 						<td>商品属性：</td>
-					<td > <select id="Property" style="width: 60px;" >
+					<td > <select id="property" style="width: 60px;" >
 						<option value=" ">全选</option>
 						<option value="0">男</option>
 						<option value="1">女</option>
@@ -318,7 +322,7 @@
 		<br/>
 		<br/>
 		<!-- grid的容器. -->
-		<div id="grid1_container" style="width: 1126px; height: 490px"></div>
+		<div id="grid1_container" style="width: 1127px; height: 490px"></div>
 		<div style="width:100px; height:100px; display: none; z-index: 2" id="imgDiv" onmousemove="imgOut()"> <img id="img"   src=""> </div>
 				
 		</div>

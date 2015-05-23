@@ -3,6 +3,7 @@ package com.action;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -10,6 +11,9 @@ import java.util.UUID;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
@@ -46,11 +50,18 @@ public class WmlProductAction extends BaseAction {
 	private List<String> FiledataFileName;
 	private List<String> FiledataContentType;
 	private List<PicInfo> FiledataContentPath=new ArrayList<PicInfo>();
+	private String productId;
 	private String productName;
 	private String productType;
 	private String timestr;
 	
 	
+	public String getProductId() {
+		return productId;
+	}
+	public void setProductId(String productId) {
+		this.productId = productId;
+	}
 	public String getTimestr() {
 		return timestr;
 	}
@@ -167,32 +178,55 @@ public class WmlProductAction extends BaseAction {
 	
 	//修改商品信息
 	public void updateWmlProduct() throws Exception{
-			WmlAdmin wmladmin=(WmlAdmin)this.session.get("admin");
-			if(wmladmin!=null){
-			if(wmlProduct.getPrice()!=0 &&wmladmin.getUpdatePrice()==0){
-				if(FiledataContentPath.size()<0){
-					if(wmlProduct.getStatus()==0){
-						wmlProduct.setOnTime(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
-					}
+		
+		WmlAdmin wmladmin=(WmlAdmin)this.session.get("admin");
+		
+		if(wmladmin!=null){
+			wmlProduct.setLastModifyDate(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
+			if(wmladmin.getUpdatePrice()==1){
+				if(FiledataContentPath.size()<=0){
 					if(wmlProductService.updateWmlProduct(wmlProduct).equals(Constant.MSG_SUCCESS)){
 						message="修改成功";
 					}else{
 						message="修改失败";
 					}
 				}else{
-					if(wmlProduct.getStatus()==0){
-						wmlProduct.setOnTime(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
-					}
+					ActionContext ac=ActionContext.getContext();
+					ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+					String savePath = sc.getRealPath("/") + "productUpload\\";
+					WmlProduct product= new WmlProduct();
+					product.setId(wmlProduct.getId());
+					product = wmlProductService.queryWmlProduct(product);
+					productType=product.getProductType();
+					timestr=product.getCreateDate();
+					timestr=(timestr.replace("-", "")).substring(0, 8);
+					productId = product.getId().toString();
+					savePath=savePath+"\\"+productType+"\\"+timestr+"\\"+productId+"\\";
 					if(wmlProductService.updateWmlProduct(wmlProduct).equals(Constant.MSG_SUCCESS)){
 						WmlProductImage ImageItem= new WmlProductImage();
 						ImageItem.setProductId(wmlProduct.getId());
 						//查询旧图片信息
 						List<WmlProductImage> oldImageList=wmlProductImageService.queryWmlProductImageList(ImageItem);
 						for(WmlProductImage img:oldImageList){
+							//删除旧文件
+							String filename =savePath + "\\"+ img.getUrl();
+							File targetFile = new File(filename); 
+							if (targetFile.isFile()) {
+		                        targetFile.delete();
+			                }
+							//设置旧文件的数据isDel为删除并更新
 							img.setIsDel(Constant.isDelete);
 							wmlProductImageService.updateWmlProductImage(img);
 						}
-						//添加新图片信息
+						//删除目录
+						File dir=new File(savePath);
+						if(dir.isDirectory()){
+							dir.delete();
+						}
+						
+						//添加新图片信息：
+						//1.如果是修改原商品的图片，则查询原来商品的图片ＩＤ号，进行更新
+						//2.如果是新追加商品图片，则作为插入处理
 						for(PicInfo item:FiledataContentPath){
 							try{
 							WmlProductImage productImage= new WmlProductImage();
@@ -214,13 +248,13 @@ public class WmlProductAction extends BaseAction {
 			}else{
 				message= "此帐号没有编辑价格权限";
 			}
-			}else{
-				message="会话过期,请重新登录!";
-			}
-			wmlProduct=null;
-			FiledataContentPath.clear();
-			response.setCharacterEncoding("utf-8");
-			response.getWriter().print(message);
+		}else{
+			message="会话过期,请重新登录!";
+		}
+		wmlProduct=null;
+		FiledataContentPath.clear();
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);
 	}
 	//图片保存
 	public String productUpload() {
@@ -268,6 +302,21 @@ public class WmlProductAction extends BaseAction {
 	 * @return
 	 */
 	public String UploadproductUpdate() {
+		
+		
+        //创建磁盘文件工厂  
+        DiskFileItemFactory fac = new DiskFileItemFactory();      
+        //创建servlet文件上传组件  
+        ServletFileUpload upload = new ServletFileUpload(fac);      
+        //文件列表  
+        List fileList = null;      
+        //解析request从而得到前台传过来的文件  
+        try {      
+            fileList = upload.parseRequest(request);      
+        } catch (FileUploadException ex) {      
+            ex.printStackTrace();      
+            return null;      
+        }   
 		
 		ActionContext ac=ActionContext.getContext();
 		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
@@ -395,20 +444,11 @@ public class WmlProductAction extends BaseAction {
 		if (totalRowNum<1){
 			totalRowNum=wmlProductService.getProductCount(wmlProduct);
 			gridServerHandler.setTotalRowNum(totalRowNum);
-			if(totalRowNum==1){
-				itemList=wmlProductService.queryWmlProductList(wmlProduct);
-				gridServerHandler.setData(itemList,WmlProduct.class);
-			}else{
-				itemList=wmlProductService.queryPageWmlProduct(wmlProduct, gridServerHandler.getStartRowNum(),gridServerHandler.getPageSize());
-				gridServerHandler.setData(itemList,WmlProduct.class);
-			}
-			
-		}else{
-			itemList=wmlProductService.queryPageWmlProduct(wmlProduct, gridServerHandler.getStartRowNum(),gridServerHandler.getPageSize());
-			gridServerHandler.setData(itemList,WmlProduct.class);
 		}
 		
-		//wmlProduct=null;
+		itemList=wmlProductService.queryPageWmlProduct(wmlProduct, gridServerHandler.getStartRowNum(),gridServerHandler.getPageSize());
+		gridServerHandler.setData(itemList,WmlProduct.class);
+
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().print(gridServerHandler.getLoadResponseText());
 		
