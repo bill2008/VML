@@ -5,6 +5,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+
 %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN" >
 <html>
@@ -23,10 +24,11 @@
 		%>
 		<script type="text/javascript">
 			alert("用户没有登录,请重新登录后再操作!");
-		window.parent.location.href="/VML";
+		window.parent.location.href="/VML_Manager";
 		</script>
 <%}%>
 <script type="text/javascript">
+
 function init(productType,organ,brand,property,uploadType,status,isDel) {
 	
 	$.post("wmlProductType_queryWmlProductType.action", function(resultData) {
@@ -75,7 +77,7 @@ function init(productType,organ,brand,property,uploadType,status,isDel) {
 	
 	$("#uploadify").uploadify({
 		'uploader'       : '<%=basePath%>js/uploadify/scripts/uploadify.swf',
-		'script'         : 'wmlProduct_UploadproductUpdate.action',
+		'script'         : 'wmlProduct_UploadProductUpdate.action',
 		'cancelImg'      : '<%=basePath%>js/uploadify/cancel.png',
 		'buttonImg'		 : '<%=basePath%>js/uploadify/buttonImg.png',
 		'queueID'        : 'fileQueue',
@@ -88,16 +90,8 @@ function init(productType,organ,brand,property,uploadType,status,isDel) {
 		'fileExt'		 : '*.png;*.gif;*.jpg;*.bmp;*.jpeg',
 		'fileDesc'		 : '图片文件(*.png;*.gif;*.jpg;*.bmp;*.jpeg)',
 		'onAllComplete'  :function(event,data) 
-/* 		'onSelect': function(e, queueId, fileObj)   */
 		{
 			$('#result').html(data.filesUploaded +'个图片上传成功');
-/*             alert("唯一标识:" + queueId + "\r\n" +  
-                    "文件名：" + fileObj.name + "\r\n" +  
-                    "文件大小：" + fileObj.size + "\r\n" +  
-                    "创建时间：" + fileObj.creationDate + "\r\n" +  
-                    "最后修改时间：" + fileObj.modificationDate + "\r\n" +  
-                    "文件类型：" + fileObj.type  
-              );  */
 		}
 	});
 	
@@ -105,9 +99,9 @@ function init(productType,organ,brand,property,uploadType,status,isDel) {
 	$("#uploadType option[value="+uploadType+"]").attr("selected",'selected'); 
 	$("#status option[value="+status+"]").attr("selected",'selected'); 
 	$("#isDel option[value="+isDel+"]").attr("selected",'selected'); 
-
-
-}
+}	
+	
+  
 function selectProductType(productType){
 
 	  var type = document.getElementById("productType");
@@ -126,6 +120,17 @@ function checkValue(item,widgetName){
 }
 
 function doSubmit(){
+	var productId=$("#id").val();
+	var productName=$("#name").val();
+    var time=$("#createDate").val();
+    var strtime=time.substring(0,10);
+	var str= new Array();
+	str=strtime.split("-");
+	var timestr="";
+	for (var i=0;i<str.length ;i++ ){
+		timestr+=str[i];
+	}
+	
 	var name= $("#name").val();
 	var description= $("#description").val();
 	var productType= $("#productType").val();
@@ -158,12 +163,39 @@ function doSubmit(){
 			"wmlProduct.forwar" : forwar,
 			"wmlProduct.download" : download,
 			"wmlProduct.collect" : collect,
-			"wmlProduct.description" : description
+			"wmlProduct.description" : description,
+			"productId":productId,
+			"productName":productName,
+			"productType":$("#productType").find("option:selected").text(),
+			"timestr":timestr
+			
 	};
 	$.post("wmlProduct_updateWmlProduct.action",data,function(result){
 		window.opener.location.reload();
 		window.close();
-});
+	});
+}
+function doCancel(){
+	var productId=$("#id").val();
+	var productName=$("#name").val();
+    var time=$("#createDate").val();
+    var strtime=time.substring(0,10);
+	var str= new Array();
+	str=strtime.split("-");
+	var timestr="";
+	for (var i=0;i<str.length ;i++ ){
+		timestr+=str[i];
+	}
+	var data = {
+			"productId":productId,
+			"productName":productName,
+			"productType":$("#productType").find("option:selected").text(),
+			"timestr":timestr
+	};
+	$.post("wmlProduct_cancelUpdateWmlProduct.action",data,function(result){
+		window.opener.location.reload();
+		/* window.close(); */
+	});
 }
 //设置缩略图
 function doFirst(imgId,imgUrl,imgProductId,imgIsDel){
@@ -184,9 +216,10 @@ function doFirst(imgId,imgUrl,imgProductId,imgIsDel){
 	});
 }
 
+
 function uploasFile(){   
-    //校验  
-    var productName=$("#name").val();
+	var productId=$("#id").val();
+	var productName=$("#name").val();
     var productType =$("#productType").find("option:selected").text(); 
     var time=$("#createDate").val();
     
@@ -197,6 +230,7 @@ function uploasFile(){
 	for (var i=0;i<str.length ;i++ ){
 		timestr+=str[i];
 	}
+	//校验 
   	if(productName==null){
   		alert("商品名称不能为空");
   		return false;
@@ -205,9 +239,12 @@ function uploasFile(){
   		return false;
   	}
     //设置 scriptData 的参数  
-    $('#uploadify').uploadifySettings('scriptData',{'productName':productName,'productType':productType,'timestr':timestr});  
-    //上传  
+    $('#uploadify').uploadifySettings('scriptData',{'productId':productId,'productName':productName,'productType':productType,'timestr':timestr});  
+    //上传 
+
     jQuery('#uploadify').uploadifyUpload();
+    
+    
 } 
 </script>
 
@@ -340,14 +377,14 @@ function uploasFile(){
 	</table>
 	
 <div>
-	<input type="reset" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; " value="重置" />
+	<input type="reset" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; " value="重置"  onclick="doCancel()"/>
 	
 	<input type="button" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; margin-right: 10px;" value="提交"   onclick="doSubmit()"/>
 </div>
 </div>
 </div>
 </form>
-	
+
 		
 </body>
 </html>

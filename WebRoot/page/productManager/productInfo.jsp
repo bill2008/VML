@@ -70,6 +70,7 @@
 				$("#brandName").append($option);
 			}
 		});
+		
 	}
 	
 	
@@ -270,7 +271,7 @@
 </script>
 </head>
 <body>
-<div id="tt" class="easyui-tabs"  style="height: 720px;">
+<div id="tt" class="easyui-tabs"  style="height: 730px;">
 	<div title="商品管理" class="gt-panel"  >
 		<div>
 			<table>

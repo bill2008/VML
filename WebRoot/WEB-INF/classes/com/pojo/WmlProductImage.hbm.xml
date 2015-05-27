@@ -11,6 +11,9 @@
         <property name="url" type="java.lang.String">
             <column name="url" length="255" />
         </property>
+        <property name="name" type="java.lang.String">
+            <column name="name" length="255" />
+        </property>        
         <property name="isDel" type="java.lang.Integer">
             <column name="isDel" length="11" />
         </property>

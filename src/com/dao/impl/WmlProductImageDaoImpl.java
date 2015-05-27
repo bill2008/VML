@@ -30,8 +30,12 @@ public class WmlProductImageDaoImpl extends BaseDAO implements
 			if(item.getIsFirst()!=null){
 				dc.add(Restrictions.eq("isFirst", item.getIsFirst()));
 			}
+			if(item.getIsFirst()!=null){
+				dc.add(Restrictions.eq("isDel", item.getIsDel()));
+			}else{
+				dc.add(Restrictions.eq("isDel", Constant.DELETE));
+			}
 		}
-		dc.add(Restrictions.eq("isDel", Constant.DELETE));
 		List<WmlProductImage> WmlProductImageList=c.list();
 		return WmlProductImageList;
 		}catch(Exception  e){

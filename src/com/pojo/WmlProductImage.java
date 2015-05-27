@@ -3,6 +3,7 @@ package com.pojo;
 public class WmlProductImage {
 	private Integer id;
 	private String url;
+	private String name;
 	private Integer width;
 	private Integer height;
 	private Integer productId;
@@ -13,17 +14,20 @@ public class WmlProductImage {
 	public WmlProductImage() {
 		
 	}
-	public WmlProductImage(Integer id, String url, Integer width,
+	
+	public WmlProductImage(Integer id, String url, String name, Integer width,
 			Integer height, Integer productId, Integer isDel, Integer isFirst) {
 		super();
 		this.id = id;
 		this.url = url;
+		this.name = name;
 		this.width = width;
 		this.height = height;
 		this.productId = productId;
 		this.isDel = isDel;
 		this.isFirst = isFirst;
 	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -37,6 +41,15 @@ public class WmlProductImage {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public Integer getProductId() {
 		return productId;
 	}
