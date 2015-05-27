@@ -130,6 +130,7 @@ function doSubmit(){
 	for (var i=0;i<str.length ;i++ ){
 		timestr+=str[i];
 	}
+	var operator=$("#operator").val();
 	
 	var name= $("#name").val();
 	var description= $("#description").val();
@@ -167,9 +168,10 @@ function doSubmit(){
 			"productId":productId,
 			"productName":productName,
 			"productType":$("#productType").find("option:selected").text(),
-			"timestr":timestr
-			
+			"timestr":timestr,
+			"operator":operator
 	};
+	
 	$.post("wmlProduct_updateWmlProduct.action",data,function(result){
 		window.opener.location.reload();
 		window.close();
@@ -222,6 +224,7 @@ function uploasFile(){
 	var productName=$("#name").val();
     var productType =$("#productType").find("option:selected").text(); 
     var time=$("#createDate").val();
+    var operator=$("#operator").val();
     
     var strtime=time.substring(0,10);
 	var str= new Array();
@@ -239,7 +242,7 @@ function uploasFile(){
   		return false;
   	}
     //设置 scriptData 的参数  
-    $('#uploadify').uploadifySettings('scriptData',{'productId':productId,'productName':productName,'productType':productType,'timestr':timestr});  
+    $('#uploadify').uploadifySettings('scriptData',{'operator':operator,'productId':productId,'productName':productName,'productType':productType,'timestr':timestr});  
     //上传 
 
     jQuery('#uploadify').uploadifyUpload();
@@ -258,6 +261,7 @@ function uploasFile(){
 	<tr >
 		<td style="width: 100px;">商品名称：</td>
 		<td style="width: 790px;">
+		<input type="hidden" id= "operator" name="operator" value="<%=session.getAttribute("adminId")%>">
 		<input type="hidden" id="id" name="id" value="${product.id}"> 
 		<input type="hidden" id="createDate" name="createDate" value="${product.createDate}"> 
 		<input type="hidden" id="forwar" name="forwar" value="${product.forwar}"> 

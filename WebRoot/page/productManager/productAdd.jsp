@@ -73,7 +73,7 @@ $(document).ready(function() {
 	
 	$("#uploadify").uploadify({
 		'uploader'       : '<%=basePath%>js/uploadify/scripts/uploadify.swf',
-		'script'         : 'wmlProduct_productUpload.action',
+		'script'         : 'wmlProduct_productUploadAdd.action',
 		'cancelImg'      : '<%=basePath%>js/uploadify/cancel.png',
 		'buttonImg'		 : '<%=basePath%>js/uploadify/buttonImg.png',
 		'queueID'        : 'fileQueue',
@@ -113,6 +113,7 @@ function doSubmit(){
 	var uploadType=$("#uploadType").val();
 	var price=$("#price").val();
 	var status=$("#status").val();
+	var operator=$("#operator").val();
 	var data = {
 			"wmlProduct.name" : name,
 			"wmlProduct.tid" : productType,
@@ -122,8 +123,9 @@ function doSubmit(){
 			"wmlProduct.property" : property,
 			"wmlProduct.status" : status,
 			"wmlProduct.price" : price,
-			"wmlProduct.description" : description
-			
+			"wmlProduct.description" : description,
+			"productType":$("#productType").find("option:selected").text(),
+			"operator":operator
 	};
 	$.post("wmlProduct_addWmlProduct.action",data,function(result){
 		if(result == "fail"){
@@ -141,8 +143,10 @@ function doSubmit(){
 }
 function uploasFile(){   
     //校验  
-    var productName=$("#name").val();
+   var productName=$("#name").val();
     var productType =$("#productType").find("option:selected").text(); 
+    var operator=$("#operator").val();
+    
   	if(productName==null){
   		alert("商品名称不能为空");
   		return false;
@@ -150,9 +154,10 @@ function uploasFile(){
   		alert("商品类型不能为空");
   		return false;
   	}
-    //设置 scriptData 的参数  
-    $('#uploadify').uploadifySettings('scriptData',{'productName':productName,'productType':productType});  
+    //设置 scriptData 的参数
+    $('#uploadify').uploadifySettings('scriptData',{'operator':operator,'productName':productName,'productType':productType});  
     //上传  
+    
     jQuery('#uploadify').uploadifyUpload();
 }  
 </script>
@@ -166,7 +171,10 @@ function uploasFile(){
 	<table  >
 	<tr >
 		<td style="width: 50px;">商品名称：</td>
-		<td style="width: 400px;"><input id="name" name="name" onblur="checkValue(this,'商品名称')"></td>
+		<td style="width: 400px;">
+		<input id="name" name="name" onblur="checkValue(this,'商品名称')">
+		<input type="hidden" id= "operator" name="operator" value="<%=session.getAttribute("adminId")%>">
+		</td>
 	</tr>
 		<tr >
 		<td style="width: 50px;">商品价格：</td>

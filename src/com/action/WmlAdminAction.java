@@ -180,6 +180,7 @@ public class WmlAdminAction extends BaseAction {
 			if(item!=null){
 				if(SessionHandler.exitsUser(String.valueOf(item.getId()),this.request.getSession())){
 					this.session.put("admin", item);
+					this.session.put("adminId",item.getId());
 					item=null;
 					return "login";
 				}else{
