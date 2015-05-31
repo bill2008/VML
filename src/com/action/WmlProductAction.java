@@ -147,6 +147,36 @@ public class WmlProductAction extends BaseAction {
 	public void setWmlProductImageService(IWmlProductImageService wmlProductImageService) {
 		this.wmlProductImageService = wmlProductImageService;
 	}
+	
+	public void deleteWmlProduct()throws Exception{
+		WmlProduct item = new WmlProduct();
+		WmlProductImage imageItem = new WmlProductImage();
+		int Id = Integer.parseInt(productId);
+		imageItem.setProductId(Id);
+		List<WmlProductImage> imageList = wmlProductImageService.queryWmlProductImageList(imageItem);
+		item.setId(Id);
+		item=wmlProductService.queryWmlProduct(item);
+		if(item!=null){
+			item.setIsDel(Constant.isDelete);
+			if(wmlProductService.updateWmlProduct(item)==Constant.MSG_SUCCESS){
+				for(int i=0;i<imageList.size();i++){
+					imageItem=imageList.get(i);
+					imageItem.setIsDel(Constant.isDelete);
+					wmlProductImageService.updateWmlProductImage(imageItem);
+				}
+				message= "optsuccess";
+			}else{
+				message= "fail";
+			}	
+		}else{
+			message="productIdNull";
+		}
+		wmlProduct = null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);
+	}
+	
+	
 	//查询所有商品信息
 	public String queryWmlProduct()  {
 		try{

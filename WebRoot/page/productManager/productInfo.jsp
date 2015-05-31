@@ -120,10 +120,10 @@ img:hover {background-color:yellow;}
 			{id : 'userName',header : "上传人",width : 50},
 			{id : 'onTime',header : "上架时间",width : 130},
 			{id : 'price',header : "价格",width : 50,editable : true,editor : {type : 'text'}},
-			{id : 'viewCount',header : "浏览次数",width : 	60},
-			{id : 'forwar',header : "转发",width : 35},
-			{id : 'download',header : "下载",width : 35},
-			{id : 'collect',header : "收藏",width : 35},
+			{id : 'viewCount',header : "浏览次数",width : 	60,align : 'center'},
+			{id : 'forwar',header : "转发",width : 35,align : 'center'},
+			{id : 'download',header : "下载",width : 35,align : 'center'},
+			{id : 'collect',header : "收藏",width : 35,align : 'center'},
 			{id : 'lastModifyDate',header : "修改日期",width : 130},
 			{id : 'status',header : "状态",width : 43,renderer : statusClass},
 			{id : 'delete',header : "删除",width : 35,headAlign : 'center' ,align : 'center',renderer : deleteClass}
@@ -132,7 +132,7 @@ img:hover {background-color:yellow;}
 		var gridConfig = {
 			id : grid_demo_id,
 			loadURL : "wmlProduct_queryPageProduct.action",
-			saveURL:"wmlProduct_updateWmlProdutInfo.action",
+			/* saveURL:"wmlProduct_updateWmlProdutInfo.action", */
 			dataset : dsConfig,
 			columns : colsConfig,
 			container : 'grid1_container',
@@ -277,10 +277,8 @@ img:hover {background-color:yellow;}
 	function  statusClass (value ,record,columnObj,grid,colNo,rowNo){
 		var url = "";
 		if(value==0){
-			/* url = "wmlAdmin_updateWmlAdminStatus.action?status=0&id="+record['id']; */
 			return "<a onclick=\"confirmWindow('"+url+"','')\" /><font style=\"font-weight:bold;color:blue\">上架</font></span>";
 		}else if (value==1 ){
-			/* url = "wmlAdmin_updateWmlAdminStatus.action?status=1&id="+record['id']; */
 			return "<a onclick=\"confirmWindow('"+url+"','')\"><font  color=\"grey\">下架</font></span>";
 		}else if (value==2 || value == null){
 			return "<a onclick=\"confirmWindow('"+url+"','')\"><font  color=\"red\">未审核</font></span>";
@@ -288,14 +286,28 @@ img:hover {background-color:yellow;}
 	}
 	
 	function  deleteClass (value ,record,columnObj,grid,colNo,rowNo){
-		
-		/* var url = "wmlUser_deleteWmlUser.action?useId="+record['id'];  */
-		var url =" ";
+		var url = "wmlProduct_deleteWmlProduct.action?productId="+record['id']; 
 		var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/cancel.png";
 		return "<img onclick=\"confirmWindow('"+url+"','你确定要删除商品吗？')\" src=\""+imgPath+"\"/>";
 		
 	}	
 	
+	function confirmWindow(url,title){
+		if(window.confirm(title)){
+			$.post(url,function(result){
+				if(result == "fail"){
+					alert("操作失败！");
+				}
+				else if(result == "optsuccess"){
+					alert("操作成功！");
+					mygrid.reload();
+				}
+			});
+	        return true;
+	     }else{
+	        return false;
+         };
+	}	
 </script>
 </head>
 <body>
