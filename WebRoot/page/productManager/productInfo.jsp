@@ -29,6 +29,10 @@
 	background-color: #004da8;
 	color: #ffffff;
 }
+
+a:hover {background-color:yellow;} 
+img:hover {background-color:yellow;}
+
 </style>
 <script type="text/javascript">
 
@@ -79,7 +83,7 @@
 		var dsConfig = {
 			fields : [ 
 			          {name : 'id',type : 'text'}, 
-					   {name : 'createDate',type : 'text'}, 
+					   {name : 'onTime',type : 'text'}, 
 					   {name : 'uid',type : 'int'},
 					   {name : 'userName',type : 'text'},
 					   {name : 'tid',type : 'int'},
@@ -106,22 +110,23 @@
 
 		var colsConfig = [ 
 			{id : 'id',header : "编号",width : 40}, 
-			{id : 'name',header : "商品名称",width : 100}, 
+			{id : 'name',header : "商品名称",width : 85}, 
 			{id : 'description',header : "描述",width : 130,editable : true,editor : {type : 'text'}},
 			{id : 'brandName',header : "商品品牌",width : 55},
 			{id : 'productType',header : "商品类型",headAlign : 'center' , align : 'center' ,width : 60},
 			{id : 'property',header : "属性",width : 35, headAlign : 'center' , align : 'center' ,renderer : GT.Grid.mappingRenderer(propertyOpt, '')},
-			{id : 'organName',header : "商户",width : 35},
+			{id : 'organName',header : "商户",width : 41},
 			{id : 'uploadType',header : "上传类型",width : 60, align : 'center' ,renderer : GT.Grid.mappingRenderer(UploadTypeOpt, '')},
 			{id : 'userName',header : "上传人",width : 50},
-			{id : 'createDate',header : "上传时间",width : 130},
+			{id : 'onTime',header : "上架时间",width : 130},
 			{id : 'price',header : "价格",width : 50,editable : true,editor : {type : 'text'}},
 			{id : 'viewCount',header : "浏览次数",width : 	60},
 			{id : 'forwar',header : "转发",width : 35},
 			{id : 'download',header : "下载",width : 35},
 			{id : 'collect',header : "收藏",width : 35},
 			{id : 'lastModifyDate',header : "修改日期",width : 130},
-			{id : 'status',header : "状态",width : 70,renderer : GT.Grid.mappingRenderer(statusOpt, '')}
+			{id : 'status',header : "状态",width : 43,renderer : statusClass},
+			{id : 'delete',header : "删除",width : 35,headAlign : 'center' ,align : 'center',renderer : deleteClass}
 			];
 
 		var gridConfig = {
@@ -267,7 +272,30 @@
 			});	
 		}
 		
-	}		
+	}
+	
+	function  statusClass (value ,record,columnObj,grid,colNo,rowNo){
+		var url = "";
+		if(value==0){
+			/* url = "wmlAdmin_updateWmlAdminStatus.action?status=0&id="+record['id']; */
+			return "<a onclick=\"confirmWindow('"+url+"','')\" /><font style=\"font-weight:bold;color:blue\">上架</font></span>";
+		}else if (value==1 ){
+			/* url = "wmlAdmin_updateWmlAdminStatus.action?status=1&id="+record['id']; */
+			return "<a onclick=\"confirmWindow('"+url+"','')\"><font  color=\"grey\">下架</font></span>";
+		}else if (value==2 || value == null){
+			return "<a onclick=\"confirmWindow('"+url+"','')\"><font  color=\"red\">未审核</font></span>";
+		}
+	}
+	
+	function  deleteClass (value ,record,columnObj,grid,colNo,rowNo){
+		
+		/* var url = "wmlUser_deleteWmlUser.action?useId="+record['id'];  */
+		var url =" ";
+		var imgPath="<%=basePath%>js/jquery-easyui-1.3.5/themes/icons/cancel.png";
+		return "<img onclick=\"confirmWindow('"+url+"','你确定要删除商品吗？')\" src=\""+imgPath+"\"/>";
+		
+	}	
+	
 </script>
 </head>
 <body>
@@ -282,14 +310,17 @@
 					<td ><input style="width: 80px;" type="text" name="name" id="name" onkeydown="query(event)"/></td>
 					<td>分类：</td>
 					<td > <select id="productType" style="width: 60px;" >
+						<option value=""></option>
 						<option value=" ">全选</option>
 					</select></td>
 					<td>品牌：</td>
 					<td > <select id="brandName" style="width: 60px;" >
+						<option value=""></option>
 						<option value=" ">全选</option>
 					</select></td>
 					<td>上传类型：</td>
 					<td ><select id="uploadType" style="width: 60px;" >
+						<option value=""></option>
 						<option value=" ">全选</option>
 						<option value="0">分后台</option>
 						<option value="1">后台</option>
@@ -297,6 +328,7 @@
 					</select></td>
 						<td>商品属性：</td>
 					<td > <select id="property" style="width: 60px;" >
+						<option value=""></option>
 						<option value=" ">全选</option>
 						<option value="0">男</option>
 						<option value="1">女</option>
@@ -304,6 +336,7 @@
 					</select>	</td>
 						<td>状态：</td>
 					<td > <select id="status" style="width: 60px;" >
+						<option value=""></option>
 						<option value=" ">全选</option>
 						<option value="0">上架</option>
 						<option value="1">下架</option>

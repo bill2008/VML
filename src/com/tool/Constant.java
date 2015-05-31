@@ -23,6 +23,21 @@ public class Constant {
 	public static final int isDelete=0;
 	
 	/**
+	 * 上架
+	 */
+	public static final int isON=0;
+	
+	/**
+	 * 下架
+	 */
+	public static final int isDOWN=1;	
+	
+	/**
+	 * 未审核
+	 */
+	public static final int isUNREVIEW=2;
+	
+	/**
 	 * 返回信息_成功
 	 */
 	public static final String MSG_SUCCESS = "操作成功!";

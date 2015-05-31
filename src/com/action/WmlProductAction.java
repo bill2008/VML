@@ -28,6 +28,7 @@ import com.pojo.WmlProductImage;
 import com.service.IWmlProductImageService;
 import com.service.IWmlProductService;
 import com.tool.Constant;
+import com.tool.FileUtil;
 import com.tool.PicInfo;
 import com.tool.TimeUtil;
 
@@ -380,12 +381,32 @@ public class WmlProductAction extends BaseAction {
 		}
 		return null;
 	}
+	
+	//取消图片添加
+	public void cancelAddWmlProduct() throws Exception{
+		String timePath=TimeUtil.getCurrentTime("yyyyMMdd");
+		String productId="tempID";
+		ActionContext ac=ActionContext.getContext();
+		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+		String savePath = sc.getRealPath("/") + "productUpload";
+		savePath=savePath+"\\"+productType+"\\"+timePath+"\\"+productId+"_"+operator+"\\";		
+		File dir=new File(savePath);
+		if  (dir .exists()  && dir .isDirectory()) {
+			File fa[] = dir.listFiles();
+			int fileCount=fa.length;
+			if (fileCount>0){
+				for (int i = 0; i < fileCount; i++) {
+					fa[i].delete();
+				}
+			}
+			dir.delete();
+		}
+	}	
 	/**
 	 * 修改商品重新上传
 	 * @return
 	 */
 	public String UploadProductUpdate() {
-
 		if(operator!=null){
 			ActionContext ac=ActionContext.getContext();
 			ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
@@ -427,7 +448,7 @@ public class WmlProductAction extends BaseAction {
 				File file = new File(savePath + name + extName);
 				try {
 
-					FileUtils.copyFile(Filedata.get(i), file);
+					FileUtil.doCopyFile(Filedata.get(i), file,false);
 					picInfo=ReNamePicture(getTimestr(),savePath, name, extName,imgNo);	
 					name=picInfo.getPicUrl();
 
@@ -450,11 +471,7 @@ public class WmlProductAction extends BaseAction {
 		PicInfo pic= new PicInfo();
 		File f = new File(filePath+pictureName+extName);
 		Image src = javax.imageio.ImageIO.read(f);
-		try{
-		    Thread.sleep(5000);
-		}catch(InterruptedException ie){
-		    ie.printStackTrace();
-		}
+
 		String picWidth=String.valueOf(src.getWidth(null));
 		String picHeight=String.valueOf(src.getHeight(null));
 		

@@ -83,7 +83,7 @@ function init(productType,organ,brand,property,uploadType,status,isDel) {
 		'queueID'        : 'fileQueue',
 		'auto'           : false,
 		'multi'          : true,
-		'simUploadLimit' : 9,
+		'simUploadLimit' : 1,
 		'sizeLimit': 18874368,
 		'queueSizeLimit ': 9,
 		'wmode'			 : 'transparent',
@@ -99,6 +99,10 @@ function init(productType,organ,brand,property,uploadType,status,isDel) {
 	$("#uploadType option[value="+uploadType+"]").attr("selected",'selected'); 
 	$("#status option[value="+status+"]").attr("selected",'selected'); 
 	$("#isDel option[value="+isDel+"]").attr("selected",'selected'); 
+	
+  	$(window).onunload(function(){
+	    doCancel();
+  	});	
 }	
 	
   
@@ -188,11 +192,13 @@ function doCancel(){
 	for (var i=0;i<str.length ;i++ ){
 		timestr+=str[i];
 	}
+	var operator=$("#operator").val();
 	var data = {
 			"productId":productId,
 			"productName":productName,
 			"productType":$("#productType").find("option:selected").text(),
-			"timestr":timestr
+			"timestr":timestr,
+			"operator":operator
 	};
 	$.post("wmlProduct_cancelUpdateWmlProduct.action",data,function(result){
 		window.opener.location.reload();
@@ -347,7 +353,7 @@ function uploasFile(){
 		<td  style="width: 100px;"></td>
 		<td style="width: 790px;">
 			<input type="button" class="gt-input-button"  onclick="uploasFile()"  value="开始上传">
-　			<input type="button" class="gt-input-button"  onclick="jQuery('#uploadify').uploadifyClearQueue()" value="取消上传">
+　			<input type="button" class="gt-input-button"  onclick="doCancel();jQuery('#uploadify').uploadifyClearQueue()" value="取消上传">
 			<span id="result" style="font-size: 13px;color: red"></span>
 		</td>
 		</tr>
