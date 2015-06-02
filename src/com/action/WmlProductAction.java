@@ -28,6 +28,7 @@ import com.pojo.WmlProductImage;
 import com.service.IWmlProductImageService;
 import com.service.IWmlProductService;
 import com.tool.Constant;
+import com.tool.FileUtil;
 import com.tool.PicInfo;
 import com.tool.TimeUtil;
 
@@ -146,6 +147,36 @@ public class WmlProductAction extends BaseAction {
 	public void setWmlProductImageService(IWmlProductImageService wmlProductImageService) {
 		this.wmlProductImageService = wmlProductImageService;
 	}
+	
+	public void deleteWmlProduct()throws Exception{
+		WmlProduct item = new WmlProduct();
+		WmlProductImage imageItem = new WmlProductImage();
+		int Id = Integer.parseInt(productId);
+		imageItem.setProductId(Id);
+		List<WmlProductImage> imageList = wmlProductImageService.queryWmlProductImageList(imageItem);
+		item.setId(Id);
+		item=wmlProductService.queryWmlProduct(item);
+		if(item!=null){
+			item.setIsDel(Constant.isDelete);
+			if(wmlProductService.updateWmlProduct(item)==Constant.MSG_SUCCESS){
+				for(int i=0;i<imageList.size();i++){
+					imageItem=imageList.get(i);
+					imageItem.setIsDel(Constant.isDelete);
+					wmlProductImageService.updateWmlProductImage(imageItem);
+				}
+				message= "optsuccess";
+			}else{
+				message= "fail";
+			}	
+		}else{
+			message="productIdNull";
+		}
+		wmlProduct = null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);
+	}
+	
+	
 	//查询所有商品信息
 	public String queryWmlProduct()  {
 		try{
@@ -181,9 +212,7 @@ public class WmlProductAction extends BaseAction {
 	
 	//修改商品信息
 	public void updateWmlProduct() throws Exception{
-		String operator="temp";
 		WmlAdmin wmladmin=(WmlAdmin)this.session.get("admin");
-		
 		if(wmladmin!=null){
 			ActionContext ac=ActionContext.getContext();
 			ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
@@ -252,7 +281,7 @@ public class WmlProductAction extends BaseAction {
 								String obj="smaller";
 								int index=filename.lastIndexOf(".");
 								if (!(filename.substring(index-7,index)).equals(obj)){
-									//20141208_H650_W650_1.jpg
+									//例：20141208_H650_W650_1.jpg
 									try{
 										String[] str=filename.split("_");
 										WmlProductImage productImage= new WmlProductImage();
@@ -260,19 +289,31 @@ public class WmlProductAction extends BaseAction {
 										productImage.setIsFirst(Integer.parseInt(str[3].substring(0,str[3].indexOf("."))));
 										productImage.setIsDel(Constant.isDelete);
 										productImage=wmlProductImageService.queryWmlProductImage(productImage);
-										productImage.setUrl(filename);
-										productImage.setHeight(Integer.parseInt(str[1].substring(1,str[1].length())));
-										productImage.setWidth(Integer.parseInt(str[2].substring(1,str[2].length())));
-										productImage.setName(wmlProduct.getName()+"_"+productImage.getIsFirst());
-										productImage.setIsDel(Constant.DELETE);
-										wmlProductImageService.updateWmlProductImage(productImage);
-										//更改临时上传目录名为产品目名
+										if (productImage!=null){
+											productImage.setUrl(filename);
+											productImage.setHeight(Integer.parseInt(str[1].substring(1,str[1].length())));
+											productImage.setWidth(Integer.parseInt(str[2].substring(1,str[2].length())));
+											productImage.setName(wmlProduct.getName()+"_"+productImage.getIsFirst());
+											productImage.setIsDel(Constant.DELETE);
+											wmlProductImageService.updateWmlProductImage(productImage);
+										}else{
+											productImage= new WmlProductImage();
+											productImage.setProductId(wmlProduct.getId());
+											productImage.setIsFirst(Integer.parseInt(str[3].substring(0,str[3].indexOf("."))));
+											productImage.setUrl(filename);
+											productImage.setHeight(Integer.parseInt(str[1].substring(1,str[1].length())));
+											productImage.setWidth(Integer.parseInt(str[2].substring(1,str[2].length())));
+											productImage.setName(wmlProduct.getName()+"_"+productImage.getIsFirst());
+											productImage.setIsDel(Constant.DELETE);
+											wmlProductImageService.addWmlProductImage(productImage);
+										}
 									
 									}catch(Exception e){
 										e.printStackTrace();
 									}
 								}
 							}
+								//更改临时上传目录名为产品目名
 							dir.renameTo(new File(savePath));
 						}						
 						message="修改成功";
@@ -287,14 +328,12 @@ public class WmlProductAction extends BaseAction {
 			message="会话过期,请重新登录!";
 		}
 		wmlProduct=null;
-		FiledataContentPath.clear();
 		response.setCharacterEncoding("utf-8");
 		response.getWriter().print(message);
 	}
 	
 	//修改商品信息
 	public void cancelUpdateWmlProduct() throws Exception{	
-		String operator="temp";
 		ActionContext ac=ActionContext.getContext();
 		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
 		String savePath = sc.getRealPath("/") + "productUpload";
@@ -312,54 +351,92 @@ public class WmlProductAction extends BaseAction {
 		}
 	}
 	
-	//图片保存
-	public String productUpload() {
+	//图片添加
+	public String productUploadAdd() {
 		String timePath=TimeUtil.getCurrentTime("yyyyMMdd");
-		ActionContext ac=ActionContext.getContext();
+		String productId="tempID";
+		if(operator!=null){
+			
+			ActionContext ac=ActionContext.getContext();
+			ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+			String savePath = sc.getRealPath("/");
+			savePath=savePath+ "productUpload"+"\\"+productType+"\\"+timePath+"\\"+productId+"_"+operator+"\\";
 		
-		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
-		String savePath = sc.getRealPath("/");
-		savePath = savePath + "productUpload\\"+getProductType()+"\\"+timePath+"\\"+getProductName()+"\\";
-		File f1 = new File(savePath);
-		if (!f1.exists()) {
-			f1.mkdirs();
-		}
-		
-		int size = Filedata.size();
-		if (size == 0)
-			return "ERROR";
-		String extName = null;
-		String name = null;
-		
-		for (int i = 0; i < size; i++) {
-			PicInfo picInfo= new PicInfo();
-			extName = FiledataFileName.get(i).substring(FiledataFileName.get(i).lastIndexOf("."));
-			name = UUID.randomUUID().toString();
-			File file = new File(savePath + name + extName);
+			int size = Filedata.size();
+			if (size == 0)
+				return "ERROR";
+			String extName = null;
+			String name = null;
+			//设置上传图片的序列号
+			File dir=new File(savePath);
+			int imgNo=1;
+			if  (!dir .exists()  && !dir .isDirectory())      
+			{
+				dir.mkdir();
+			}else{
+				File fa[] = dir.listFiles();
+				int fileCount=fa.length;
+				if (fileCount>0){
+					for (int i = 0; i < fileCount; i++) {
+						File fs = fa[i];
+						String filename=fs.getName();
+						String obj="smaller";
+						int index=filename.lastIndexOf(".");
+						if (!(filename.substring(index-7,index)).equals(obj)){
+							imgNo=imgNo+1;
+						}
+					}
+				}
+			}
+			
+			for (int i = 0; i < size; i++) {
+				PicInfo picInfo= new PicInfo();
+				extName = FiledataFileName.get(i).substring(FiledataFileName.get(i).lastIndexOf("."));
+				name = UUID.randomUUID().toString();
+				File file = new File(savePath + name + extName);
+				try {
+					FileUtils.copyFile(Filedata.get(i), file);
+					picInfo=ReNamePicture(timePath,savePath, name, extName,imgNo);	
+					name=picInfo.getPicUrl();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			HttpServletResponse response = ServletActionContext.getResponse();
 			try {
-				FileUtils.copyFile(Filedata.get(i), file);
-/*				picInfo=ReNamePicture(timePath,savePath, name, extName);*/	
-				picInfo.setPicUrl(picInfo.getPicUrl());
-				FiledataContentPath.add(picInfo);
+				response.getWriter().print(name);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
-		HttpServletResponse response = ServletActionContext.getResponse();
-		try {
-			response.getWriter().print(name + extName);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 		return null;
 	}
+	
+	//取消图片添加
+	public void cancelAddWmlProduct() throws Exception{
+		String timePath=TimeUtil.getCurrentTime("yyyyMMdd");
+		String productId="tempID";
+		ActionContext ac=ActionContext.getContext();
+		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+		String savePath = sc.getRealPath("/") + "productUpload";
+		savePath=savePath+"\\"+productType+"\\"+timePath+"\\"+productId+"_"+operator+"\\";		
+		File dir=new File(savePath);
+		if  (dir .exists()  && dir .isDirectory()) {
+			File fa[] = dir.listFiles();
+			int fileCount=fa.length;
+			if (fileCount>0){
+				for (int i = 0; i < fileCount; i++) {
+					fa[i].delete();
+				}
+			}
+			dir.delete();
+		}
+	}	
 	/**
 	 * 修改商品重新上传
 	 * @return
 	 */
 	public String UploadProductUpdate() {
-		/*String operator= getOperator();*/
-		String operator="temp";
 		if(operator!=null){
 			ActionContext ac=ActionContext.getContext();
 			ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
@@ -400,16 +477,11 @@ public class WmlProductAction extends BaseAction {
 				name = UUID.randomUUID().toString();
 				File file = new File(savePath + name + extName);
 				try {
-					FileUtils.copyFile(Filedata.get(i), file);
+
+					FileUtil.doCopyFile(Filedata.get(i), file,false);
 					picInfo=ReNamePicture(getTimestr(),savePath, name, extName,imgNo);	
 					name=picInfo.getPicUrl();
-/*					WmlProductImage imagePath= new WmlProductImage();
-					imagePath.setProductId(Integer.parseInt(productId));
-					imagePath.setIsFirst(imgNo);
-					imagePath.setUrl(name);
-					imagePathList.add(imagePath);
-					picInfo.setPicUrl(picInfo.getPicUrl());
-					FiledataContentPath.add(picInfo);*/
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -429,13 +501,15 @@ public class WmlProductAction extends BaseAction {
 		PicInfo pic= new PicInfo();
 		File f = new File(filePath+pictureName+extName);
 		Image src = javax.imageio.ImageIO.read(f);
+
 		String picWidth=String.valueOf(src.getWidth(null));
 		String picHeight=String.valueOf(src.getHeight(null));
 		
 		String picPath=filePath+timePath+"_H"+picHeight+"_W"+picWidth+"_"+String.valueOf(imgNo)+extName;
 		String picNamePath=timePath+"_H"+picHeight+"_W"+picWidth+"_"+String.valueOf(imgNo)+extName;
-		f.renameTo(new File(picPath));
-		
+		File newfile=new File(picPath);
+		FileUtils.copyFile(f, newfile);
+		f.delete();
 		pic.setPicHeight(picHeight);
 		pic.setPicWidth(picWidth);
 		pic.setPicUrl(picNamePath);
@@ -444,47 +518,73 @@ public class WmlProductAction extends BaseAction {
 	}
 	//添加商品信息
 	public void addWmlProduct() throws Exception{
-		wmlProduct.setDownload(0);
-		wmlProduct.setForwar(0);
-		wmlProduct.setCollect(0);
-		wmlProduct.setIsDel(Constant.DELETE);
-		wmlProduct.setCreateDate(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
-		if(wmlProduct.getStatus()==0){
-			wmlProduct.setOnTime(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
-		}
-		WmlAdmin admin=(WmlAdmin) this.session.get("admin");
-		if(admin==null){
-			message="sessionFail";
-		}else{
-		wmlProduct.setUid(admin.getId());
-		WmlProduct pro= new WmlProduct();
-	
-		if(wmlProductService.addWmlProduct(wmlProduct).equals("success")){
-			pro=wmlProductService.queryWmlProduct(wmlProduct);
-			int count=0;
-			for(PicInfo item:FiledataContentPath){
-				try{
-				WmlProductImage productImage= new WmlProductImage();
-				productImage.setUrl(item.getPicUrl());
-				productImage.setWidth(Integer.valueOf(item.getPicWidth()));
-				productImage.setHeight(Integer.valueOf(item.getPicHeight()));
-				productImage.setProductId(pro.getId());
-				productImage.setIsFirst(count);
-				wmlProductImageService.addWmlProductImage(productImage);
-				count++;
-				}catch(Exception e){
-					e.printStackTrace();
-				}
+		String productId="tempID";
+		WmlAdmin wmladmin=(WmlAdmin)this.session.get("admin");
+		
+		if(wmladmin!=null){
+			ActionContext ac=ActionContext.getContext();
+			ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+			String savePath = sc.getRealPath("/") + "productUpload";
+			String timestr=TimeUtil.getCurrentTime("yyyyMMdd");
+			savePath=savePath+"\\"+productType+"\\"+timestr+"\\"+productId+"_"+operator+"\\";
+			
+			wmlProduct.setDownload(0);
+			wmlProduct.setForwar(0);
+			wmlProduct.setCollect(0);
+			wmlProduct.setIsDel(Constant.DELETE);
+			wmlProduct.setCreateDate(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
+			if(wmlProduct.getStatus()==0){
+				wmlProduct.setOnTime(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
 			}
+			wmlProduct.setLastModifyDate(TimeUtil.getCurrentTime("yyyy-MM-dd HH:mm:ss"));
+			wmlProduct.setUid(wmladmin.getId());
+			WmlProduct pro= new WmlProduct();
+	
+			if(wmlProductService.addWmlProduct(wmlProduct).equals("success")){
+				pro=wmlProductService.queryWmlProduct(wmlProduct);
+				File dir=new File(savePath);
+				File fa[] = dir.listFiles();
+				int fileCount=fa.length;
+				if (fileCount>0){
+					for (int i = 0; i < fileCount; i++) {
+						File fs = fa[i];
+						String filename=fs.getName();
+						String obj="smaller";
+						int index=filename.lastIndexOf(".");
+						if (!(filename.substring(index-7,index)).equals(obj)){
+							//例：20141208_H650_W650_1.jpg
+							try{
+								String[] str=filename.split("_");
+								WmlProductImage productImage= new WmlProductImage();
+								productImage.setProductId(pro.getId());
+								productImage.setIsFirst(Integer.parseInt(str[3].substring(0,str[3].indexOf("."))));
+								productImage.setIsDel(Constant.DELETE);
+								productImage.setUrl(filename);
+								productImage.setHeight(Integer.parseInt(str[1].substring(1,str[1].length())));
+								productImage.setWidth(Integer.parseInt(str[2].substring(1,str[2].length())));
+								productImage.setName(wmlProduct.getName()+"_"+productImage.getIsFirst());
+								wmlProductImageService.addWmlProductImage(productImage);
+								//更改临时上传目录名为产品目名
+							
+							}catch(Exception e){
+								e.printStackTrace();
+							}
+						}
+					}
+					savePath=sc.getRealPath("/") + "productUpload"+"\\"+productType+"\\"+timestr+"\\"+pro.getId()+"\\";
+					dir.renameTo(new File(savePath));
+				}
+			
 			message= "optsuccess";
 			}else{
 				message= "fail";
 			}	
+		}else{
+			message="会话过期,请重新登录!";
 		}
-			wmlProduct=null;
-			this.FiledataContentPath.clear();
-			response.setCharacterEncoding("utf-8");
-			response.getWriter().print(message);
+		wmlProduct=null;
+		response.setCharacterEncoding("utf-8");
+		response.getWriter().print(message);
 	}
 	
 	//查询单个商品信息

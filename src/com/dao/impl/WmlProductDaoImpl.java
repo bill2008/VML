@@ -120,9 +120,18 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 					sql.append(" and property= "+item.getProperty()+"");
 				}
 				if(item.getStatus()!=null){
-					sql.append(" and status= "+item.getStatus()+"");
-				}				
+					if(item.getStatus()==Constant.isUNREVIEW){
+						sql.append(" and status= "+Constant.isUNREVIEW+"");
+						sql.append(" or status= null");
+					}else{
+						sql.append(" and status= "+item.getStatus()+"");
+					}
+				}
+			}else{
+				sql.append(" and status= "+Constant.isON+"");
 			}
+			
+			sql.append(" order by onTime desc ");
 			Query query=session.createQuery(sql.toString());
 			query.setFirstResult(startRowNum-1);
 			query.setMaxResults(pageSize);

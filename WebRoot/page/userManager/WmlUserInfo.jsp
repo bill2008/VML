@@ -101,8 +101,8 @@ img:hover {background-color:yellow;}
 					{id : 'lastDate',header : "最近登录时间",width :100},
 					{id : 'createDate',header : "创建时间",width :100},
 					{id : 'uidName',header : "推荐人",width : 99},
-					{id : 'detail' , header : "详细" , width : 35, hdAlign : 'center' ,align : 'center' ,renderer : Detail },
-					{id : 'detail' , header : "删除" , width : 35, hdAlign : 'center' ,align : 'center' ,renderer : Delete }
+					{id : 'detail' , header : "详细" , width : 36, headAlign : 'center' ,align : 'center' ,renderer : Detail },
+					{id : 'delete' , header : "删除" , width : 34, headAlign : 'center' ,align : 'center' ,renderer : Delete }
 					];
 		
 		var gridConfig = {

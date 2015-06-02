@@ -22,7 +22,7 @@
 		%>
 		<script type="text/javascript">
 			alert("用户没有登录,请重新登录后再操作!");
-		window.parent.location.href="/VML";
+		window.parent.location.href="/VML_Manager";
 		</script>
 <%}%>
 <script type="text/javascript">
@@ -73,17 +73,16 @@ $(document).ready(function() {
 	
 	$("#uploadify").uploadify({
 		'uploader'       : '<%=basePath%>js/uploadify/scripts/uploadify.swf',
-		'script'         : 'wmlProduct_productUpload.action',
+		'script'         : 'wmlProduct_productUploadAdd.action',
 		'cancelImg'      : '<%=basePath%>js/uploadify/cancel.png',
 		'buttonImg'		 : '<%=basePath%>js/uploadify/buttonImg.png',
 		'queueID'        : 'fileQueue',
 		'auto'           : false,
 		'multi'          : true,
 		'simUploadLimit' : 1,
-		'sizeLimit': 19871202,
-		'queueSizeLimit ': 10,
+		'sizeLimit': 18874368,
+		'queueSizeLimit ': 9,
 		'wmode'			 : 'transparent',
-		'simUploadLimit' :1,
 		'fileExt'		 : '*.png;*.gif;*.jpg;*.bmp;*.jpeg',
 		'fileDesc'		 : '图片文件(*.png;*.gif;*.jpg;*.bmp;*.jpeg)',
 		'onAllComplete'  :function(event,data) 
@@ -94,7 +93,13 @@ $(document).ready(function() {
 	$("#property").get(0).selectedIndex = parseInt($("#Property",parent.document).attr("value")) + 1;
 	$("#status").get(0).selectedIndex = parseInt($("#status",parent.document).attr("value")) + 1;
 	
+	
+  	$(window).onunload(function(){
+	    doCancel();
+  	});
 });
+
+
 
 function checkValue(item,widgetName){
 	if(item.value=="" ){
@@ -113,6 +118,7 @@ function doSubmit(){
 	var uploadType=$("#uploadType").val();
 	var price=$("#price").val();
 	var status=$("#status").val();
+	var operator=$("#operator").val();
 	var data = {
 			"wmlProduct.name" : name,
 			"wmlProduct.tid" : productType,
@@ -122,8 +128,9 @@ function doSubmit(){
 			"wmlProduct.property" : property,
 			"wmlProduct.status" : status,
 			"wmlProduct.price" : price,
-			"wmlProduct.description" : description
-			
+			"wmlProduct.description" : description,
+			"productType":$("#productType").find("option:selected").text(),
+			"operator":operator
 	};
 	$.post("wmlProduct_addWmlProduct.action",data,function(result){
 		if(result == "fail"){
@@ -139,10 +146,26 @@ function doSubmit(){
 		}
 	});
 }
+
+function doCancel(){
+	var operator=$("#operator").val();
+	
+	var data = {
+			"productType":$("#productType").find("option:selected").text(),
+			"operator":operator
+	};
+	$.post("wmlProduct_cancelAddWmlProduct.action",data,function(result){
+		window.opener.location.reload();
+		/* window.close(); */
+	});
+}
+
 function uploasFile(){   
     //校验  
-    var productName=$("#name").val();
+   var productName=$("#name").val();
     var productType =$("#productType").find("option:selected").text(); 
+    var operator=$("#operator").val();
+    
   	if(productName==null){
   		alert("商品名称不能为空");
   		return false;
@@ -150,15 +173,16 @@ function uploasFile(){
   		alert("商品类型不能为空");
   		return false;
   	}
-    //设置 scriptData 的参数  
-    $('#uploadify').uploadifySettings('scriptData',{'productName':productName,'productType':productType});  
+    //设置 scriptData 的参数
+    $('#uploadify').uploadifySettings('scriptData',{'operator':operator,'productName':productName,'productType':productType});  
     //上传  
+    
     jQuery('#uploadify').uploadifyUpload();
 }  
 </script>
 
 </head>
-<body>
+<body >
 <form id="frm">
 <div class="gt-panel" style="width: 600px; margin-left: 10px; ">
 	<div class="gt-panel-head"><center> <span>添加商品信息</span></center></div>
@@ -166,7 +190,10 @@ function uploasFile(){
 	<table  >
 	<tr >
 		<td style="width: 50px;">商品名称：</td>
-		<td style="width: 400px;"><input id="name" name="name" onblur="checkValue(this,'商品名称')"></td>
+		<td style="width: 400px;">
+		<input id="name" name="name" onblur="checkValue(this,'商品名称')">
+		<input type="hidden" id= "operator" name="operator" value="<%=session.getAttribute("adminId")%>">
+		</td>
 	</tr>
 		<tr >
 		<td style="width: 50px;">商品价格：</td>
@@ -239,7 +266,7 @@ function uploasFile(){
 		<td  style="width: 50px;"></td>
 		<td style="width: 400px;">
 			<input type="button" class="gt-input-button"  onclick="uploasFile()" value="开始上传">
-　			<input type="button" class="gt-input-button"  onclick="jQuery('#uploadify').uploadifyClearQueue()" value="取消上传">
+　			<input type="button" class="gt-input-button"  onclick="doCancel();jQuery('#uploadify').uploadifyClearQueue()" value="取消上传">
 			<span id="result" style="font-size: 13px;color: red"></span>
 		</td>
 		</tr>
@@ -247,8 +274,7 @@ function uploasFile(){
 	</table>
 	
 <div>
-	<input type="reset" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; " value="重置" />
-	
+	<input type="reset" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; " value="重置" onclick="doCancel()"/>
 	<input type="button" class="gt-input-button" style="width: 70px; float: right; margin-top: 20px; margin-right: 10px;" value="提交"   onclick="doSubmit()"/>
 </div>
 </div>
