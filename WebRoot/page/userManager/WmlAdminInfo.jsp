@@ -10,6 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="kiben" content="no-cache">
 <title>员工管理</title>
 <LINK REL="SHORTCUT ICON" HREF="<%=basePath%>images/logo.png">
 <link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5/themes/default/easyui.css">

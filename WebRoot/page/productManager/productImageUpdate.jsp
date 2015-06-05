@@ -11,7 +11,8 @@
 <html>
 <head>
 <title>商品管理</title>
-<meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+<meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema" >
+<meta http-equiv="kiben" content="no-cache">
 <link href="<%=basePath%>js/uploadify/css/default.css" rel="stylesheet" type="text/css" />
 <link href="<%=basePath%>js/uploadify/css/uploadify.css" rel="stylesheet" type="text/css" />
 <script type="text/javascript" src="<%=basePath%>js/jquery-1.4.4.min.js"></script>
@@ -144,9 +145,7 @@ function doSubmit(){
 	var property=$("#property").val();
 	var uploadType=$("#uploadType").val();
 	var price=$("#price").val();
-	var status=$("#status").val();
 	var id =$("#id").val();
-	var isDel =$("#isDel").val();
 	var uid =$("#uid").val();
 	var createDate =$("#createDate").val();
 	var forwar =$("#forwar").val();
@@ -154,7 +153,6 @@ function doSubmit(){
 	var collect =$("#collect").val();
 	var data = {
 			"wmlProduct.id" : id,
-			"wmlProduct.isDel" : isDel,
 			"wmlProduct.createDate" : createDate,
 			"wmlProduct.name" : name,
 			"wmlProduct.uid" : uid,
@@ -163,7 +161,6 @@ function doSubmit(){
 			"wmlProduct.bid" : brandName,
 			"wmlProduct.uploadType" : uploadType,
 			"wmlProduct.property" : property,
-			"wmlProduct.status" : status,
 			"wmlProduct.price" : price,
 			"wmlProduct.forwar" : forwar,
 			"wmlProduct.download" : download,
@@ -258,7 +255,7 @@ function uploasFile(){
 </script>
 
 </head>
-<body onload="init('${product.tid}','${product.oid}','${product.bid}','${product.property}','${product.uploadType}','${product.status}','${product.isDel}');">
+<body onload="init('${product.tid}','${product.oid}','${product.bid}','${product.property}','${product.uploadType}');">
 <form id="frm">
 <div class="gt-panel" style="width: 900px; margin-left: 10px; ">
 	<div class="gt-panel-head"><center> <span>修改商品信息</span></center></div>
@@ -317,26 +314,9 @@ function uploasFile(){
 			</select></td>
 	</tr>
 	<tr>
-		<td  style="width: 100px;">状态：</td>
-		<td  style="width: 790px;"><select id="status" name="status"  >
-				<option value="">--请选择--</option>
-				<option value="0">上架</option>
-				<option value="1">下架</option>
-				<option value="2">未审核</option>
-			</select></td>
-	</tr>
-	<tr>
 		<td  style="width: 100px;">描述：</td>
 		<td style="width: 790px;">
 			<textarea rows="1" cols="25"  id="description" name="description"  onblur="checkValue(this,'描述')">${product.description}</textarea>
-	</tr>
-	<tr>
-		<td style="width: 100px;">是否删除：</td>
-		<td  style="width: 790px;"><select id="isDel" name="isDel">
-				<option value="">--请选择--</option>
-				<option value="0">是</option>
-				<option value="1">否</option>
-			</select></td>
 	</tr>
 	<tr>
 		<td  style="width: 100px;">图片上传：</td>

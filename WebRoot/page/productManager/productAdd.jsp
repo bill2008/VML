@@ -91,7 +91,6 @@ $(document).ready(function() {
 		}
 	});
 	$("#property").get(0).selectedIndex = parseInt($("#Property",parent.document).attr("value")) + 1;
-	$("#status").get(0).selectedIndex = parseInt($("#status",parent.document).attr("value")) + 1;
 	
 	
   	$(window).onunload(function(){
@@ -117,7 +116,6 @@ function doSubmit(){
 	var property=$("#property").val();
 	var uploadType=$("#uploadType").val();
 	var price=$("#price").val();
-	var status=$("#status").val();
 	var operator=$("#operator").val();
 	var data = {
 			"wmlProduct.name" : name,
@@ -126,7 +124,6 @@ function doSubmit(){
 			"wmlProduct.bid" : brandName,
 			"wmlProduct.uploadType" : uploadType,
 			"wmlProduct.property" : property,
-			"wmlProduct.status" : status,
 			"wmlProduct.price" : price,
 			"wmlProduct.description" : description,
 			"productType":$("#productType").find("option:selected").text(),
@@ -229,19 +226,10 @@ function uploasFile(){
 		<tr>
 		<td  style="width: 50px;">上传类型：</td>
 		<td  style="width: 400px;"><select id="uploadType" name="uploadType" >
-				<option value="">--请选择--</option>
-				<option value="0">分后台</option>
+<!-- 				<option value="">--请选择--</option> -->
+<!-- 				<option value="0">分后台</option> -->
 				<option value="1">后台</option>
-				<option value="2">手机</option>
-			</select></td>
-	</tr>
-	<tr>
-		<td  style="width: 50px;">状态：</td>
-		<td  style="width: 400px;"><select id="status" name="status"  >
-				<option value="">--请选择--</option>
-				<option value="0">上架</option>
-				<option value="1">下架</option>
-				<option value="2">未审核</option>
+<!-- 				<option value="2">手机</option> -->
 			</select></td>
 	</tr>
 	<tr>

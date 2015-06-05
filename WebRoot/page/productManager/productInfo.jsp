@@ -10,6 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="kiben" content="no-cache">
 <title>商品管理</title>
 <link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="<%=basePath%>js/jquery-easyui-1.3.5//themes/icon.css">
@@ -118,14 +119,14 @@ img:hover {background-color:yellow;}
 			{id : 'organName',header : "商户",width : 41},
 			{id : 'uploadType',header : "上传类型",width : 60, align : 'center' ,renderer : GT.Grid.mappingRenderer(UploadTypeOpt, '')},
 			{id : 'userName',header : "上传人",width : 50},
-			{id : 'onTime',header : "上架时间",width : 130},
+			{id : 'onTime',header : "上架时间",width : 117},
 			{id : 'price',header : "价格",width : 50,editable : true,editor : {type : 'text'}},
 			{id : 'viewCount',header : "浏览次数",width : 	60,align : 'center'},
 			{id : 'forwar',header : "转发",width : 35,align : 'center'},
 			{id : 'download',header : "下载",width : 35,align : 'center'},
 			{id : 'collect',header : "收藏",width : 35,align : 'center'},
-			{id : 'lastModifyDate',header : "修改日期",width : 130},
-			{id : 'status',header : "状态",width : 43,renderer : statusClass},
+			{id : 'lastModifyDate',header : "修改日期",width : 117},
+			{id : 'status',header : "状态",width : 69,headAlign : 'center' ,renderer : statusClass},
 			{id : 'delete',header : "删除",width : 35,headAlign : 'center' ,align : 'center',renderer : deleteClass}
 			];
 
@@ -275,13 +276,12 @@ img:hover {background-color:yellow;}
 	}
 	
 	function  statusClass (value ,record,columnObj,grid,colNo,rowNo){
-		var url = "";
 		if(value==0){
-			return "<a onclick=\"confirmWindow('"+url+"','')\" /><font style=\"font-weight:bold;color:blue\">上架</font></span>";
+			return "<select id=\"status"+record['id']+"\" onchange=\"statusChange(this.value,this.id)\" style=\"text-align:center;font-weight:bold;color:blue\"><option value=\"0\" style=\"font-weight:bold;color:blue\">上架</option><option value=\"1\" style=\"color:grey\">下架</option><option value=\"2\" style=\"color:red\">未审核</option></select>";
 		}else if (value==1 ){
-			return "<a onclick=\"confirmWindow('"+url+"','')\"><font  color=\"grey\">下架</font></span>";
+			return "<select id=\"status"+record['id']+"\" onchange=\"statusChange(this.value,this.id)\" style=\"text-align:center;color:grey\"><option value=\"1\" style=\"color:grey\">下架</option><option value=\"0\" style=\"font-weight:bold;color:blue\">上架</option><option value=\"2\" style=\"color:red\">未审核</option></select>";
 		}else if (value==2 || value == null){
-			return "<a onclick=\"confirmWindow('"+url+"','')\"><font  color=\"red\">未审核</font></span>";
+			return "<select id=\"status"+record['id']+"\" onchange=\"statusChange(this.value,this.id)\" style=\"text-align:center;color:red\"><option value=\"2\" style=\"color:red\">未审核</option><option value=\"0\" style=\"font-weight:bold;color:blue\">上架</option><option value=\"1\" style=\"color:grey\">下架</option></select>";
 		}
 	}
 	
@@ -307,7 +307,27 @@ img:hover {background-color:yellow;}
 	     }else{
 	        return false;
          };
-	}	
+	}
+	
+	function statusChange(value,id){
+		var productId = id.substring(6);
+		var url="wmlProduct_updateWmlProductByStatus.action?productId="+productId;
+		if (value==0 ){
+			$('#'+id).attr("style","text-align:center;font-weight:bold;color:blue");
+			url = url + "&status=0";
+			confirmWindow(url,"你确定要把编号为："+productId+" 的商品状态改为上架吗？");
+		}else if (value==1 ){
+			url = url + "&status=1";
+			$('#'+id).attr("style","text-align:center;color:grey");
+			confirmWindow(url,"你确定要把编号为："+productId+" 的商品状态改为下架吗？");
+		}else if (value==2 || value == null){
+			$('#'+id).attr("style","text-align:center;color:red");
+			url = url + "&status=2";
+			confirmWindow(url,"你确定要把编号为："+productId+" 的商品状态改为未审核吗？");
+		}
+	}
+	
+	
 </script>
 </head>
 <body>

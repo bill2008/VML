@@ -131,7 +131,7 @@ public class WmlProductDaoImpl extends BaseDAO implements IWmlProductDao {
 				sql.append(" and status= "+Constant.isON+"");
 			}
 			
-			sql.append(" order by onTime desc ");
+			sql.append(" order by lastModifyDate desc, onTime desc");
 			Query query=session.createQuery(sql.toString());
 			query.setFirstResult(startRowNum-1);
 			query.setMaxResults(pageSize);
