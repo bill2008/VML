@@ -73,8 +73,17 @@ public class TimeUtil {
 		return format.format(date);
 	}
 	
+	public static String parseToString(String time){
+		String timestr=time.substring(0, 10);
+		String str="";
+		for(int i=0;i<timestr.split("-").length;i++){
+			str+=timestr.split("-")[i];
+		}
+		return str;
+	}
+	
 	public static void main(String [] arg){
-		String time="2014-04-09 15:02:14";
+		String time="2014-06-20 17:05:07";
 	
 		String timestr=time.substring(0, 10);
 		String str="";

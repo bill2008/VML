@@ -703,6 +703,58 @@ public class WmlProductAction extends BaseAction {
 		
 	}
 	
+	//批量修改图片位置
+	public String productImageUpdateFiles(){
+		try{
+		
+		ActionContext ac=ActionContext.getContext();
+		ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+		//获取原图片存储地址
+		String imagePath = sc.getRealPath("/") + "productUpload";
+		//查询所有商品信息
+		List<WmlProduct> productList=wmlProductService.queryWmlProductList(wmlProduct);
+		
+		//遍历所有商品信息
+		for(WmlProduct item: productList){
+			WmlProductImage imgItem=new WmlProductImage();
+			//转换商品上传时间"2015-09-10" 转换为"20150910"
+			String timestr=TimeUtil.parseToString(item.getCreateDate());
+			//商品重新存储地址
+			String saveImagePath=imagePath+"\\"+item.getProductType()+"\\"+timestr+"\\"+item.getId();
+			//按商品id查询商品图片信息
+			imgItem.setProductId(item.getId());
+			List<WmlProductImage> imgList=wmlProductImageService.queryWmlProductImageList(imgItem);
+			int i=0;
+			//遍历图片信息
+			for(WmlProductImage imgitem:imgList){
+				i++;
+				//获取原图片文件
+				String pathimg=imagePath+"\\"+imgitem.getUrl();
+				File f = new File(pathimg);
+				//判断原商品图片是否存在
+				if(f.exists()){
+					//重新保存商品图片信息地址
+				String imageName=saveImagePath+"\\"+timestr+"_H"+imgitem.getHeight()+"_W"+imgitem.getWidth()+"_"+i+".jpg";
+				File copyFile= new File(imageName);
+				//复制原商品图片信息到新路径
+				FileUtils.copyFile(f, copyFile);
+				//保存新图片路径信息
+				imgitem.setUrl(timestr+"_H"+imgitem.getHeight()+"_W"+imgitem.getWidth()+"_"+i+".jpg");
+				//更新图片路径信息
+				wmlProductImageService.updateWmlProductImage(imgitem);
+				}
+			}
+		}
+		message="success";
+		}catch(Exception e){
+			message="fail";
+			e.printStackTrace();
+		}
+		
+		return "success";
+	}
+	
+	
 	
 	
 	
