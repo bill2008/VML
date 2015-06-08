@@ -13,22 +13,19 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.struts2.ServletActionContext;
 
-
-
-
-
-
-
 import com.grid.tool.GridServerHandler;
 import com.grid.tool.GridSupport;
 import com.opensymphony.xwork2.ActionContext;
 import com.pojo.WmlAdmin;
+import com.pojo.WmlAdvertisement;
 import com.pojo.WmlProduct;
 import com.pojo.WmlProductImage;
+import com.service.IWmlAdvertisementService;
 import com.service.IWmlProductImageService;
 import com.service.IWmlProductService;
 import com.tool.Constant;
 import com.tool.FileUtil;
+import com.tool.GeneralStaticFile;
 import com.tool.PicInfo;
 import com.tool.TimeUtil;
 
@@ -37,6 +34,7 @@ public class WmlProductAction extends BaseAction {
 
 	private IWmlProductService wmlProductService;
 	private IWmlProductImageService wmlProductImageService;
+	private IWmlAdvertisementService wmlAdvertisementService;
 	private WmlProduct wmlProduct;//接受数据对象
 	private WmlProduct product;//返回界面
 	private List<WmlProduct> data;
@@ -154,7 +152,9 @@ public class WmlProductAction extends BaseAction {
 	public void setWmlProductImageService(IWmlProductImageService wmlProductImageService) {
 		this.wmlProductImageService = wmlProductImageService;
 	}
-	
+	public void setWmlAdvertisementService(IWmlAdvertisementService wmlAdvertisementService) {
+		this.wmlAdvertisementService = wmlAdvertisementService;
+	}
 	public void deleteWmlProduct()throws Exception{
 		WmlProduct item = new WmlProduct();
 		WmlProductImage imageItem = new WmlProductImage();
@@ -736,6 +736,7 @@ public class WmlProductAction extends BaseAction {
 					//重新保存商品图片信息地址
 				String imageName=saveImagePath+"\\"+timestr+"_H"+imgitem.getHeight()+"_W"+imgitem.getWidth()+"_"+i+".jpg";
 				File copyFile= new File(imageName);
+				copyFile.mkdir();
 				//复制原商品图片信息到新路径
 				FileUtils.copyFile(f, copyFile);
 				//保存新图片路径信息
@@ -753,6 +754,70 @@ public class WmlProductAction extends BaseAction {
 		
 		return "success";
 	}
+	
+	//批量生成html静态页面
+		public String bulidHtml() {
+		try{
+			//实例化生成静态页面工具类
+			GeneralStaticFile gsf=new GeneralStaticFile();
+			//获取项目实际地址
+			ActionContext ac=ActionContext.getContext();
+			ServletContext sc = (ServletContext) ac.get(ServletActionContext.SERVLET_CONTEXT);
+			String savePath = sc.getRealPath("/");
+			//获取模板所在地址
+			String templetPath=savePath+"page\\HtmlTemplet\\template.html";
+			//转换分隔符因 分隔符"\"在写入时候会被去除掉，所有全部转换为 分隔符"/"
+			String [] substr=savePath.split("\\\\");
+			String workPath="";
+			for(String cell:substr){
+				workPath+=cell+"/";
+			}
+			//查看静态页面存储地址是否为空，为空的话重新创建
+			File f1 = new File("D:\\virtualhost\\vmilan\\ROOT");
+			if(!f1.exists()){
+				f1.mkdirs();
+			}
+			//查询所有商品信息
+			List<WmlProduct> productList=wmlProductService.queryWmlProductList(null);
+			//查询所有广告信息
+			List<WmlAdvertisement> advList= wmlAdvertisementService.queryWmlAdvertisementList(null);
+			for(WmlProduct proItem:productList){
+				
+				WmlProductImage imgitem=new WmlProductImage();
+				
+				imgitem.setProductId(proItem.getId());
+				//查询商品所对应的商品图片
+				List<WmlProductImage> proImageList=wmlProductImageService.queryWmlProductImageList(imgitem);
+				//图片替换字符串
+				String imgStr="";
+				//替换内容
+				String file=gsf.readFile(templetPath);
+				file=gsf.changeContent(file, "###tittle###", proItem.getDescription());
+				file=gsf.changeContent(file, "###itemname###", proItem.getDescription());
+				file=gsf.changeContent(file, "###brand###", proItem.getProductType());
+				file=gsf.changeContent(file, "###price###", proItem.getPrice().toString());
+				file=gsf.changeContent(file, "###createTime###", proItem.getCreateDate());
+				for(WmlProductImage imageitem:proImageList){
+					imgStr+="<img  src='"+workPath+"productUpload/"+imageitem.getUrl()+"'  style='width:100%;max-width:850px'>";
+				}
+				file=gsf.changeContent(file, "###imges###", imgStr);
+				
+				String advstr="";
+				for(WmlAdvertisement advitem:advList){
+					advstr+="<li><section id='item_seller'><a id='enter_shop' class='for_gaq hide'  href='"+advitem.getUrl()+"' style='display: block;'>"
+												+ "<div id='eller_wrap' class='rel'><div style='float:left; margin:0px; padding:0px;'></div>"
+												+ "<div style='float:left; padding-left:15px'>"+advitem.getDescription()+"</a></div></div></section></li>";
+				}
+				file=gsf.changeContent(file, " ###adv###", advstr);
+				gsf.writeFile(file, "D:\\virtualhost\\vmilan\\ROOT\\"+proItem.getId()+".html");
+			}
+			message="success";
+		}catch(Exception e){
+			message="fail";
+			e.printStackTrace();
+		}
+		return "success";
+		}
 	
 	
 	

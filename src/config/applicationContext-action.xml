@@ -37,6 +37,7 @@
 	<bean id="wmlProductAction" class="com.action.WmlProductAction" scope="prototype"  >
 		<property name="wmlProductService" ref="wmlProductService"></property>
 			<property name="wmlProductImageService" ref="wmlProductImageService"></property>
+			<property name="wmlAdvertisementService" ref="wmlAdvertisementService"></property>
 	</bean>   
 	<bean id="wmlProductImageAction" class="com.action.WmlProductImageAction" scope="prototype"  >
 		<property name="wmlProductImageService" ref="wmlProductImageService"></property>

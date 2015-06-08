@@ -7,19 +7,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<title>商品图片分目录操作</title>
+<title>生成商品静态操作</title>
 <script type="text/javascript" src="<%=basePath %>js/jquery-1.4.4.min.js"></script>
 <script type="text/javascript">
 function imgeCopy(){
 	$.ajax({
-		url : "wmlProduct_productImageUpdateFiles.action",
+		url : "wmlProduct_bulidHtml.action",
 		type : "post",
 		success : function(data) {
 				 	if(data.message=="success"){
 				 		alert("添加成功");
-				 		window.close();
 				 	}else{
-				 		alert(data.message);
+				 		alert("添加失败");
 				 	}
 			}
 		});
@@ -27,6 +26,6 @@ function imgeCopy(){
 </script>
 </head>
 <body>
-<input  type="button" value="图片分目录操作" onclick="imgeCopy()"/>
+<input  type="button" value="生成商品静态操作" onclick="imgeCopy()"/>
 </body>
 </html>
